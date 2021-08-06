@@ -2,6 +2,7 @@ const express = require("express");
 const userRoutes = require("./routes/user.routes");
 const playerRoutes = require("./routes/player.routes");
 const skillRoutes = require("./routes/skill.routes");
+const techniqueRoutes = require("./routes/technique.routes");
 const cookieParser = require("cookie-parser");
 require("dotenv").config({ path: "./config/.env" });
 require("./config/db");
@@ -26,6 +27,7 @@ app.get("/jwtid", requireAuth, (require, res) => {
 app.use("/api/user", userRoutes);
 app.use("/api/player", playerRoutes);
 app.use("/api/skill", skillRoutes);
+app.use("/api/technique", techniqueRoutes);
 
 // server
 app.listen(process.env.PORT, () => {
