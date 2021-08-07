@@ -15,7 +15,8 @@ module.exports.createPlayer = async(req, res) => {
 };
 
 module.exports.getAllPlayers = async(req, res) => {
-    const players = await PlayerModel.find(req.query).select();
+    const players = await PlayerModel.find(req.query)
+        .select(["-leader_skill", "-passive_skill", "-hidden_abilities", "-stats", "-techniques"]);
     res.status(200).json(players);
 };
 
