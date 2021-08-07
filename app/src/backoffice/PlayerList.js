@@ -74,15 +74,75 @@ const playerForm = [
     },
     {
         label: "Pays",
-        name: "country"
+        name: "country",
+        type: "select",
+        options: [
+            {label: "Japon", value: "japan"},
+            {label: "Allemagne", value: "germany"},
+            {label: "France", value: "france"},
+            {label: "Italie", value: "italia"},
+            {label: "Hollande", value: "netherlands"},
+            {label: "Angleterre", value: "england"},
+            {label: "Suède", value: "sweden"},
+            {label: "Espagne", value: "spain"},
+            {label: "Mexique", value: "mexico"},
+            {label: "Brésil", value: "brazil"},
+            {label: "Argentine", value: "argentina"},
+            {label: "Uruguay", value: "uruguay"},
+            {label: "Thaïlande", value: "thailand"},
+            {label: "Arabie Saoudite", value: "saudi_arabia"},
+            {label: "Ouzbékistan", value: "uzbekistan"},
+            {label: "Chine", value: "china"},
+            {label: "Corée du Sud", value: "korea"},
+            {label: "Nigéria", value: "nigeria"},
+            {label: "Portugal", value: "portugal"},
+            {label: "Danemark", value: "danmark"},
+        ]
     },
     {
         label: "Equipe",
-        name: "team" 
+        name: "team" ,
+        type: "select",
+        options: [
+            {label: "Japon", value: "Japon"},
+            {label: "Allemagne", value: "Allemagne"},
+            {label: "France", value: "France"},
+            {label: "Italie", value: "Italie"},
+            {label: "Hollande", value: "Hollande"},
+            {label: "Angleterre", value: "Angleterre"},
+            {label: "Suède", value: "Suède"},
+            {label: "Espagne", value: "Espagne"},
+            {label: "Mexique", value: "Mexique"},
+            {label: "Brésil", value: "Brésil"},
+            {label: "Argentine", value: "Argentine"},
+            {label: "Uruguay", value: "Uruguay"},
+            {label: "Thaïlande", value: "Thaïlande"},
+            {label: "Arabie Saoudite", value: "Arabie Saoudite"},
+            {label: "Ouzbékistan", value: "Ouzbékistan"},
+            {label: "Chine", value: "Chine"},
+            {label: "Corée du Sud", value: "Corée du Sud"},
+            {label: "Nigéria", value: "Nigéria"},
+            {label: "Portugal", value: "Portugal"},
+            {label: "Danemark", value: "Danemark"},
+        ]
     },
     {
         label: "Série",
-        name: "series"
+        name: "series",
+        type: "select",
+        options: [
+            {label: "Collégien", value: "Collégien"},
+            {label: "Lycée", value: "Lycée"},
+            {label: "Junior", value: "Junior"},
+            {label: "Qualification zone Asie", value: "Qualification zone Asie"},
+            {label: "Mondial Espoir", value: "Mondial Espoir"},
+            {label: "Real Japan 7", value: "Real Japan 7"},
+            {label: "Golden 23", value: "Golden 23"},
+            {label: "Rising Sun", value: "Rising Sun"},
+            {label: "Clubs européens", value: "Clubs européens"},
+            {label: "Club sud-américains", value: "Club sud-américains"},
+            {label: "Club Japonais", value: "Club Japonais"}
+        ]
     }
 ]
 

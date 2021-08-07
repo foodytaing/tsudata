@@ -1,23 +1,7 @@
 import React, { useEffect, useState } from "react";
+import playerList from '../../data/player_list.json'
 
-const players = [
-    {
-        first_name: 'Tsubasa',
-        last_name: 'Ozora'
-    },
-    {
-        first_name: 'Carlos',
-        last_name: 'Santana'
-    },
-    {
-        first_name: 'Natureza',
-        last_name: ''
-    },
-    {
-        first_name: 'Rivaul',
-        last_name: ''
-    }
-]
+const players = playerList
 
 function tri(a, b) {
     if (a.text < b.text) return -1;
@@ -103,6 +87,11 @@ export const SelectAutoSuggestPlayerName = (props) => {
     const [inputValue, setInputValue] = useState(value);
     const [suggestions, setSuggestions] = useState([]);
 
+    useEffect(() => {
+        setInputValue(value);
+        setSuggestions([]);
+    }, [value]);
+
     function handleInputValueChange(e) {
         setInputValue(e.target.value);
         getSuggestion(e.target.value)
@@ -112,9 +101,15 @@ export const SelectAutoSuggestPlayerName = (props) => {
         const value = inputValue.trim().toLowerCase();
         const length = inputValue.length;
 
-        const suggestions = length === 0 ? [] : players.filter(player =>
-            player.first_name.toLowerCase().slice(0, length) === value
-        );
+        if (length <= 1)
+            return setSuggestions([]);
+
+        const suggestions = players.filter(function (item) {
+            return (
+                item.first_name.toLowerCase().slice(0, length) === value ||
+                item.last_name.toLowerCase().slice(0, length) === value
+            );
+        });
 
         setSuggestions(suggestions);
     }
@@ -134,7 +129,14 @@ export const SelectAutoSuggestPlayerName = (props) => {
                     return (
                         <li
                             key={index}
-                            onClick={() => handleSelectPlayer({first_name: option?.first_name, last_name: option?.last_name})}
+                            onClick={() => handleSelectPlayer(
+                                {
+                                    first_name: option?.first_name,
+                                    last_name: option?.last_name,
+                                    country: option?.country,
+                                    team: option?.team,
+                                }
+                            )}
                         >
                             {option?.first_name} {option?.last_name}
                         </li>
