@@ -17,6 +17,16 @@ app.use(
 );
 app.use(cookieParser());
 
+app.use((req, res, next) => {
+    res.header({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Z-Key',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+    });
+    next();
+});
+
 // jwt
 app.get("*", checkUser);
 app.get("/jwtid", requireAuth, (require, res) => {

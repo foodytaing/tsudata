@@ -1,0 +1,14 @@
+[
+    {
+        "label": "rouge",
+        "value": "red"
+    },
+    {
+        "label": "bleu",
+        "value": "blue"
+    },
+    {
+        "label": "vert",
+        "value": "green"
+    }
+]

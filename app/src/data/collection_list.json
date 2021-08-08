@@ -1,0 +1,38 @@
+[
+    {
+        "label": "Inclus Ticket SSR",
+        "value": "include_ticket_SSR"
+    },
+    {
+        "label": "Exclus Ticket SSR",
+        "value": "exclude_ticket_SSR"
+    },
+    {
+        "label": "Dream Collection",
+        "value": "dream_collection"
+    },
+    {
+        "label": "Dream Festival",
+        "value": "dream_festival"
+    },
+    {
+        "label": "Joueur Limité",
+        "value": "limited_player"
+    },
+    {
+        "label": "Joueur Gratuit",
+        "value": "free_player"
+    },
+    {
+        "label": "Joueur LR",
+        "value": "lr_player"
+    },
+    {
+        "label": "World Legend",
+        "value": "world_legend"
+    },
+    {
+        "label": "Joueur Payant",
+        "value": "paying_player"
+    }
+]
