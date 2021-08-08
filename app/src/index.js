@@ -1,22 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { applyMiddleware, createStore } from "redux";
-import rootReducer from "./reducers";
-import thunk from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
 import App from "./App";
-
-const store = createStore(
-    rootReducer,
-    composeWithDevTools(applyMiddleware(thunk))
-);
+import { SWRConfig } from 'swr'
 
 ReactDOM.render(
-<Provider store={store}>
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>
-  </Provider>,
+    <SWRConfig
+        value={{
+            fetcher: (...args) => fetch(...args).then(res => res.json())
+        }}
+    >
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
+    </SWRConfig>,
   document.getElementById("root")
 );

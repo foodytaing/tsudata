@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
 import Input from "../components/form/Input"
 
-import {
-    getAllPlayersAction
-} from "../actions/player.action";
+import useSWR, { mutate } from 'swr'
 
 import { 
     getPlayerApi,
@@ -202,19 +199,16 @@ const playerSkillsForm = []
 
 const playerTechniquesForm = []
 
-const PlayerList = () => {
-    const dispatch = useDispatch();
-    const playerListData = useSelector((state) => state.playerReducer);
+const fetcher = url => fetch(url).then(r => r.json())
 
+const PlayerList = () => {
     //state
     const [playerSelected, setPlayerSelected] = useState({});
     const [playerStats, setPlayerStats] = useState({});
     const [showForm, setShowForm] = useState(false);
     const [newPlayerForm, setNewPlayerForm] = useState(false);
 
-    useEffect(() => {
-        dispatch(getAllPlayersAction());
-    }, [dispatch]);
+    const { data, error } = useSWR(`${process.env.REACT_APP_API_URL}/api/player/`, fetcher)
 
     async function handleEdit(id) {
         try {
@@ -228,7 +222,9 @@ const PlayerList = () => {
     }
 
     function handleDelete(id) {
+        mutate(`${process.env.REACT_APP_API_URL}/api/player/`, data.filter(function(el) { return el._id != id; }), false)
         deletePlayerApi(id);
+
     }
 
     function handleUpdate() {
@@ -237,17 +233,17 @@ const PlayerList = () => {
             stats: { ...playerStats }
         }
 
+        mutate(`${process.env.REACT_APP_API_URL}/api/player/`, data.map(obj => [newPlayerData].find(o => o._id === obj._id) || obj), false)
         updatePlayerApi(newPlayerData);
     }
 
     function handleCreate() {
-        console.log("handleCreate");
-
         const newPlayerData = {
             ...playerSelected,
             stats: { ...playerStats }
         }
 
+        mutate(`${process.env.REACT_APP_API_URL}/api/player/`, [...data, newPlayerData], false)
         createPlayerApi(newPlayerData);
     }
 
@@ -320,7 +316,7 @@ const PlayerList = () => {
             <h1>Backoffice Liste des joueurs</h1>
             <button onClick={showNewPlayerForm}>Nouveau joueur</button>
             <ul>
-                {Array.isArray(playerListData) && playerListData.map((player, index) => {
+                {Array.isArray(data) && data.map((player, index) => {
                     return (
                         <li key={index}>
                             <img
