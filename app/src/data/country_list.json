@@ -1,0 +1,82 @@
+[
+    {
+        "label": "Japon",
+        "value": "japan"
+    },
+    {
+        "label": "Allemagne",
+        "value": "germany"
+    },
+    {
+        "label": "France",
+        "value": "france"
+    },
+    {
+        "label": "Italie",
+        "value": "italia"
+    },
+    {
+        "label": "Hollande",
+        "value": "netherlands"
+    },
+    {
+        "label": "Angleterre",
+        "value": "england"
+    },
+    {
+        "label": "Suède",
+        "value": "sweden"
+    },
+    {
+        "label": "Espagne",
+        "value": "spain"
+    },
+    {
+        "label": "Mexique",
+        "value": "mexico"
+    },
+    {
+        "label": "Brésil",
+        "value": "brazil"
+    },
+    {
+        "label": "Argentine",
+        "value": "argentina"
+    },
+    {
+        "label": "Uruguay",
+        "value": "uruguay"
+    },
+    {
+        "label": "Thaïlande",
+        "value": "thailand"
+    },
+    {
+        "label": "Arabie Saoudite",
+        "value": "saudi_arabia"
+    },
+    {
+        "label": "Ouzbékistan",
+        "value": "uzbekistan"
+    },
+    {
+        "label": "Chine",
+        "value": "china"
+    },
+    {
+        "label": "Corée du Sud",
+        "value": "korea"
+    },
+    {
+        "label": "Nigéria",
+        "value": "nigeria"
+    },
+    {
+        "label": "Portugal",
+        "value": "portugal"
+    },
+    {
+        "label": "Danemark",
+        "value": "denmark"
+    }
+]

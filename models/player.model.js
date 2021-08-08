@@ -42,17 +42,14 @@ const playerSchema = new mongoose.Schema({
     },
     country: {
         type: String,
-        lowercase: true,
         trim: true,
     },
     team: {
         type: String,
-        lowercase: true,
         trim: true,
     },
     series: {
         type: String,
-        lowercase: true,
         trim: true,
     },
     positions: {
@@ -66,12 +63,10 @@ const playerSchema = new mongoose.Schema({
     },
     leader_skill: {
         type: String,
-        lowercase: true,
         trim: true,
     },
     passive_skill: {
         type: String,
-        lowercase: true,
         trim: true,
     },
     hidden_abilities: {

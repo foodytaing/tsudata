@@ -10,6 +10,14 @@ import {
     updatePlayerApi,
     deletePlayerApi
 } from "../api/player.api";
+import collectionList from '../data/collection_list.json'
+import rarityList from '../data/rarity_list.json'
+import colorList from '../data/color_list.json'
+import countryList from '../data/country_list.json'
+import seriesList from '../data/series_list.json'
+import teamList from '../data/team_list.json'
+import floatballList from '../data/floatball_list.json'
+import positionList from '../data/position_list.json'  
 
 const playerForm = [
     {
@@ -31,11 +39,7 @@ const playerForm = [
         label: "Couleur",
         name: "color",
         type: "select",
-        options: [
-            {label: "rouge", value: "red"},
-            {label: "bleu", value: "blue"},
-            {label: "vert", value: "green"}
-        ]
+        options: colorList
     },
     {
         label: "Titre",
@@ -49,100 +53,37 @@ const playerForm = [
         label: "Rareté",
         name: "rarity",
         type: "select",
-        options: [
-            {label: "N", value: "N"},
-            {label: "SR", value: "SR"},
-            {label: "SSR", value: "SSR"},
-            {label: "UR", value: "UR"}
-        ]
+        options: rarityList
     },
     {
         label: "Collection",
         name: "collection_card",
         type: "select",
-        options: [
-            {label: "Inclus Ticket SSR", value: "include_ticket_SSR"},
-            {label: "Exclus Ticket SSR", value: "exclude_ticket_SSR"},
-            {label: "Dream Collection", value: "dream_collection"},
-            {label: "Dream Fest", value: "dream_fest"},
-            {label: "Joueur Limité", value: "limited_player"},
-            {label: "Joueur Gratuit", value: "free_player"},
-            {label: "Joueur Ultra Rare", value: "lr_player"},
-            {label: "World Legend", value: "world_legend"},
-            {label: "Joueur Payant", value: "paying_player"}
-        ]
+        options: collectionList
     },
     {
         label: "Pays",
         name: "country",
         type: "select",
-        options: [
-            {label: "Japon", value: "japan"},
-            {label: "Allemagne", value: "germany"},
-            {label: "France", value: "france"},
-            {label: "Italie", value: "italia"},
-            {label: "Hollande", value: "netherlands"},
-            {label: "Angleterre", value: "england"},
-            {label: "Suède", value: "sweden"},
-            {label: "Espagne", value: "spain"},
-            {label: "Mexique", value: "mexico"},
-            {label: "Brésil", value: "brazil"},
-            {label: "Argentine", value: "argentina"},
-            {label: "Uruguay", value: "uruguay"},
-            {label: "Thaïlande", value: "thailand"},
-            {label: "Arabie Saoudite", value: "saudi_arabia"},
-            {label: "Ouzbékistan", value: "uzbekistan"},
-            {label: "Chine", value: "china"},
-            {label: "Corée du Sud", value: "korea"},
-            {label: "Nigéria", value: "nigeria"},
-            {label: "Portugal", value: "portugal"},
-            {label: "Danemark", value: "danmark"},
-        ]
+        options: countryList
     },
     {
         label: "Equipe",
         name: "team" ,
         type: "select",
-        options: [
-            {label: "Japon", value: "Japon"},
-            {label: "Allemagne", value: "Allemagne"},
-            {label: "France", value: "France"},
-            {label: "Italie", value: "Italie"},
-            {label: "Hollande", value: "Hollande"},
-            {label: "Angleterre", value: "Angleterre"},
-            {label: "Suède", value: "Suède"},
-            {label: "Espagne", value: "Espagne"},
-            {label: "Mexique", value: "Mexique"},
-            {label: "Brésil", value: "Brésil"},
-            {label: "Argentine", value: "Argentine"},
-            {label: "Uruguay", value: "Uruguay"},
-            {label: "Thaïlande", value: "Thaïlande"},
-            {label: "Arabie Saoudite", value: "Arabie Saoudite"},
-            {label: "Ouzbékistan", value: "Ouzbékistan"},
-            {label: "Chine", value: "Chine"},
-            {label: "Corée du Sud", value: "Corée du Sud"},
-            {label: "Nigéria", value: "Nigéria"},
-            {label: "Portugal", value: "Portugal"},
-            {label: "Danemark", value: "Danemark"},
-        ]
+        options: teamList
     },
     {
         label: "Série",
         name: "series",
         type: "select",
-        options: [
-            {label: "Collégien", value: "Collégien"},
-            {label: "Lycée", value: "Lycée"},
-            {label: "Junior", value: "Junior"},
-            {label: "Qualification zone Asie", value: "Qualification zone Asie"},
-            {label: "Mondial Espoir", value: "Mondial Espoir"},
-            {label: "Real Japan 7", value: "Real Japan 7"},
-            {label: "Golden 23", value: "Golden 23"},
-            {label: "Rising Sun", value: "Rising Sun"},
-            {label: "Clubs européens", value: "Clubs européens"},
-            {label: "Club sud-américains", value: "Club sud-américains"},
-            {label: "Club Japonais", value: "Club Japonais"}
-        ]
+        options: seriesList
+    },
+    {
+        label: "Position",
+        name: "positions",
+        type: "checkbox",
+        options: positionList
     }
 ]
 
@@ -199,21 +140,13 @@ const playerStatsForm = [
         label: "Ballon haut",
         name: "highBall",
         type: "select",
-        options: [
-            {label: "Normal", value: "1"},
-            {label: "Bon", value: "1.125"},
-            {label: "Très bon", value: "1.25"},
-        ]
+        options: floatballList
     },
     {
         label: "Ballon bas",
         name: "lowBall",
         type: "select",
-        options: [
-            {label: "Normal", value: "1"},
-            {label: "Bon", value: "1.125"},
-            {label: "Très bon", value: "1.25"},
-        ]
+        options: floatballList
     }
 ]
 
@@ -229,6 +162,7 @@ const initialPlayerSelected = {
     "country": "",
     "team": "",
     "series": "",
+    "positions": []
 }
 
 const initialPlayerStats = {
@@ -374,7 +308,7 @@ const PlayerList = () => {
                 showForm ? (
                     <>
                         <div className="modal">
-                            <form onSubmit={handleSubmit}>
+                            <form autoComplete="off" onSubmit={handleSubmit}>
                                 <h2>{playerSelected?._id}</h2>
                                 {
                                     playerForm.map((form, index) => {

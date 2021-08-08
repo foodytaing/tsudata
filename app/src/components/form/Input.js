@@ -28,6 +28,8 @@ export const Input = (props) => {
             return <Select { ...props } />;
         case 'select_player_name':
             return <SelectAutoSuggestPlayerName { ...props } />;
+        case 'checkbox':
+            return <CheckBoxInput { ...props } />;
         default:
             return (
                 <>
@@ -143,6 +145,45 @@ export const SelectAutoSuggestPlayerName = (props) => {
                     )
                 })}
             </ul>
+        </fieldset>
+    )
+}
+
+export const CheckBoxInput = (props) => {
+    const {
+        value,
+        handleChange,
+        label,
+        options,
+        name
+    } = props
+
+    function handleRadioChange(e) {
+        const newValue = [...value]
+
+        if (newValue.includes(e.target.value)) {
+            newValue.splice(newValue.indexOf(e.target.value), 1);
+        } else {
+            newValue.push(e.target.value)
+        }
+
+        const newObj = {}
+        newObj[name] = newValue
+
+        handleChange(newObj)
+    }
+
+    return (
+        <fieldset>
+            <label>{label}</label>
+            {Array.isArray(options) && options.map((option) => {
+                return (
+                    <fieldset key={option.value}>
+                        <input type="checkbox" id={option.label} value={option.value} checked={value.includes(option.value)} onChange={e => handleRadioChange(e)} />
+                        <label htmlFor={option.label}>{option.label}</label>
+                    </fieldset>
+                )
+            })}
         </fieldset>
     )
 }
