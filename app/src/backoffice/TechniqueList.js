@@ -24,6 +24,10 @@ const dataForm = [
                 value: "A"
             },
             {
+                label: "A (EX)",
+                value: "A (EX)"
+            },
+            {
                 label: "B",
                 value: "B"
             },
@@ -34,52 +38,9 @@ const dataForm = [
         ]
     },
     {
-        label: "Description",
-        name: "description"
-    },
-    {
-        label: "Type de compétence",
-        name: "type_skill",
+        label: "Type de technique",
+        name: "type_technique",
         type: "select",
-        options: [
-            {
-                label: "Compétence d'équipe",
-                value: "leader_skill"
-            },
-            {
-                label: "Compétence passive",
-                value: "passive_skill"
-            },
-            {
-                label: "Compétence cachée",
-                value: "hidden_ability"
-            }
-        ]
-    },
-    {
-        label: "Effet (en %)",
-        name: "effect_value",
-        type: "number"
-    },
-    {
-        label: "Type d'effet",
-        name: "effect_type",
-        type: "select",
-        options: [
-            {
-                label: "Paramètres",
-                value: "params"
-            },
-            {
-                label: "Intensité",
-                value: "intensity"
-            },
-        ]
-    },
-    {
-        label: "Paramètres affectés",
-        name: "assignment_stats",
-        type: "checkbox",
         options: [
             {
                 "label": "Dribble",
@@ -126,23 +87,75 @@ const dataForm = [
                 "value": "catch"
             }
         ]
+    },
+    {
+        label: "Endurance",
+        name: "stamina",
+        type: "number"
+    },
+    {
+        label: "Intensité",
+        name: "intensity",
+        type: "number"
+    },
+    {
+        label: "Combinaison",
+        name: "combination",
+        type: "number"
+    },
+    {
+        label: "Nombre de joueur envoyé dans les airs",
+        name: "blow_off",
+        type: "number"
+    },
+    {
+        label: "Distance",
+        name: "distance_decay",
+        type: "select",
+        options: [
+            {
+                label: "Oui",
+                value: "true",
+            },
+            {
+                label: "Non",
+                value: "false",
+            }
+        ]
+    },
+    {
+        label: "Angle",
+        name: "angle_decay",
+        type: "select",
+        options: [
+            {
+                label: "Oui",
+                value: "true",
+            },
+            {
+                label: "Non",
+                value: "false",
+            }
+        ]
     }
 ]
 
 const initialDataSelected = {
     "name": "",
     "rank": "",
-    "description": "",
-    "type_skill": "",
-    "effect_value": "",
-    "effect_type": "",
-    "assignment_stats": ["catch", "dribble", "shot", "pass", "tackle", "block", "intercept", "speed", "power", "technique", "punch", "catch"],
+    "type_technique": "",
+    "stamina": "",
+    "intensity": "",
+    "combination": "0",
+    "blow_off": "0",
+    "distance_decay": "false",
+    "angle_decay": "false"
 }
 
 const fetcher = url => fetch(url).then(r => r.json())
-const apiUrl = `${process.env.REACT_APP_API_URL}/api/skill/`
+const apiUrl = `${process.env.REACT_APP_API_URL}/api/technique/`
 
-const SkillList = () => {
+const TechniqueList = () => {
     const alert = useAlert()
 
     //state
@@ -255,8 +268,8 @@ const SkillList = () => {
 
     return (
         <>
-            <h1>Backoffice Liste des compétences</h1>
-            <button onClick={showNewDataForm}>Nouvelle compétence</button>
+            <h1>Backoffice Liste des techniques</h1>
+            <button onClick={showNewDataForm}>Nouvelle technique</button>
             <ul>
                 {Array.isArray(data) && data.reverse().map((item, index) => {
                     return (
@@ -308,4 +321,4 @@ const SkillList = () => {
     );
 };
 
-export default SkillList;
+export default TechniqueList;

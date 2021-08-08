@@ -14,6 +14,7 @@ import Error404 from "../pages/Error404"
 import Backoffice from "../backoffice/Backoffice"
 import BackofficePlayerList from "../backoffice/PlayerList"
 import BackofficeSkillList from "../backoffice/SkillList"
+import BackofficeTechniqueList from "../backoffice/TechniqueList"
 
 const index = () => {
     return (
@@ -24,6 +25,7 @@ const index = () => {
                 <Route path="/backoffice" exact component={Backoffice} />
                 <Route path="/backoffice/playerlist" exact component={BackofficePlayerList} />
                 <Route path="/backoffice/skilllist" exact component={BackofficeSkillList} />
+                <Route path="/backoffice/techniquelist" exact component={BackofficeTechniqueList} />
                 <Redirect to="/error404" />
             </Switch>
         </Router>

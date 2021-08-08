@@ -24,7 +24,7 @@ const techniqueSchema = new mongoose.Schema({
         lowercase: true,
     },
     combination: {
-        type: [String],
+        type: Number,
     },
     blow_off: {
         type: Number,
