@@ -1,14 +1,9 @@
 import React, { useState } from "react";
 import Input from "../components/form/Input"
+import { useAlert } from 'react-alert'
 
 import useSWR, { mutate } from 'swr'
-
-import { 
-    getPlayerApi,
-    createPlayerApi,
-    updatePlayerApi,
-    deletePlayerApi
-} from "../api/player.api";
+import axios from "axios";
 
 import WidgetCloudinary from "../components/WidgetCloudinary";
 
@@ -195,13 +190,11 @@ const initialPlayerStats = {
     "lowBall": ""
 }
 
-const playerSkillsForm = []
-
-const playerTechniquesForm = []
-
 const fetcher = url => fetch(url).then(r => r.json())
 
 const PlayerList = () => {
+    const alert = useAlert()
+
     //state
     const [playerSelected, setPlayerSelected] = useState({});
     const [playerStats, setPlayerStats] = useState({});
@@ -212,39 +205,64 @@ const PlayerList = () => {
 
     async function handleEdit(id) {
         try {
-            const player = await getPlayerApi(id);
-            setPlayerSelected(player);
-            setPlayerStats(player.stats);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/player/${id}`);
+            setPlayerSelected(response.data);
+            setPlayerStats(response.data.stats);
             setShowForm(true);
+            return response.data;
         } catch(err) {
+            alert.show('Une erreur est survenue');
             return err
         }
     }
 
-    function handleDelete(id) {
-        mutate(`${process.env.REACT_APP_API_URL}/api/player/`, data.filter(function(el) { return el._id != id; }), false)
-        deletePlayerApi(id);
-
+    async function handleDelete(id) {
+        try {
+            const response = await axios.delete(`${process.env.REACT_APP_API_URL}/api/player/${id}`);
+            mutate(`${process.env.REACT_APP_API_URL}/api/player/`, data.filter(function(el) { return el._id !== id; }), false)
+            alert.show('La suppression du joueur à bien été pris en compte');
+            setShowForm(false);
+            return response.data;
+        } catch (err) {
+            alert.show('Une erreur est survenue');
+            return err;
+        }
     }
 
-    function handleUpdate() {
+    async function handleUpdate() {
         const newPlayerData = {
             ...playerSelected,
             stats: { ...playerStats }
         }
 
-        mutate(`${process.env.REACT_APP_API_URL}/api/player/`, data.map(obj => [newPlayerData].find(o => o._id === obj._id) || obj), false)
-        updatePlayerApi(newPlayerData);
+        try {
+            const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/player/${newPlayerData._id}`, newPlayerData);
+            mutate(`${process.env.REACT_APP_API_URL}/api/player/`, data.map(obj => [newPlayerData].find(o => o._id === obj._id) || obj), false)
+            alert.show('Les modifications du joueur ont bien été prises en compte');
+            setShowForm(false);
+            return response.data;
+        } catch (err) {
+            alert.show('Une erreur est survenue');
+            return err;
+        }
     }
 
-    function handleCreate() {
+    async function handleCreate() {
         const newPlayerData = {
             ...playerSelected,
             stats: { ...playerStats }
         }
 
-        mutate(`${process.env.REACT_APP_API_URL}/api/player/`, [...data, newPlayerData], false)
-        createPlayerApi(newPlayerData);
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/player/`, newPlayerData);
+            mutate(`${process.env.REACT_APP_API_URL}/api/player/`, [newPlayerData, ...data], false)
+            alert.show('La création de joueur à bien été prises en compte');
+            setShowForm(false);
+            return response.data;
+        } catch (err) {
+            alert.show('Une erreur est survenue');
+            return err;
+        }
     }
 
     function handleInputInfoChange(e) {
@@ -311,16 +329,20 @@ const PlayerList = () => {
         setPlayerSelected(newPlayerSelected);
     }
 
+    if (error) return <div>failed to load</div>
+    if (!data) return <div>loading...</div>
+
     return (
         <>
             <h1>Backoffice Liste des joueurs</h1>
             <button onClick={showNewPlayerForm}>Nouveau joueur</button>
             <ul>
-                {Array.isArray(data) && data.map((player, index) => {
+                {Array.isArray(data) && data.reverse().map((player, index) => {
                     return (
                         <li key={index}>
                             <img
                                 src={player?.image_url ? player?.image_url : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
+                                alt={player?.first_name}
                                 width="20"
                             />
                             {player?.first_name} {player?.last_name}
@@ -340,6 +362,7 @@ const PlayerList = () => {
                             />
                             <img
                                 src={playerSelected?.image_url ? playerSelected?.image_url : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
+                                alt={playerSelected?.firt_name}
                                 width="100"
                             />
                             <form autoComplete="off" onSubmit={handleSubmit}>

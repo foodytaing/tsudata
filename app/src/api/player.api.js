@@ -1,7 +1,5 @@
 import axios from "axios";
 
-export const GET_ALL_PLAYERS = "GET_ALL_PLAYERS";
-
 export const getAllPlayersApi = async (params = '') => {
     try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/player/${params}`);

@@ -1,7 +1,21 @@
 import React from "react";
+import { useAlert } from 'react-alert'
 
 const PlayerList = () => {
-    return <div>PlayerList</div>;
+    const alert = useAlert()
+    
+    return (
+        <>
+            <div>PlayerList</div>
+            <button
+                onClick={() => {
+                    alert.show('Oh look, an alert!')
+                }}
+            >
+            Show Alert
+            </button>
+        </>
+    );
 };
 
 export default PlayerList;
