@@ -8,9 +8,6 @@ const skillSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    name_helper: {
-        type: String,
-    },
     description: {
         type: String,
     },

@@ -13,6 +13,7 @@ import Error404 from "../pages/Error404"
 //import Pages Backoffice
 import Backoffice from "../backoffice/Backoffice"
 import BackofficePlayerList from "../backoffice/PlayerList"
+import BackofficeSkillList from "../backoffice/SkillList"
 
 const index = () => {
     return (
@@ -22,6 +23,7 @@ const index = () => {
                 <Route path="/error404" exact component={Error404} />
                 <Route path="/backoffice" exact component={Backoffice} />
                 <Route path="/backoffice/playerlist" exact component={BackofficePlayerList} />
+                <Route path="/backoffice/skilllist" exact component={BackofficeSkillList} />
                 <Redirect to="/error404" />
             </Switch>
         </Router>
