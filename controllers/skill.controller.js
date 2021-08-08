@@ -15,7 +15,8 @@ module.exports.createSkill = async(req, res) => {
 };
 
 module.exports.getAllSkills = async(req, res) => {
-    const skills = await SkillModel.find(req.query).select();
+    const skills = await SkillModel.find(req.query)
+        .select(["-effect_value", "-effect_type"]);
     res.status(200).json(skills);
 };
 

@@ -4,6 +4,8 @@ import App from "./App";
 import { SWRConfig } from 'swr'
 import { Provider as AlertProvider } from 'react-alert'
 
+// import './styles/normalize.css'
+
 const AlertTemplate = ({ style, options, message, close }) => (
     <div style={style}>
       {options.type === 'info' && '!'}

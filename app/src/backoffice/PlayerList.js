@@ -203,11 +203,11 @@ const PlayerList = () => {
 
     const { data, error } = useSWR(`${process.env.REACT_APP_API_URL}/api/player/`, fetcher)
 
-    async function handleEdit(id) {
+    async function handleGetPlayer(id) {
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/player/${id}`);
-            setPlayerSelected(response.data);
-            setPlayerStats(response.data.stats);
+            setPlayerSelected(({...initialPlayerSelected, ...response.data}));
+            setPlayerStats(({...initialPlayerStats, ...response.data.stats}));
             setShowForm(true);
             return response.data;
         } catch(err) {
@@ -220,7 +220,7 @@ const PlayerList = () => {
         try {
             const response = await axios.delete(`${process.env.REACT_APP_API_URL}/api/player/${id}`);
             mutate(`${process.env.REACT_APP_API_URL}/api/player/`, data.filter(function(el) { return el._id !== id; }), false)
-            alert.show('La suppression du joueur à bien été pris en compte');
+            alert.show('La suppression du joueur a bien été pris en compte');
             setShowForm(false);
             return response.data;
         } catch (err) {
@@ -256,7 +256,7 @@ const PlayerList = () => {
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/player/`, newPlayerData);
             mutate(`${process.env.REACT_APP_API_URL}/api/player/`, [newPlayerData, ...data], false)
-            alert.show('La création de joueur à bien été prises en compte');
+            alert.show('La création de joueur a bien été prises en compte');
             setShowForm(false);
             return response.data;
         } catch (err) {
@@ -346,7 +346,7 @@ const PlayerList = () => {
                                 width="20"
                             />
                             {player?.first_name} {player?.last_name}
-                            <button onClick={() => handleEdit(player?._id)}>Modifier</button>
+                            <button onClick={() => handleGetPlayer(player?._id)}>Modifier</button>
                             <button onClick={() => handleDelete(player?._id)}>Supprimer</button>
                         </li>
                     )
@@ -357,16 +357,16 @@ const PlayerList = () => {
                 showForm ? (
                     <>
                         <div className="modal">
-                            <WidgetCloudinary
-                                onSuccess={onImageUploaded}
-                            />
-                            <img
-                                src={playerSelected?.image_url ? playerSelected?.image_url : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
-                                alt={playerSelected?.firt_name}
-                                width="100"
-                            />
                             <form autoComplete="off" onSubmit={handleSubmit}>
-                                <h2>{playerSelected?._id}</h2>
+                                <h2>{playerSelected?._id || 'Nouveau joueur'}</h2>
+                                <WidgetCloudinary
+                                    onSuccess={onImageUploaded}
+                                />
+                                <img
+                                    src={playerSelected?.image_url ? playerSelected?.image_url : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
+                                    alt={playerSelected?.firt_name}
+                                    width="100"
+                                />
                                 {
                                     playerForm.map((form, index) => {
                                         return (
