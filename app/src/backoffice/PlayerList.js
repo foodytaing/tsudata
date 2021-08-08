@@ -375,7 +375,7 @@ const PlayerList = () => {
                                                 label={form?.label}
                                                 name={form?.name}
                                                 type={form?.type}
-                                                value={playerSelected[form?.name]}
+                                                value={playerSelected[form?.name] || ""}
                                                 handleChange={handleInputInfoChange}
                                                 readonly={form?.readonly}
                                                 options={form?.options}
