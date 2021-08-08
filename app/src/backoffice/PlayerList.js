@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Input from "../components/form/Input"
+
 import {
     getAllPlayersAction
 } from "../actions/player.action";
+
 import { 
     getPlayerApi,
     createPlayerApi,
     updatePlayerApi,
     deletePlayerApi
 } from "../api/player.api";
+
+import WidgetCloudinary from "../components/WidgetCloudinary";
+
+// Form Data
 import collectionList from '../data/collection_list.json'
 import rarityList from '../data/rarity_list.json'
 import colorList from '../data/color_list.json'
@@ -90,51 +96,63 @@ const playerForm = [
 const playerStatsForm = [
     {
         label: "Endurance",
-        name: "stamina"
+        name: "stamina",
+        type: "number"
     },
     {
         label: "Dribble",
-        name: "dribble"
+        name: "dribble",
+        type: "number"
     },
     {
         label: "Tir",
-        name: "shot"
+        name: "shot",
+        type: "number"
     },
     {
         label: "Passe",
-        name: "pass"
+        name: "pass",
+        type: "number"
     },
     {
         label: "Tacle",
-        name: "tackle"
+        name: "tackle",
+        type: "number"
     },
     {
         label: "Contre",
-        name: "block"
+        name: "block",
+        type: "number"
     },
     {
         label: "Interception",
-        name: "intercept"
+        name: "intercept",
+        type: "number"
     },
     {
         label: "Rapidité",
-        name: "speed"
+        name: "speed",
+        type: "number"
     },
     {
         label: "Puissance",
-        name: "power"
+        name: "power",
+        type: "number"
     },
     {
         label: "Technicité",
-        name: "technique"
+        name: "technique",
+        type: "number"
     },
     {
         label: "Coup de poing",
-        name: "punch"
+        name: "punch",
+        type: "number"
     },
     {
         label: "Arrêt",
-        name: "catch"
+        name: "catch",
+        type: "number"
     },
     {
         label: "Ballon haut",
@@ -288,6 +306,15 @@ const PlayerList = () => {
         });
     }
 
+    function onImageUploaded(e) {
+        const newPlayerSelected = {
+            ...playerSelected,
+            image_url: e.info.url
+        }
+
+        setPlayerSelected(newPlayerSelected);
+    }
+
     return (
         <>
             <h1>Backoffice Liste des joueurs</h1>
@@ -296,6 +323,10 @@ const PlayerList = () => {
                 {Array.isArray(playerListData) && playerListData.map((player, index) => {
                     return (
                         <li key={index}>
+                            <img
+                                src={player?.image_url ? player?.image_url : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
+                                width="20"
+                            />
                             {player?.first_name} {player?.last_name}
                             <button onClick={() => handleEdit(player?._id)}>Modifier</button>
                             <button onClick={() => handleDelete(player?._id)}>Supprimer</button>
@@ -308,6 +339,13 @@ const PlayerList = () => {
                 showForm ? (
                     <>
                         <div className="modal">
+                            <WidgetCloudinary
+                                onSuccess={onImageUploaded}
+                            />
+                            <img
+                                src={playerSelected?.image_url ? playerSelected?.image_url : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
+                                width="100"
+                            />
                             <form autoComplete="off" onSubmit={handleSubmit}>
                                 <h2>{playerSelected?._id}</h2>
                                 {

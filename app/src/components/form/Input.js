@@ -19,7 +19,6 @@ export const Input = (props) => {
         label,
         type,
         name,
-        options,
         readonly = false
     } = props
 
@@ -34,7 +33,9 @@ export const Input = (props) => {
             return (
                 <>
                     <fieldset>
-                        <label>{label}</label>
+                        {label ? (
+                            <label>{label}</label>
+                        ) : null}
                         <input
                             placeholder={placeholder}
                             type={type}
@@ -61,7 +62,9 @@ export const Select = (props) => {
 
     return (
         <fieldset>
-            <label>{label}</label>
+            {label ? (
+                <label>{label}</label>
+            ) : null}
             <select
                 placeholder={placeholder}
                 name={name}
@@ -123,8 +126,9 @@ export const SelectAutoSuggestPlayerName = (props) => {
 
     return (
         <fieldset>
-            <label>{label}</label>
-
+            {label ? (
+                <label>{label}</label>
+            ) : null}
             <input onChange={(e) => handleInputValueChange(e)} value={inputValue} />
             <ul>
                 {Array.isArray(suggestions) && suggestions.map((option, index) => {
