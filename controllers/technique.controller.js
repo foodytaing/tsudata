@@ -64,3 +64,11 @@ module.exports.deleteTechnique = async(req, res) => {
         return res.status(500).json({ message: err });
     }
 };
+
+module.exports.getSearchTechniques = async(req, res) => {
+    console.log({[req.query.key]: new RegExp(req.query.val, 'i'), type_skill: req.query.type})
+
+    const techniques = await TechniqueModel.find({[req.query.key]: new RegExp(req.query.val, 'i'), type_skill: req.query.type})
+        .select(["-effect_value", "-effect_type"]);
+    res.status(200).json(techniques);
+};

@@ -4,10 +4,12 @@ const techniqueSchema = new mongoose.Schema({
     rank: {
         type: String,
         required: true,
+        lowercase: true,
     },
     name: {
         type: String,
         required: true,
+        lowercase: true,
     },
     type_technique: {
         type: String,
@@ -17,6 +19,7 @@ const techniqueSchema = new mongoose.Schema({
     stamina: {
         type: Number,
         required: true,
+        lowercase: true,
     },
     intensity: {
         type: String,

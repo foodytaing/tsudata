@@ -62,11 +62,11 @@ const playerSchema = new mongoose.Schema({
         type: [String],
     },
     leader_skill: {
-        type: String,
+        type: [String],
         trim: true,
     },
     passive_skill: {
-        type: String,
+        type: [String],
         trim: true,
     },
     hidden_abilities: {

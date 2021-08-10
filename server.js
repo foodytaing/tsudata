@@ -27,6 +27,14 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(function(req, res, next) {
+    for (var key in req.query)
+    { 
+        req.query[key.toLowerCase()] = req.query[key];
+    }
+    next();
+});
+
 // jwt
 app.get("*", checkUser);
 app.get("/jwtid", requireAuth, (require, res) => {

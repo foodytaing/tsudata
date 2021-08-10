@@ -124,6 +124,14 @@ const dataForm = [
             {
                 "label": "Capte",
                 "value": "catch"
+            },
+            {
+                "label": "Ballon Haut (tête)",
+                "value": "highball"
+            },
+            {
+                "label": "Ballon Bas (volée)",
+                "value": "lowball"
             }
         ]
     }
@@ -136,7 +144,7 @@ const initialDataSelected = {
     "type_skill": "",
     "effect_value": "",
     "effect_type": "",
-    "assignment_stats": ["catch", "dribble", "shot", "pass", "tackle", "block", "intercept", "speed", "power", "technique", "punch", "catch"],
+    "assignment_stats": ["catch", "dribble", "shot", "pass", "tackle", "block", "intercept", "speed", "power", "technique", "punch", "catch", "highball", "lowball"],
 }
 
 const fetcher = url => fetch(url).then(r => r.json())
@@ -261,7 +269,7 @@ const SkillList = () => {
                 {Array.isArray(data) && data.reverse().map((item, index) => {
                     return (
                         <li key={index}>
-                            {item?.rank} {item?.name}
+                            {item?.rank} {item?.name} {item?.type_skill} 
                             <p>{item?.description}</p>
                             <button onClick={() => handleGetData(item?._id)}>Modifier</button>
                             <button onClick={() => handleDelete(item?._id)}>Supprimer</button>
