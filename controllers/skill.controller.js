@@ -65,8 +65,6 @@ module.exports.deleteSkill = async(req, res) => {
 };
 
 module.exports.getSearchSkills = async(req, res) => {
-    console.log({[req.query.key]: new RegExp(req.query.val, 'i'), type_skill: req.query.type})
-
     const skills = await SkillModel.find({[req.query.key]: new RegExp(req.query.val, 'i'), type_skill: req.query.type})
         .select(["-effect_value", "-effect_type"]);
     res.status(200).json(skills);
