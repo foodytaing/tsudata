@@ -44,3 +44,12 @@ export const createPlayerApi = async (data) => {
         return err
     }
 }
+
+export const getSkillApi = async (id) => {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/skill/${id}`);
+        return response.data;
+    } catch (err) {
+        return err
+    }
+}

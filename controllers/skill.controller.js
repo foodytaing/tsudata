@@ -12,7 +12,7 @@ module.exports.createSkill = async(req, res) => {
     } catch (err) {
         return res.status(400).send(err);
     }
-};
+}
 
 module.exports.getAllSkills = async(req, res) => {
     const skills = await SkillModel.find(req.query)
@@ -62,4 +62,12 @@ module.exports.deleteSkill = async(req, res) => {
     } catch (err) {
         return res.status(500).json({ message: err });
     }
+};
+
+module.exports.getSearchSkills = async(req, res) => {
+    console.log({[req.query.key]: new RegExp(req.query.val, 'i'), type_skill: req.query.type})
+
+    const skills = await SkillModel.find({[req.query.key]: new RegExp(req.query.val, 'i'), type_skill: req.query.type})
+        .select(["-effect_value", "-effect_type"]);
+    res.status(200).json(skills);
 };

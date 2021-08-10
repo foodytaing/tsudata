@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Input from "../components/form/Input"
 import { useAlert } from 'react-alert'
-
 import useSWR, { mutate } from 'swr'
 import axios from "axios";
-
 import WidgetCloudinary from "../components/WidgetCloudinary";
+
+import ApiSearchInputMultipleValue from "../components/form/ApiSearchInputMultipleValue";
 
 // Form Data
 import collectionList from '../data/collection_list.json'
@@ -172,7 +172,8 @@ const initialPlayerSelected = {
     "country": "",
     "team": "",
     "series": "",
-    "positions": []
+    "positions": [],
+    "passive_skill": [],
 }
 
 const initialPlayerStats = {
@@ -201,19 +202,98 @@ const PlayerList = () => {
     const [showForm, setShowForm] = useState(false);
     const [newPlayerForm, setNewPlayerForm] = useState(false);
 
+    const [PassiveSkill, setPassiveSkill] = useState()
+    const [fetchPassiveSkill, setFetchPassiveSkill] = useState(false);
+
+    const [LeaderSkill, setLeaderSkill] = useState()
+    const [fetchLeaderSkill, setFetchLeaderSkill] = useState(false);
+
+    const [HiddenAbilities, setHiddenAbilities] = useState();
+    const [fetchHiddenAbilities, setFetchHiddenAbilities] = useState(false);
+
+    const [Techniques, setTechniques] = useState();
+    const [fetchTechniques, setFetchTechniques] = useState(false);
+
     const { data, error } = useSWR(`${process.env.REACT_APP_API_URL}/api/player/`, fetcher)
 
+    useEffect(() => {     
+        if (!fetchLeaderSkill) {
+            playerSelected?.leader_skill?.forEach(el => {
+                axios
+                    .get(`${process.env.REACT_APP_API_URL}/api/skill/${el._id}`)
+                    .then((res) => {
+                        setLeaderSkill([{...res.data}])
+                        setFetchLeaderSkill(true)
+                    }).catch((err) => console.log(err))      
+            })
+        }
+        if (!fetchPassiveSkill) {
+            playerSelected?.passive_skill?.forEach(el => {
+                axios
+                    .get(`${process.env.REACT_APP_API_URL}/api/skill/${el._id}`)
+                    .then((res) => {
+                        setPassiveSkill([{...res.data}])
+                        setFetchPassiveSkill(true)
+                    }).catch((err) => console.log(err))      
+            })
+        };
+        if (!fetchHiddenAbilities) {
+            let HA = []
+            playerSelected?.hidden_abilities?.forEach(el => {
+                axios
+                    .get(`${process.env.REACT_APP_API_URL}/api/skill/${el._id}`)
+                    .then((res) => {
+                        HA.push(res.data);
+                        setHiddenAbilities([...HA]);
+                        setFetchHiddenAbilities(true);
+                    }).catch((err) => console.log(err))      
+            })
+        }
+        if (!fetchTechniques) {
+            let Techniques = []
+            playerSelected?.techniques?.forEach(el => {
+                axios
+                    .get(`${process.env.REACT_APP_API_URL}/api/technique/${el._id}`)
+                    .then((res) => {
+                        Techniques.push(res.data);
+                        setTechniques([...Techniques]);
+                        setFetchTechniques(true);
+                    }).catch((err) => console.log(err))      
+            })
+        }
+    }, [playerSelected])
+
     async function handleGetPlayer(id) {
+        setFetchPassiveSkill(false);
+        setPassiveSkill();
+        setFetchLeaderSkill(false);
+        setLeaderSkill();
+        setFetchHiddenAbilities(false);
+        setHiddenAbilities()
+        setFetchTechniques(false);
+        setTechniques();
+
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/player/${id}`);
-            setPlayerSelected(({...initialPlayerSelected, ...response.data}));
+            const formatPassiveSkill = response.data.passive_skill.map(skill => { return {"_id": skill}});
+            const formatLeaderSkill = response.data.leader_skill.map(skill => { return {"_id": skill}});
+            const formatHiddenAbilitiesSkill = response.data.hidden_abilities.map(skill => { return {"_id": skill}});
+            const formatTechniques = response.data.techniques.map(technique => { return {"_id": technique}});
+            setPlayerSelected(({
+                ...initialPlayerSelected,
+                ...response.data,
+                passive_skill: formatPassiveSkill,
+                leader_skill: formatLeaderSkill,
+                hidden_abilities: formatHiddenAbilitiesSkill,
+                techniques: formatTechniques
+            }));
             setPlayerStats(({...initialPlayerStats, ...response.data.stats}));
             setShowForm(true);
             return response.data;
         } catch(err) {
             alert.show('Une erreur est survenue');
             return err
-        }
+        } 
     }
 
     async function handleDelete(id) {
@@ -230,16 +310,24 @@ const PlayerList = () => {
     }
 
     async function handleUpdate() {
+        const newPassiveSkill = PassiveSkill.map(skill => skill._id);
+        const newLeaderSkill = LeaderSkill.map(skill => skill._id);
+        const newHiddenAbilitiesSkill = HiddenAbilities.map(skill => skill._id);
+        const newTechniques = Techniques.map(skill => skill._id);
+
         const newPlayerData = {
             ...playerSelected,
-            stats: { ...playerStats }
+            stats: { ...playerStats },
+            passive_skill: newPassiveSkill,
+            leader_skill: newLeaderSkill,
+            hidden_abilities: newHiddenAbilitiesSkill,
+            techniques: newTechniques
         }
 
         try {
             const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/player/${newPlayerData._id}`, newPlayerData);
             mutate(`${process.env.REACT_APP_API_URL}/api/player/`, data.map(obj => [newPlayerData].find(o => o._id === obj._id) || obj), false)
             alert.show('Les modifications du joueur ont bien été prises en compte');
-            setShowForm(false);
             return response.data;
         } catch (err) {
             alert.show('Une erreur est survenue');
@@ -257,7 +345,6 @@ const PlayerList = () => {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/player/`, newPlayerData);
             mutate(`${process.env.REACT_APP_API_URL}/api/player/`, [newPlayerData, ...data], false)
             alert.show('La création de joueur a bien été prises en compte');
-            setShowForm(false);
             return response.data;
         } catch (err) {
             alert.show('Une erreur est survenue');
@@ -310,6 +397,15 @@ const PlayerList = () => {
     }
 
     function showNewPlayerForm() {
+        setFetchPassiveSkill(false);
+        setPassiveSkill();
+        setFetchLeaderSkill(false);
+        setLeaderSkill();
+        setFetchHiddenAbilities(false);
+        setHiddenAbilities()
+        setFetchTechniques(false);
+        setTechniques();
+
         setNewPlayerForm(true);
         setShowForm(true);
         setPlayerSelected({
@@ -357,11 +453,11 @@ const PlayerList = () => {
                 showForm ? (
                     <>
                         <div className="modal">
+                            <h2>{playerSelected?._id || 'Nouveau joueur'}</h2>
+                            <WidgetCloudinary
+                                onSuccess={onImageUploaded}
+                            />
                             <form autoComplete="off" onSubmit={handleSubmit}>
-                                <h2>{playerSelected?._id || 'Nouveau joueur'}</h2>
-                                <WidgetCloudinary
-                                    onSuccess={onImageUploaded}
-                                />
                                 <img
                                     src={playerSelected?.image_url ? playerSelected?.image_url : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
                                     alt={playerSelected?.firt_name}
@@ -399,6 +495,46 @@ const PlayerList = () => {
                                         )
                                     })
                                 }
+
+                                <ApiSearchInputMultipleValue
+                                    apiUrl={`${process.env.REACT_APP_API_URL}/api/skill/search`}
+                                    label="Compétence d'équipe"
+                                    handleChange={setLeaderSkill}
+                                    type="leader_skill"
+                                    value={LeaderSkill}
+                                    limit={1}
+                                    resetOnDataChange={playerSelected}
+                                />
+
+                                <ApiSearchInputMultipleValue
+                                    apiUrl={`${process.env.REACT_APP_API_URL}/api/skill/search`}
+                                    label="Compétence passive"
+                                    handleChange={setPassiveSkill}
+                                    type="passive_skill"
+                                    value={PassiveSkill}
+                                    limit={1}
+                                    resetOnDataChange={playerSelected}
+                                />
+
+                                <ApiSearchInputMultipleValue
+                                    apiUrl={`${process.env.REACT_APP_API_URL}/api/skill/search`}
+                                    label="Potentiel"
+                                    handleChange={setHiddenAbilities}
+                                    type="hidden_ability"
+                                    value={HiddenAbilities}
+                                    limit={5}
+                                    resetOnDataChange={playerSelected}
+                                />
+
+                                <ApiSearchInputMultipleValue
+                                    apiUrl={`${process.env.REACT_APP_API_URL}/api/technique/search`}
+                                    label="Techniques"
+                                    handleChange={setTechniques}
+                                    value={Techniques}
+                                    limit={7}
+                                    resetOnDataChange={playerSelected}
+                                />
+
                                 {
                                     newPlayerForm ? (
                                         <button type="submit">Créer</button>

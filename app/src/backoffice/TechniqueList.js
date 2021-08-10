@@ -85,6 +85,14 @@ const dataForm = [
             {
                 "label": "Capte",
                 "value": "catch"
+            },
+            {
+                "label": "Ballon Haut (tête)",
+                "value": "highball"
+            },
+            {
+                "label": "Ballon Bas (volée)",
+                "value": "lowball"
             }
         ]
     },

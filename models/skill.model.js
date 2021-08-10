@@ -3,13 +3,16 @@ const mongoose = require("mongoose");
 const skillSchema = new mongoose.Schema({
     rank: {
         type: String,
+        lowercase: true,
     },
     name: {
         type: String,
         required: true,
+        lowercase: true,
     },
     description: {
         type: String,
+        lowercase: true,
     },
     type_skill: {
         type: String,
