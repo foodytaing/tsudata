@@ -1,7 +1,7 @@
 [
     {
-        "label": "Collégien",
-        "value": "Collégien"
+        "label": "Collège",
+        "value": "Collège"
     },
     {
         "label": "Lycée",
@@ -42,5 +42,9 @@
     {
         "label": "Club Japonais",
         "value": "Club Japonais"
+    },
+    {
+        "label": "Autres Séries",
+        "value": "other_player"
     }
 ]

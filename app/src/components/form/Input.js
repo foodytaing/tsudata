@@ -4,8 +4,8 @@ import playerList from '../../data/player_list.json'
 const players = playerList
 
 function tri(a, b) {
-    if (a.text < b.text) return -1;
-    else if (a.text === b.text) return 0;
+    if (a.name < b.name) return -1;
+    else if (a.name === b.name) return 0;
     else return 1;
 }
 
@@ -19,20 +19,20 @@ export const Input = (props) => {
         label,
         type,
         name,
-        readonly = false
+        fieldClass
     } = props
 
     switch (type) {
         case 'select':
-            return <Select { ...props } />;
+            return <Select {...props} />;
         case 'select_player_name':
-            return <SelectAutoSuggestPlayerName { ...props } />;
+            return <SelectAutoSuggestPlayerName {...props} />;
         case 'checkbox':
-            return <CheckBoxInput { ...props } />;
+            return <CheckBoxInput {...props} />;
         default:
             return (
                 <>
-                    <fieldset>
+                    <fieldset className={fieldClass}>
                         {label ? (
                             <label>{label}</label>
                         ) : null}
@@ -41,7 +41,6 @@ export const Input = (props) => {
                             type={type}
                             name={name}
                             onChange={e => handleChange(e)}
-                            readOnly={readonly}
                             value={value}
                         />
                     </fieldset>
@@ -58,10 +57,11 @@ export const Select = (props) => {
         label,
         name,
         options,
+        fieldClass
     } = props
 
     return (
-        <fieldset>
+        <fieldset className={fieldClass}>
             {label ? (
                 <label>{label}</label>
             ) : null}
@@ -86,7 +86,8 @@ export const SelectAutoSuggestPlayerName = (props) => {
     const {
         value,
         handleChange,
-        label
+        label,
+        fieldClass
     } = props
 
     const [inputValue, setInputValue] = useState(value);
@@ -125,30 +126,35 @@ export const SelectAutoSuggestPlayerName = (props) => {
     }
 
     return (
-        <fieldset>
+        <fieldset className={fieldClass}>
             {label ? (
                 <label>{label}</label>
             ) : null}
-            <input onChange={(e) => handleInputValueChange(e)} value={inputValue} />
-            <ul>
-                {Array.isArray(suggestions) && suggestions.map((option, index) => {
-                    return (
-                        <li
-                            key={index}
-                            onClick={() => handleSelectPlayer(
-                                {
-                                    first_name: option?.first_name,
-                                    last_name: option?.last_name,
-                                    country: option?.country,
-                                    team: option?.team,
-                                }
-                            )}
-                        >
-                            {option?.first_name} {option?.last_name}
-                        </li>
-                    )
-                })}
-            </ul>
+            <div className="wrapper-input-auto-complete">
+                <input autoComplete="off" onChange={(e) => handleInputValueChange(e)} value={inputValue} />
+                {Array.isArray(suggestions) && suggestions.length > 0 ? (
+                    <ul className="wrapper-input-auto-complete__suggestions">
+                        {Array.isArray(suggestions) && suggestions.map((option, index) => {
+                            return (
+                                <li
+                                    className="wrapper-input-auto-complete__suggestion-item"
+                                    key={index}
+                                    onClick={() => handleSelectPlayer(
+                                        {
+                                            first_name: option?.first_name,
+                                            last_name: option?.last_name,
+                                            country: option?.country,
+                                            team: option?.team,
+                                        }
+                                    )}
+                                >
+                                    {option?.first_name} {option?.last_name}
+                                </li>
+                            )
+                        })}
+                    </ul>
+                ) : null}
+            </div>
         </fieldset>
     )
 }
@@ -159,7 +165,9 @@ export const CheckBoxInput = (props) => {
         handleChange,
         label,
         options,
-        name
+        name,
+        fieldClass,
+        className
     } = props
 
     function handleRadioChange(e) {
@@ -178,16 +186,18 @@ export const CheckBoxInput = (props) => {
     }
 
     return (
-        <fieldset>
+        <fieldset className={`${fieldClass} ${className}`}>
             <label>{label}</label>
-            {Array.isArray(options) && options.map((option) => {
-                return (
-                    <fieldset key={option.value}>
-                        <input type="checkbox" id={option.label} value={option.value} checked={value.includes(option.value)} onChange={e => handleRadioChange(e)} />
-                        <label htmlFor={option.label}>{option.label}</label>
-                    </fieldset>
-                )
-            })}
+            <div className='checkbox-list'>
+                {Array.isArray(options) && options.map((option) => {
+                    return (
+                        <div key={option.value}>
+                            <input type="checkbox" id={option.label} value={option.value} checked={value.includes(option.value)} onChange={e => handleRadioChange(e)} />
+                            <label htmlFor={option.label}>{option.label}</label>
+                        </div>
+                    )
+                })}
+            </div>
         </fieldset>
     )
 }

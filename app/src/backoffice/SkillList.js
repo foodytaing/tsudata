@@ -1,41 +1,20 @@
 import React, { useState } from "react";
 import Input from "../components/form/Input"
 import { useAlert } from 'react-alert'
-
 import useSWR, { mutate } from 'swr'
 import axios from "axios";
+import { Modal, ValidModal } from '../components/Modal'
 
 const dataForm = [
     {
         label: "Nom",
-        name: "name"
-    },
-    {
-        label: "Rang",
-        name: "rank",
-        type: "select",
-        options: [
-            {
-                label: "S",
-                value: "S"
-            },
-            {
-                label: "A",
-                value: "A"
-            },
-            {
-                label: "B",
-                value: "B"
-            },
-            {
-                label: "C",
-                value: "C"
-            }
-        ]
+        name: "name",
+        fieldClass: "full-width"
     },
     {
         label: "Description",
-        name: "description"
+        name: "description",
+        fieldClass: "full-width"
     },
     {
         label: "Type de compétence",
@@ -54,12 +33,38 @@ const dataForm = [
                 label: "Compétence cachée",
                 value: "hidden_ability"
             }
-        ]
+        ],
+        fieldClass: "full-width"
+    },
+    {
+        label: "Rang",
+        name: "rank",
+        type: "select",
+        options: [
+            {
+                label: "S",
+                value: "s"
+            },
+            {
+                label: "A",
+                value: "a"
+            },
+            {
+                label: "B",
+                value: "b"
+            },
+            {
+                label: "C",
+                value: "c"
+            }
+        ],
+        fieldClass: "tier-width"
     },
     {
         label: "Effet (en %)",
         name: "effect_value",
-        type: "number"
+        type: "number",
+        fieldClass: "tier-width"
     },
     {
         label: "Type d'effet",
@@ -74,7 +79,8 @@ const dataForm = [
                 label: "Intensité",
                 value: "intensity"
             },
-        ]
+        ],
+        fieldClass: "tier-width"
     },
     {
         label: "Paramètres affectés",
@@ -133,7 +139,9 @@ const dataForm = [
                 "label": "Ballon Bas (volée)",
                 "value": "lowball"
             }
-        ]
+        ],
+        className: "checkbox-list-wrapper-vertical",
+        fieldClass: "full-width"
     }
 ]
 
@@ -144,7 +152,7 @@ const initialDataSelected = {
     "type_skill": "",
     "effect_value": "",
     "effect_type": "",
-    "assignment_stats": ["catch", "dribble", "shot", "pass", "tackle", "block", "intercept", "speed", "power", "technique", "punch", "catch", "highball", "lowball"],
+    "assignment_stats": ["dribble", "shot", "pass", "tackle", "block", "intercept", "speed", "power", "technique", "punch", "catch", "highball", "lowball"],
 }
 
 const fetcher = url => fetch(url).then(r => r.json())
@@ -158,15 +166,31 @@ const SkillList = () => {
     const [showForm, setShowForm] = useState(false);
     const [newDataForm, setNewDataForm] = useState(false);
 
-    const { data, error } = useSWR(apiUrl, fetcher)
+    //const { data, error } = useSWR(apiUrl, fetcher)
+    const { data, setData } = useState([])
 
     async function handleGetData(id) {
         try {
-            const response = await axios.get(apiUrl+id);
-            setDataSelected({...initialDataSelected, ...response.data});
+            const response = await axios.get(apiUrl + id);
+
+            if (
+                (response.data.effect_type === "params" || response.data.effect_type === "intensity") &&
+                (!Array.isArray(response.data.assignment_stats) || (Array.isArray(response.data.assignment_stats) && response.data.assignment_stats.length === 0))
+            ) {
+                const assignment_stats = ["dribble", "shot", "pass", "tackle", "block", "intercept", "speed", "power", "technique", "punch", "catch", "highball", "lowball"]
+                try {
+                    await axios.put(apiUrl + response.data._id, { assignment_stats });
+                } catch (err) {
+                    alert.show('Une erreur est survenue');
+                }
+                setDataSelected({ ...initialDataSelected, ...response.data, assignment_stats });
+            } else {
+                setDataSelected({ ...initialDataSelected, ...response.data });
+            }
+
             setShowForm(true);
             return response.data;
-        } catch(err) {
+        } catch (err) {
             alert.show('Une erreur est survenue');
             return err
         }
@@ -174,9 +198,10 @@ const SkillList = () => {
 
     async function handleDelete(id) {
         try {
-            const response = await axios.delete(apiUrl+id);
-            mutate(apiUrl, data.filter(function(el) { return el._id !== id; }), false)
+            const response = await axios.delete(apiUrl + id);
+            mutate(apiUrl, data.filter(function (el) { return el._id !== id; }), false)
             alert.show('La suppression de la compétence a bien été pris en compte');
+            mutate(apiUrl);
             setShowForm(false);
             return response.data;
         } catch (err) {
@@ -186,14 +211,22 @@ const SkillList = () => {
     }
 
     async function handleUpdate() {
+        let assignment_stats = []
+
+        if (dataSelected.effect_type !== "") {
+            assignment_stats = dataSelected.assignment_stats
+        }
+
         const newData = {
-            ...dataSelected
+            ...dataSelected,
+            assignment_stats
         }
 
         try {
-            const response = await axios.put(apiUrl+newData._id, newData);
+            const response = await axios.put(apiUrl + newData._id, newData);
             mutate(apiUrl, data.map(obj => [newData].find(o => o._id === obj._id) || obj), false)
             alert.show('Les modifications de la compétence ont bien été prises en compte');
+            mutate(apiUrl);
             setShowForm(false);
             return response.data;
         } catch (err) {
@@ -211,7 +244,9 @@ const SkillList = () => {
             const response = await axios.post(apiUrl, newData);
             mutate(apiUrl, [...data, newData], false)
             alert.show('La création de la compétence a bien été prises en compte');
+            mutate(apiUrl);
             setShowForm(false);
+            setNewDataForm(false);
             return response.data;
         } catch (err) {
             alert.show('Une erreur est survenue');
@@ -258,61 +293,75 @@ const SkillList = () => {
         });
     }
 
-    if (error) return <div>failed to load</div>
-    if (!data) return <div>loading...</div>
+    //if (error) return <div>failed to load</div>
+    //if (!data) return <div>loading...</div>
 
     return (
-        <>
+        <div className="container">
             <h1>Backoffice Liste des compétences</h1>
-            <button onClick={showNewDataForm}>Nouvelle compétence</button>
-            <ul>
-                {Array.isArray(data) && data.reverse().map((item, index) => {
-                    return (
-                        <li key={index}>
-                            {item?.rank} {item?.name} {item?.type_skill} 
-                            <p>{item?.description}</p>
-                            <button onClick={() => handleGetData(item?._id)}>Modifier</button>
-                            <button onClick={() => handleDelete(item?._id)}>Supprimer</button>
-                        </li>
-                    )
-                })}
-            </ul>
+            <button className="button--primary button-data--create" onClick={showNewDataForm}>Nouvelle compétence</button>
+            <table className="table-data-list">
+                <tbody>
+                    {Array.isArray(data) && data.reverse().map((item, index) => {
+                        return (
+                            <tr className="table-data-list__item skill-data-inline" key={index}>
+                                <td>
+                                    {item?.type_skill}
+                                </td>
+                                <td>
+                                    <div>
+                                        <span className="skill-data-inline__name">{item?.rank ? item?.rank + ' ' : null} {item?.name}</span>
+                                        <span className="skill-data-inline__description">{item?.description}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="table-data-list__action">
+                                        <ValidModal
+                                            label="Supprimer"
+                                            onConfirm={() => handleDelete(item?._id)}
+                                            question={"Confirmer la suppression de la compétence."}
+                                        />
+                                        <button className="button--secondary" onClick={() => handleGetData(item?._id)}>Modifier</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
 
-            {
-                showForm ? (
-                    <>
-                        <div className="modal">
-                            <form autoComplete="off" onSubmit={handleSubmit}>
-                                <h2>{dataSelected?._id || 'Nouvelle compétence'}</h2>
-                                {
-                                    dataForm.map((form, index) => {
-                                        return (
-                                            <Input
-                                                key={index}
-                                                label={form?.label}
-                                                name={form?.name}
-                                                type={form?.type}
-                                                value={dataSelected[form?.name] || ""}
-                                                handleChange={handleInputInfoChange}
-                                                readonly={form?.readonly}
-                                                options={form?.options}
-                                            />
-                                        )
-                                    })
-                                }
-                                {
-                                    newDataForm ? (
-                                        <button type="submit">Créer</button>
-                                    ) : (
-                                        <button type="submit">Mettre à jour</button>
-                                    )
-                                }
-                            </form>
-                        </div>
-                    </>
-                ) : null
-            }
-        </>
+            <Modal displayModal={showForm} handleClose={() => setShowForm(false)}>
+                <form className="simple-form" autoComplete="off" onSubmit={handleSubmit}>
+                    {
+                        dataForm.map((form, index) => {
+                            return (
+                                <Input
+                                    key={index}
+                                    label={form?.label}
+                                    name={form?.name}
+                                    type={form?.type}
+                                    value={dataSelected[form?.name] || ""}
+                                    handleChange={handleInputInfoChange}
+                                    readonly={form?.readonly}
+                                    options={form?.options}
+                                    fieldClass={form?.fieldClass}
+                                    className={form?.className}
+                                />
+                            )
+                        })
+                    }
+                    <fieldset>
+                        {
+                            newDataForm ? (
+                                <button className="button--primary btn-bg--green" type="submit">Créer</button>
+                            ) : (
+                                <button className="button--primary btn-bg--green" type="submit">Mettre à jour</button>
+                            )
+                        }
+                    </fieldset>
+                </form>
+            </Modal>
+        </div>
     );
 };
 

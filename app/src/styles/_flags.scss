@@ -1,0 +1,28 @@
+.flag {
+    background: url("../img/flags.png");
+    display: inline-block;
+    width: 16px;
+    height: 11px;
+    vertical-align: middle;
+
+    &--japan {background-position: -224px -66px;}
+    &--france {background-position: -160px -44px;}
+    &--germany {background-position: -32px -33px;}
+    &--italia {background-position: -144px -66px;}
+    &--netherlands {background-position: -16px -88px;}
+    &--england {background-position: -192px -33px;}
+    &--sweden {background-position: -208px -121px;}
+    &--spain {background-position: -224px -33px;}
+    &--mexico {background-position: -96px -99px;}
+    &--brazil {background-position: -176px -11px;}
+    &--argentina {background-position: -144px -0px;}
+    &--uruguay {background-position: -16px -154px;}
+    &--thailand {background-position: -208px -22px;}
+    &--saudi_arabia {background-position: -128px -121px;}
+    &--uzbekistan {background-position: -32px -154px;}
+    &--china {background-position: -176px -22px;}
+    &--korea {background-position: -80px -77px;}
+    &--nigeria {background-position: -208px -99px;}
+    &--portugal {background-position: -256px -110px;}
+    &--denmark {background-position: -64px -33px;}
+}

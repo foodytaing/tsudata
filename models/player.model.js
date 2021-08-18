@@ -1,13 +1,6 @@
 const mongoose = require("mongoose");
 
 const playerSchema = new mongoose.Schema({
-    klab_id: {
-        type: Number,
-        unique: true,
-        minlength: 6,
-        maxlength: 6,
-        trimp: true,
-    },
     image_url: {
         type: String,
         lowercase: true,
@@ -20,10 +13,14 @@ const playerSchema = new mongoose.Schema({
     },
     rarity: {
         type: String,
+        lowercase: true,
         trim: true,
     },
     collection_card: {
         type: String,
+    },
+    position_in_collection: {
+        type: Number,
     },
     first_name: {
         type: String,
@@ -42,10 +39,7 @@ const playerSchema = new mongoose.Schema({
     },
     country: {
         type: String,
-        trim: true,
-    },
-    team: {
-        type: String,
+        lowercase: true,
         trim: true,
     },
     series: {
@@ -54,6 +48,7 @@ const playerSchema = new mongoose.Schema({
     },
     positions: {
         type: [String],
+        lowercase: true,
     },
     stats: {
         type: Object,
@@ -73,7 +68,7 @@ const playerSchema = new mongoose.Schema({
         type: [String],
     },
     chest: {
-        type: Boolean,
+        type: [String],
     },
 }, {
     timestamps: true,

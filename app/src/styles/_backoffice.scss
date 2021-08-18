@@ -1,0 +1,96 @@
+.table-data-list {
+    width: 100%;
+
+    &__item{
+        border-radius: 4px;
+        border-bottom: 1px solid #cccccc;
+        font-size: 1.6rem;
+        text-transform: capitalize;
+
+        &:first-child {
+            border-top: 1px solid #cccccc;
+        }
+
+        td {
+            padding: 6px;
+            vertical-align: middle;
+        }
+
+        td:first-child {
+            padding-left: 0;
+        }
+
+        td:last-child {
+           text-align: right; 
+           padding-right: 0;
+        }
+    }
+
+    &__action {
+        display: flex;
+        justify-content: flex-end;
+
+        button {
+            margin: 0 6px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+}
+  
+.player-data-inline {
+    &__img {
+        width: 45px;
+    }
+
+    &__fullname {
+        display: block;
+        text-transform: capitalize;
+        font-size: 1.6rem;
+        margin-bottom: 3px;
+    }
+
+    &__subname {
+        display: block;
+        text-transform: capitalize;
+        font-size: 1.2rem;
+    }
+
+    &__positions {
+        display: flex;
+
+        li {
+            margin: 3px;
+
+            &:first-child {
+                margin-left: 0;
+            }
+        
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+}
+
+.skill-data-inline {
+    &__name {
+        display: block;
+        text-transform: capitalize;
+        font-size: 1.6rem;
+        margin-bottom: 3px;
+    }
+
+    &__description {
+        display: block;
+        text-transform: capitalize;
+        font-size: 1.2rem;
+    }
+}
+
+.button-data--create {
+    margin-bottom: 16px;
+    float: right;
+}

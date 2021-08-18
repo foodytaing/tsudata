@@ -1,18 +1,18 @@
 [
     {
         "label": "N",
-        "value": "N"
+        "value": "n"
     },
     {
         "label": "SR",
-        "value": "SR"
+        "value": "sr"
     },
     {
         "label": "SSR",
-        "value": "SSR"
+        "value": "ssr"
     },
     {
         "label": "UR",
-        "value": "UR"
+        "value": "ur"
     }
 ]
