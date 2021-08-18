@@ -1,22 +1,22 @@
 [
     {
         "label": "AT",
-        "value": "AT"
+        "value": "at"
     },
     {
         "label": "MO",
-        "value": "MO"
+        "value": "mo"
     },
     {
         "label": "MD",
-        "value": "MD"
+        "value": "md"
     },
     {
         "label": "DF",
-        "value": "DF"
+        "value": "df"
     },
     {
         "label": "GB",
-        "value": "GB"
+        "value": "gb"
     }
 ]

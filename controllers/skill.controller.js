@@ -1,9 +1,29 @@
 const SkillModel = require("../models/skill.model");
 const ObjectID = require("mongoose").Types.ObjectId;
 
-module.exports.createSkill = async(req, res) => {
+function tri(a, b) {
+    if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+    if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+    if (a.name.toLowerCase() === b.name.toLowerCase()) {
+        if (a.description.toLowerCase() > b.description.toLowerCase()) return -1;
+        if (a.description.toLowerCase() < b.description.toLowerCase()) return 1;
+        if (a.description.toLowerCase() === b.description.toLowerCase()) return 0;
+    }
+}
+
+module.exports.createSkill = async (req, res) => {
+    let assignment_stats = []
+
+    if (
+        (req.body.effect_type === "params" || req.body.effect_type === "intensity") &&
+        (!Array.isArray(req.body.assignment_stats) || (Array.isArray(req.body.assignment_stats) && req.body.assignment_stats.length == 0))
+    ) {
+        assignment_stats = ["dribble", "shot", "pass", "tackle", "block", "intercept", "speed", "power", "technique", "punch", "catch", "highball", "lowball"]
+    }
+
     const newSkill = new SkillModel({
         ...req.body,
+        assignment_stats
     });
 
     try {
@@ -14,13 +34,13 @@ module.exports.createSkill = async(req, res) => {
     }
 }
 
-module.exports.getAllSkills = async(req, res) => {
+module.exports.getAllSkills = async (req, res) => {
     const skills = await SkillModel.find(req.query)
         .select(["-effect_value", "-effect_type"]);
-    res.status(200).json(skills);
+    res.status(200).json(skills.sort(tri));
 };
 
-module.exports.getSkill = async(req, res) => {
+module.exports.getSkill = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id);
 
@@ -30,16 +50,16 @@ module.exports.getSkill = async(req, res) => {
     }).select();
 };
 
-module.exports.updateSkill = async(req, res) => {
+module.exports.updateSkill = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id);
 
     try {
         await SkillModel.findOneAndUpdate({ _id: req.params.id }, {
-                $set: {
-                    ...req.body,
-                },
-            }, { new: true, upsert: true, setDefaultsOnInsert: true },
+            $set: {
+                ...req.body,
+            },
+        }, { new: true, upsert: true, setDefaultsOnInsert: true },
             (err, docs) => {
                 if (!err) return res.send(docs);
                 if (err) return res.status(500).send({ message: err });
@@ -50,7 +70,7 @@ module.exports.updateSkill = async(req, res) => {
     }
 };
 
-module.exports.deleteSkill = async(req, res) => {
+module.exports.deleteSkill = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id);
 
@@ -64,8 +84,8 @@ module.exports.deleteSkill = async(req, res) => {
     }
 };
 
-module.exports.getSearchSkills = async(req, res) => {
-    const skills = await SkillModel.find({[req.query.key]: new RegExp(req.query.val, 'i'), type_skill: req.query.type})
+module.exports.getSearchSkills = async (req, res) => {
+    const skills = await SkillModel.find({ [req.query.key]: new RegExp(req.query.val, 'i'), type_skill: req.query.type })
         .select(["-effect_value", "-effect_type"]);
-    res.status(200).json(skills);
+    res.status(200).json(skills.sort(tri));
 };

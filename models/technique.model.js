@@ -9,7 +9,6 @@ const techniqueSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        lowercase: true,
     },
     type_technique: {
         type: String,

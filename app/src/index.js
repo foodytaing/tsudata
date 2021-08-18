@@ -4,17 +4,18 @@ import App from "./App";
 import { SWRConfig } from 'swr'
 import { Provider as AlertProvider } from 'react-alert'
 
-// import './styles/normalize.css'
+import './styles/normalize.css'
+import './styles/style.scss'
 
 const AlertTemplate = ({ style, options, message, close }) => (
     <div style={style}>
-      {options.type === 'info' && '!'}
-      {options.type === 'success' && ':)'}
-      {options.type === 'error' && ':('}
-      {message}
-      <button onClick={close}>X</button>
+        {options.type === 'info' && '!'}
+        {options.type === 'success' && ':)'}
+        {options.type === 'error' && ':('}
+        {message}
+        <button onClick={close}>X</button>
     </div>
-  )
+)
 
 ReactDOM.render(
     <SWRConfig
@@ -28,5 +29,5 @@ ReactDOM.render(
             </React.StrictMode>
         </AlertProvider>
     </SWRConfig>,
-  document.getElementById("root")
+    document.getElementById("root")
 );

@@ -1,0 +1,17 @@
+.tag-position {
+    font-size: 1.2rem;
+    border-radius: 3px;
+    margin-right: 2px;
+    padding: 3px;
+    color: #ffffff;
+    width: 28px;
+    text-align: center;
+    text-transform: uppercase;
+
+    &--at {background: #971b38;}
+    &--mo {background: #1a8a27}
+    &--md {background: #1a8a27}
+    &--df {background: #1f347d}
+    &--gb {background: #d06d1e}
+}
+  

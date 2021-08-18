@@ -5,6 +5,8 @@ import useSWR, { mutate } from 'swr'
 import axios from "axios";
 import WidgetCloudinary from "../components/WidgetCloudinary";
 
+import { Modal, ValidModal } from '../components/Modal'
+
 import ApiSearchInputMultipleValue from "../components/form/ApiSearchInputMultipleValue";
 
 // Form Data
@@ -13,75 +15,90 @@ import rarityList from '../data/rarity_list.json'
 import colorList from '../data/color_list.json'
 import countryList from '../data/country_list.json'
 import seriesList from '../data/series_list.json'
-import teamList from '../data/team_list.json'
 import floatballList from '../data/floatball_list.json'
-import positionList from '../data/position_list.json'  
+import positionList from '../data/position_list.json'
 
 const playerForm = [
     {
-        label: "Klab ID",
-        name: "klab_id",
-        type: "number"
-    },
-    {
         label: "Prénom",
         name: "first_name",
-        type: "select_player_name"
+        type: "select_player_name",
+        fieldClass: "tier-width"
     },
     {
         label: "Nom",
         name: "last_name",
-        readonly: true
-    },
-    {
-        label: "Couleur",
-        name: "color",
-        type: "select",
-        options: colorList
-    },
-    {
-        label: "Titre",
-        name: "sub_name"
-    },
-    {
-        label: "Image",
-        name: "image_url"
+        readonly: "true",
+        fieldClass: "tier-width"
     },
     {
         label: "Rareté",
         name: "rarity",
         type: "select",
-        options: rarityList
+        options: rarityList,
+        fieldClass: "tier-width"
+    },
+    {
+        label: "Titre",
+        name: "sub_name",
+        fieldClass: "full-width"
+    },
+    {
+        label: "Couleur",
+        name: "color",
+        type: "select",
+        options: colorList,
+        fieldClass: "tier-width"
     },
     {
         label: "Collection",
         name: "collection_card",
         type: "select",
-        options: collectionList
+        options: collectionList,
+        fieldClass: "tier-width"
+    },
+    {
+        label: "Position collection",
+        name: "position_in_collection",
+        type: "number",
+        fieldClass: "tier-width"
     },
     {
         label: "Pays",
         name: "country",
         type: "select",
-        options: countryList
-    },
-    {
-        label: "Equipe",
-        name: "team" ,
-        type: "select",
-        options: teamList
+        options: countryList,
+        fieldClass: "tier-width"
     },
     {
         label: "Série",
         name: "series",
         type: "select",
-        options: seriesList
+        options: seriesList,
+        fieldClass: "tier-width"
+    },
+    {
+        label: "Coffre",
+        name: "chest",
+        type: "select",
+        options: [
+            {
+                label: "Non",
+                value: "false",
+            },
+            {
+                label: "Oui",
+                value: "true",
+            }
+        ],
+        fieldClass: "tier-width"
     },
     {
         label: "Position",
         name: "positions",
         type: "checkbox",
-        options: positionList
+        options: positionList,
+        fieldClass: "full-width"
     }
 ]
 
@@ -89,91 +106,105 @@ const playerStatsForm = [
     {
         label: "Endurance",
         name: "stamina",
-        type: "number"
+        type: "number",
+        fieldClass: "full-width"
     },
     {
         label: "Dribble",
         name: "dribble",
-        type: "number"
+        type: "number",
+        fieldClass: "tier-width"
     },
     {
         label: "Tir",
         name: "shot",
-        type: "number"
+        type: "number",
+        fieldClass: "tier-width"
     },
     {
         label: "Passe",
         name: "pass",
-        type: "number"
+        type: "number",
+        fieldClass: "tier-width"
     },
     {
         label: "Tacle",
         name: "tackle",
-        type: "number"
+        type: "number",
+        fieldClass: "tier-width"
     },
     {
         label: "Contre",
         name: "block",
-        type: "number"
+        type: "number",
+        fieldClass: "tier-width"
     },
     {
         label: "Interception",
         name: "intercept",
-        type: "number"
+        type: "number",
+        fieldClass: "tier-width"
     },
     {
         label: "Rapidité",
         name: "speed",
-        type: "number"
+        type: "number",
+        fieldClass: "tier-width"
     },
     {
         label: "Puissance",
         name: "power",
-        type: "number"
+        type: "number",
+        fieldClass: "tier-width"
     },
     {
         label: "Technicité",
         name: "technique",
-        type: "number"
+        type: "number",
+        fieldClass: "tier-width"
     },
     {
         label: "Coup de poing",
         name: "punch",
-        type: "number"
+        type: "number",
+        fieldClass: "half-width"
     },
     {
         label: "Arrêt",
         name: "catch",
-        type: "number"
+        type: "number",
+        fieldClass: "half-width"
     },
     {
         label: "Ballon haut",
         name: "highBall",
         type: "select",
-        options: floatballList
+        options: floatballList,
+        fieldClass: "half-width"
     },
     {
         label: "Ballon bas",
         name: "lowBall",
         type: "select",
-        options: floatballList
+        options: floatballList,
+        fieldClass: "half-width"
     }
 ]
 
 const initialPlayerSelected = {
-    "klab_id": "",
     "image_url": "",
     "color": "",
-    "rarity": "",
+    "rarity": "UR",
     "collection_card": "",
+    "position_in_collection": "",
     "first_name": "",
     "last_name": "",
     "sub_name": "",
     "country": "",
-    "team": "",
     "series": "",
     "positions": [],
     "passive_skill": [],
+    "chest": "false"
 }
 
 const initialPlayerStats = {
@@ -187,9 +218,11 @@ const initialPlayerStats = {
     "speed": "",
     "power": "",
     "technique": "",
-    "highBall": "",
-    "lowBall": ""
+    "highBall": "1",
+    "lowBall": "1"
 }
+
+const orderPosition = ['at', 'mo', 'md', 'df', 'gb'];
 
 const fetcher = url => fetch(url).then(r => r.json())
 
@@ -216,15 +249,15 @@ const PlayerList = () => {
 
     const { data, error } = useSWR(`${process.env.REACT_APP_API_URL}/api/player/`, fetcher)
 
-    useEffect(() => {     
+    useEffect(() => {
         if (!fetchLeaderSkill) {
             playerSelected?.leader_skill?.forEach(el => {
                 axios
                     .get(`${process.env.REACT_APP_API_URL}/api/skill/${el._id}`)
                     .then((res) => {
-                        setLeaderSkill([{...res.data}])
+                        setLeaderSkill([{ ...res.data }])
                         setFetchLeaderSkill(true)
-                    }).catch((err) => console.log(err))      
+                    }).catch((err) => console.log(err))
             })
         }
         if (!fetchPassiveSkill) {
@@ -232,9 +265,9 @@ const PlayerList = () => {
                 axios
                     .get(`${process.env.REACT_APP_API_URL}/api/skill/${el._id}`)
                     .then((res) => {
-                        setPassiveSkill([{...res.data}])
+                        setPassiveSkill([{ ...res.data }])
                         setFetchPassiveSkill(true)
-                    }).catch((err) => console.log(err))      
+                    }).catch((err) => console.log(err))
             })
         };
         if (!fetchHiddenAbilities) {
@@ -246,7 +279,7 @@ const PlayerList = () => {
                         HA.push(res.data);
                         setHiddenAbilities([...HA]);
                         setFetchHiddenAbilities(true);
-                    }).catch((err) => console.log(err))      
+                    }).catch((err) => console.log(err))
             })
         }
         if (!fetchTechniques) {
@@ -258,10 +291,10 @@ const PlayerList = () => {
                         Techniques.push(res.data);
                         setTechniques([...Techniques]);
                         setFetchTechniques(true);
-                    }).catch((err) => console.log(err))      
+                    }).catch((err) => console.log(err))
             })
         }
-    }, [playerSelected])
+    }, [playerSelected, fetchTechniques, fetchHiddenAbilities, fetchPassiveSkill, fetchLeaderSkill])
 
     async function handleGetPlayer(id) {
         setFetchPassiveSkill(false);
@@ -275,32 +308,53 @@ const PlayerList = () => {
 
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/player/${id}`);
-            const formatPassiveSkill = response.data.passive_skill.map(skill => { return {"_id": skill}});
-            const formatLeaderSkill = response.data.leader_skill.map(skill => { return {"_id": skill}});
-            const formatHiddenAbilitiesSkill = response.data.hidden_abilities.map(skill => { return {"_id": skill}});
-            const formatTechniques = response.data.techniques.map(technique => { return {"_id": technique}});
-            setPlayerSelected(({
-                ...initialPlayerSelected,
-                ...response.data,
-                passive_skill: formatPassiveSkill,
-                leader_skill: formatLeaderSkill,
-                hidden_abilities: formatHiddenAbilitiesSkill,
-                techniques: formatTechniques
-            }));
-            setPlayerStats(({...initialPlayerStats, ...response.data.stats}));
+            const formatPassiveSkill = response.data.passive_skill.map(skill => { return { "_id": skill } });
+            const formatLeaderSkill = response.data.leader_skill.map(skill => { return { "_id": skill } });
+            const formatHiddenAbilitiesSkill = response.data.hidden_abilities.map(skill => { return { "_id": skill } });
+            const formatTechniques = response.data.techniques.map(technique => { return { "_id": technique } });
+
+            if (
+                (response.data.effect_type === "params" || response.data.effect_type === "intensity") &&
+                (!Array.isArray(response.data.assignment_stats) || (Array.isArray(response.data.assignment_stats) && response.data.assignment_stats.length === 0))
+            ) {
+                const assignment_stats = ["dribble", "shot", "pass", "tackle", "block", "intercept", "speed", "power", "technique", "punch", "catch", "highball", "lowball"]
+                setPlayerSelected(({
+                    ...initialPlayerSelected,
+                    ...response.data,
+                    passive_skill: formatPassiveSkill,
+                    leader_skill: formatLeaderSkill,
+                    hidden_abilities: formatHiddenAbilitiesSkill,
+                    techniques: formatTechniques,
+                    assignment_stats
+                }));
+            } else {
+                setPlayerSelected(({
+                    ...initialPlayerSelected,
+                    ...response.data,
+                    passive_skill: formatPassiveSkill,
+                    leader_skill: formatLeaderSkill,
+                    hidden_abilities: formatHiddenAbilitiesSkill,
+                    techniques: formatTechniques
+                }));
+            }
+
+
+            setPlayerStats(({ ...initialPlayerStats, ...response.data.stats }));
+            setNewPlayerForm(false)
             setShowForm(true);
             return response.data;
-        } catch(err) {
+        } catch (err) {
             alert.show('Une erreur est survenue');
             return err
-        } 
+        }
     }
 
     async function handleDelete(id) {
         try {
             const response = await axios.delete(`${process.env.REACT_APP_API_URL}/api/player/${id}`);
-            mutate(`${process.env.REACT_APP_API_URL}/api/player/`, data.filter(function(el) { return el._id !== id; }), false)
+            mutate(`${process.env.REACT_APP_API_URL}/api/player/`, data.filter(function (el) { return el._id !== id; }), false)
             alert.show('La suppression du joueur a bien été pris en compte');
+            mutate(`${process.env.REACT_APP_API_URL}/api/player/`);
             setShowForm(false);
             return response.data;
         } catch (err) {
@@ -310,10 +364,10 @@ const PlayerList = () => {
     }
 
     async function handleUpdate() {
-        const newPassiveSkill = PassiveSkill.map(skill => skill._id);
-        const newLeaderSkill = LeaderSkill.map(skill => skill._id);
-        const newHiddenAbilitiesSkill = HiddenAbilities.map(skill => skill._id);
-        const newTechniques = Techniques.map(skill => skill._id);
+        const newPassiveSkill = PassiveSkill?.map(skill => skill._id);
+        const newLeaderSkill = LeaderSkill?.map(skill => skill._id);
+        const newHiddenAbilitiesSkill = HiddenAbilities?.map(skill => skill._id);
+        const newTechniques = Techniques?.map(skill => skill._id);
 
         const newPlayerData = {
             ...playerSelected,
@@ -328,6 +382,8 @@ const PlayerList = () => {
             const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/player/${newPlayerData._id}`, newPlayerData);
             mutate(`${process.env.REACT_APP_API_URL}/api/player/`, data.map(obj => [newPlayerData].find(o => o._id === obj._id) || obj), false)
             alert.show('Les modifications du joueur ont bien été prises en compte');
+            mutate(`${process.env.REACT_APP_API_URL}/api/player/`);
+            setShowForm(false)
             return response.data;
         } catch (err) {
             alert.show('Une erreur est survenue');
@@ -336,15 +392,26 @@ const PlayerList = () => {
     }
 
     async function handleCreate() {
+        const newPassiveSkill = PassiveSkill?.map(skill => skill._id);
+        const newLeaderSkill = LeaderSkill?.map(skill => skill._id);
+        const newHiddenAbilitiesSkill = HiddenAbilities?.map(skill => skill._id);
+        const newTechniques = Techniques?.map(skill => skill._id);
+
         const newPlayerData = {
             ...playerSelected,
-            stats: { ...playerStats }
+            stats: { ...playerStats },
+            passive_skill: newPassiveSkill,
+            leader_skill: newLeaderSkill,
+            hidden_abilities: newHiddenAbilitiesSkill,
+            techniques: newTechniques
         }
 
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/player/`, newPlayerData);
             mutate(`${process.env.REACT_APP_API_URL}/api/player/`, [newPlayerData, ...data], false)
             alert.show('La création de joueur a bien été prises en compte');
+            mutate(`${process.env.REACT_APP_API_URL}/api/player/`);
+            setShowForm(false)
             return response.data;
         } catch (err) {
             alert.show('Une erreur est survenue');
@@ -429,125 +496,178 @@ const PlayerList = () => {
     if (!data) return <div>loading...</div>
 
     return (
-        <>
+        <div className="container">
             <h1>Backoffice Liste des joueurs</h1>
-            <button onClick={showNewPlayerForm}>Nouveau joueur</button>
-            <ul>
-                {Array.isArray(data) && data.reverse().map((player, index) => {
-                    return (
-                        <li key={index}>
-                            <img
-                                src={player?.image_url ? player?.image_url : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
-                                alt={player?.first_name}
-                                width="20"
-                            />
-                            {player?.first_name} {player?.last_name}
-                            <button onClick={() => handleGetPlayer(player?._id)}>Modifier</button>
-                            <button onClick={() => handleDelete(player?._id)}>Supprimer</button>
-                        </li>
-                    )
-                })}
-            </ul>
+            <button className="button--primary button-data--create" onClick={showNewPlayerForm}>Nouveau joueur</button>
+            <table className="table-data-list">
+                <tbody>
+                    {Array.isArray(data) && data.reverse().map((player, index) => {
+                        return (
+                            <tr className="table-data-list__item player-data-inline" key={index}>
+                                <td width="45">
+                                    <img
+                                        className="player-data-inline__img"
+                                        src={player?.image_url ? player?.image_url : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
+                                        alt={player?.first_name + '_' + player?.last_name}
+                                    />
+                                </td>
+                                <td width="16">
+                                    {
+                                        player?.country ? (
+                                            <span className="player-data-inline__country">
+                                                <span className={`flag flag--${player?.country && player?.country.toLowerCase()}`} />
+                                            </span>
+                                        ) : null
+                                    }
 
-            {
-                showForm ? (
-                    <>
-                        <div className="modal">
-                            <h2>{playerSelected?._id || 'Nouveau joueur'}</h2>
-                            <WidgetCloudinary
-                                onSuccess={onImageUploaded}
-                            />
-                            <form autoComplete="off" onSubmit={handleSubmit}>
-                                <img
-                                    src={playerSelected?.image_url ? playerSelected?.image_url : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
-                                    alt={playerSelected?.firt_name}
-                                    width="100"
+                                </td>
+                                <td>
+                                    <div>
+                                        <span className={`player-data-inline__fullname text-color--${player?.color}`}>
+                                            {player?.first_name} {player?.last_name}
+                                        </span>
+                                        <span className={`player-data-inline__subname text-color--${player?.color}`}>
+                                            {player?.sub_name}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <ul className='player-data-inline__positions'>
+                                        {
+                                            Array.isArray(orderPosition) && orderPosition.map((order) => {
+                                                return (
+                                                    Array.isArray(player?.positions) && (player?.positions.includes(order)) ? (
+                                                        <li key={order} className={`tag-position tag-position--${order.toLowerCase()}`}>
+                                                            {order}
+                                                        </li>
+                                                    ) : null
+                                                )
+                                            })
+                                        }
+                                    </ul>
+                                </td>
+                                <td>
+                                    <div className="table-data-list__action">
+                                        <ValidModal
+                                            label="Supprimer"
+                                            onConfirm={() => handleDelete(player?._id)}
+                                            question={"Confirmer la suppression du joueur."}
+                                        />
+                                        <button className="button--secondary" onClick={() => handleGetPlayer(player?._id)}>Modifier</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
+
+            <Modal displayModal={showForm} handleClose={() => setShowForm(false)}>
+                <div className="player-img-cloudinary">
+                    <WidgetCloudinary
+                        onSuccess={onImageUploaded}
+                    />
+                    <div className="player-img-cloudinary__wrapper-img">
+                        <img
+                            src={playerSelected?.image_url ? playerSelected?.image_url : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
+                            alt={playerSelected?.firt_name}
+                            className="player-img-cloudinary__img"
+                        />
+                    </div>
+                </div>
+                <form className="simple-form" autoComplete="off" onSubmit={handleSubmit}>
+                    {
+                        playerForm.map((form, index) => {
+                            return (
+                                <Input
+                                    key={index}
+                                    label={form?.label}
+                                    name={form?.name}
+                                    type={form?.type}
+                                    value={playerSelected[form?.name] || ""}
+                                    handleChange={handleInputInfoChange}
+                                    options={form?.options}
+                                    fieldClass={form?.fieldClass}
                                 />
-                                {
-                                    playerForm.map((form, index) => {
-                                        return (
-                                            <Input
-                                                key={index}
-                                                label={form?.label}
-                                                name={form?.name}
-                                                type={form?.type}
-                                                value={playerSelected[form?.name] || ""}
-                                                handleChange={handleInputInfoChange}
-                                                readonly={form?.readonly}
-                                                options={form?.options}
-                                            />
-                                        )
-                                    })
-                                }
-                                {
-                                    playerStatsForm.map((form, index) => {
-                                        return (
-                                            <Input
-                                                key={index}
-                                                label={form?.label}
-                                                name={form?.name}
-                                                type={form?.type}
-                                                value={playerStats[form?.name]}
-                                                handleChange={handleInputStatsChange}
-                                                readonly={form?.readonly}
-                                                options={form?.options}
-                                            />
-                                        )
-                                    })
-                                }
+                            )
+                        })
+                    }
 
-                                <ApiSearchInputMultipleValue
-                                    apiUrl={`${process.env.REACT_APP_API_URL}/api/skill/search`}
-                                    label="Compétence d'équipe"
-                                    handleChange={setLeaderSkill}
-                                    type="leader_skill"
-                                    value={LeaderSkill}
-                                    limit={1}
-                                    resetOnDataChange={playerSelected}
+                    {
+                        playerStatsForm.map((form, index) => {
+                            return (
+                                <Input
+                                    key={index}
+                                    label={form?.label}
+                                    name={form?.name}
+                                    type={form?.type}
+                                    value={playerStats[form?.name]}
+                                    handleChange={handleInputStatsChange}
+                                    readonly={form?.readonly}
+                                    options={form?.options}
+                                    fieldClass={form?.fieldClass}
                                 />
+                            )
+                        })
 
-                                <ApiSearchInputMultipleValue
-                                    apiUrl={`${process.env.REACT_APP_API_URL}/api/skill/search`}
-                                    label="Compétence passive"
-                                    handleChange={setPassiveSkill}
-                                    type="passive_skill"
-                                    value={PassiveSkill}
-                                    limit={1}
-                                    resetOnDataChange={playerSelected}
-                                />
+                    }
 
-                                <ApiSearchInputMultipleValue
-                                    apiUrl={`${process.env.REACT_APP_API_URL}/api/skill/search`}
-                                    label="Potentiel"
-                                    handleChange={setHiddenAbilities}
-                                    type="hidden_ability"
-                                    value={HiddenAbilities}
-                                    limit={5}
-                                    resetOnDataChange={playerSelected}
-                                />
+                    <ApiSearchInputMultipleValue
+                        apiUrl={`${process.env.REACT_APP_API_URL}/api/skill/search`}
+                        label="Compétence d'équipe"
+                        handleChange={setLeaderSkill}
+                        type="leader_skill"
+                        value={LeaderSkill}
+                        limit={1}
+                        resetOnDataChange={playerSelected}
+                        keySearch="description"
+                    />
 
-                                <ApiSearchInputMultipleValue
-                                    apiUrl={`${process.env.REACT_APP_API_URL}/api/technique/search`}
-                                    label="Techniques"
-                                    handleChange={setTechniques}
-                                    value={Techniques}
-                                    limit={7}
-                                    resetOnDataChange={playerSelected}
-                                />
+                    <ApiSearchInputMultipleValue
+                        apiUrl={`${process.env.REACT_APP_API_URL}/api/skill/search`}
+                        label="Compétence passive"
+                        handleChange={setPassiveSkill}
+                        type="passive_skill"
+                        value={PassiveSkill}
+                        limit={1}
+                        resetOnDataChange={playerSelected}
+                        keySearch="description"
+                    />
 
-                                {
-                                    newPlayerForm ? (
-                                        <button type="submit">Créer</button>
-                                    ) : (
-                                        <button type="submit">Mettre à jour</button>
-                                    )
-                                }
-                            </form>
-                        </div>
-                    </>
-                ) : null
-            }
-        </>
+                    <ApiSearchInputMultipleValue
+                        apiUrl={`${process.env.REACT_APP_API_URL}/api/skill/search`}
+                        label="Potentiel"
+                        handleChange={setHiddenAbilities}
+                        type="hidden_ability"
+                        value={HiddenAbilities}
+                        limit={5}
+                        resetOnDataChange={playerSelected}
+                        keySearch="description"
+                    />
+
+                    <ApiSearchInputMultipleValue
+                        apiUrl={`${process.env.REACT_APP_API_URL}/api/technique/search`}
+                        label="Techniques"
+                        handleChange={setTechniques}
+                        value={Techniques}
+                        limit={7}
+                        resetOnDataChange={playerSelected}
+                        keysOption={["rank", "name"]}
+                        className={"select-multiple-value--techniques"}
+                    />
+                    <fieldset>
+                        {
+                            newPlayerForm ? (
+                                <button className="button--primary btn-bg--green" type="submit">Créer</button>
+                            ) : (
+                                <button className="button--primary btn-bg--green" type="submit">Mettre à jour</button>
+                            )
+                        }
+                    </fieldset>
+                </form>
+            </Modal>
+
+        </div>
     );
 };
 

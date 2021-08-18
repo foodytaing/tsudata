@@ -1,9 +1,17 @@
 const TechniqueModel = require("../models/technique.model");
 const ObjectID = require("mongoose").Types.ObjectId;
 
-module.exports.createTechnique = async(req, res) => {
-    console.log(req.body);
+function tri(a, b) {
+    if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+    if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+    if (a.name.toLowerCase() === b.name.toLowerCase()) {
+        if (a.intensity > b.intensity) return -1;
+        if (a.intensity < b.intensity) return 1;
+        if (a.intensity === b.intensity) return 0;
+    }
+}
 
+module.exports.createTechnique = async (req, res) => {
     const newTechnique = new TechniqueModel({
         ...req.body,
     });
@@ -16,12 +24,12 @@ module.exports.createTechnique = async(req, res) => {
     }
 };
 
-module.exports.getAllTechniques = async(req, res) => {
+module.exports.getAllTechniques = async (req, res) => {
     const techniques = await TechniqueModel.find(req.query).select();
-    res.status(200).json(techniques);
+    res.status(200).json(techniques.sort(tri));
 };
 
-module.exports.getTechnique = async(req, res) => {
+module.exports.getTechnique = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id);
 
@@ -31,16 +39,16 @@ module.exports.getTechnique = async(req, res) => {
     }).select();
 };
 
-module.exports.updateTechnique = async(req, res) => {
+module.exports.updateTechnique = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id);
 
     try {
         await TechniqueModel.findOneAndUpdate({ _id: req.params.id }, {
-                $set: {
-                    ...req.body,
-                },
-            }, { new: true, upsert: true, setDefaultsOnInsert: true },
+            $set: {
+                ...req.body,
+            },
+        }, { new: true, upsert: true, setDefaultsOnInsert: true },
             (err, docs) => {
                 if (!err) return res.send(docs);
                 if (err) return res.status(500).send({ message: err });
@@ -51,7 +59,7 @@ module.exports.updateTechnique = async(req, res) => {
     }
 };
 
-module.exports.deleteTechnique = async(req, res) => {
+module.exports.deleteTechnique = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id);
 
@@ -65,10 +73,9 @@ module.exports.deleteTechnique = async(req, res) => {
     }
 };
 
-module.exports.getSearchTechniques = async(req, res) => {
-    console.log({[req.query.key]: new RegExp(req.query.val, 'i'), type_skill: req.query.type})
-
-    const techniques = await TechniqueModel.find({[req.query.key]: new RegExp(req.query.val, 'i'), type_skill: req.query.type})
+module.exports.getSearchTechniques = async (req, res) => {
+    const techniques = await TechniqueModel.find({ [req.query.key]: new RegExp(req.query.val, 'i'), type_skill: req.query.type })
         .select(["-effect_value", "-effect_type"]);
-    res.status(200).json(techniques);
+
+    res.status(200).json(techniques.sort(tri));
 };
