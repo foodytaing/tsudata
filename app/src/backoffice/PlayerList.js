@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Input from "../components/form/Input"
-import { useAlert } from 'react-alert'
+import { positions, useAlert } from 'react-alert'
 import useSWR, { mutate } from 'swr'
 import axios from "axios";
 import WidgetCloudinary from "../components/WidgetCloudinary";
@@ -194,7 +194,7 @@ const playerStatsForm = [
 const initialPlayerSelected = {
     "image_url": "",
     "color": "",
-    "rarity": "UR",
+    "rarity": "ur",
     "collection_card": "",
     "position_in_collection": "",
     "first_name": "",
@@ -204,6 +204,9 @@ const initialPlayerSelected = {
     "series": "",
     "positions": [],
     "passive_skill": [],
+    "leader_skill": [],
+    "hidden_abilities": [],
+    "techniques": [],
     "chest": "false"
 }
 
@@ -223,7 +226,6 @@ const initialPlayerStats = {
 }
 
 const orderPosition = ['at', 'mo', 'md', 'df', 'gb'];
-
 const fetcher = url => fetch(url).then(r => r.json())
 
 const PlayerList = () => {
@@ -277,7 +279,7 @@ const PlayerList = () => {
                     .get(`${process.env.REACT_APP_API_URL}/api/skill/${el._id}`)
                     .then((res) => {
                         HA.push(res.data);
-                        setHiddenAbilities([...HA]);
+                        setHiddenAbilities(HA);
                         setFetchHiddenAbilities(true);
                     }).catch((err) => console.log(err))
             })
@@ -294,17 +296,17 @@ const PlayerList = () => {
                     }).catch((err) => console.log(err))
             })
         }
-    }, [playerSelected, fetchTechniques, fetchHiddenAbilities, fetchPassiveSkill, fetchLeaderSkill])
+    }, [playerSelected])
 
     async function handleGetPlayer(id) {
         setFetchPassiveSkill(false);
-        setPassiveSkill();
+        setPassiveSkill([]);
         setFetchLeaderSkill(false);
-        setLeaderSkill();
+        setLeaderSkill([]);
         setFetchHiddenAbilities(false);
-        setHiddenAbilities()
+        setHiddenAbilities([])
         setFetchTechniques(false);
-        setTechniques();
+        setTechniques([]);
 
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/player/${id}`);
@@ -438,6 +440,7 @@ const PlayerList = () => {
         }
 
         setPlayerSelected(newPlayerSelected);
+        console.log(newPlayerSelected)
     }
 
     function handleInputStatsChange(e) {
@@ -464,32 +467,70 @@ const PlayerList = () => {
     }
 
     function showNewPlayerForm() {
-        setFetchPassiveSkill(false);
-        setPassiveSkill();
-        setFetchLeaderSkill(false);
-        setLeaderSkill();
-        setFetchHiddenAbilities(false);
-        setHiddenAbilities()
-        setFetchTechniques(false);
-        setTechniques();
-
-        setNewPlayerForm(true);
-        setShowForm(true);
+        setFetchPassiveSkill(true);
+        setFetchLeaderSkill(true);
+        setFetchHiddenAbilities(true);
+        setFetchTechniques(true);
+        setPassiveSkill([]);
+        setLeaderSkill([]);
+        setHiddenAbilities([])
+        setTechniques([]);
         setPlayerSelected({
             ...initialPlayerSelected
         });
         setPlayerStats({
             ...initialPlayerStats
         });
+        setNewPlayerForm(true);
+        setShowForm(true);
     }
 
     function onImageUploaded(e) {
         const newPlayerSelected = {
             ...playerSelected,
-            image_url: e.info.url
+            image_url: e.info
+        }
+        setPlayerSelected(newPlayerSelected);
+    }
+
+    async function handleDuplicate(id) {
+        let newPlayer = {};
+
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/player/${id}`);
+
+            newPlayer = {
+                first_name: response.data.first_name,
+                last_name: response.data.last_name,
+                image_url: response.data.image_url,
+                collection_card: response.data.collection_card,
+                techniques: response.data.techniques,
+                color: response.data.color,
+                rarity: response.data.rarity,
+                position_in_collection: response.data.position_in_collection,
+                sub_name: response.data.sub_name,
+                country: response.data.country,
+                stats: response.data.stats,
+                series: response.data.series,
+                chest: response.data.chest,
+                hidden_abilities: response.data.hidden_abilities,
+                passive_skill: response.data.passive_skill,
+                leader_skill: response.data.leader_skill,
+                positions: response.data.positions,
+            }
+
+            try {
+                const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/player/`, newPlayer);
+                mutate(`${process.env.REACT_APP_API_URL}/api/player/`, [newPlayer, ...data], false)
+                alert.show('Vous avez duppliqué un joueur.');
+                mutate(`${process.env.REACT_APP_API_URL}/api/player/`);
+            } catch (err) {
+                alert.show('Une erreur est survenue ici');
+            }
+        } catch (err) {
+            alert.show('Une erreur est survenue lala');
         }
 
-        setPlayerSelected(newPlayerSelected);
     }
 
     if (error) return <div>failed to load</div>
@@ -507,7 +548,7 @@ const PlayerList = () => {
                                 <td width="45">
                                     <img
                                         className="player-data-inline__img"
-                                        src={player?.image_url ? player?.image_url : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
+                                        src={player?.image_url ? player?.image_url.url : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
                                         alt={player?.first_name + '_' + player?.last_name}
                                     />
                                 </td>
@@ -519,7 +560,6 @@ const PlayerList = () => {
                                             </span>
                                         ) : null
                                     }
-
                                 </td>
                                 <td>
                                     <div>
@@ -553,6 +593,11 @@ const PlayerList = () => {
                                             onConfirm={() => handleDelete(player?._id)}
                                             question={"Confirmer la suppression du joueur."}
                                         />
+                                        <ValidModal
+                                            label="Dupliquer"
+                                            onConfirm={() => handleDuplicate(player?._id)}
+                                            question={"Confirmer la duplication du joueur."}
+                                        />
                                         <button className="button--secondary" onClick={() => handleGetPlayer(player?._id)}>Modifier</button>
                                     </div>
                                 </td>
@@ -569,7 +614,7 @@ const PlayerList = () => {
                     />
                     <div className="player-img-cloudinary__wrapper-img">
                         <img
-                            src={playerSelected?.image_url ? playerSelected?.image_url : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
+                            src={playerSelected?.image_url ? playerSelected?.image_url.url : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
                             alt={playerSelected?.firt_name}
                             className="player-img-cloudinary__img"
                         />
@@ -652,7 +697,7 @@ const PlayerList = () => {
                         value={Techniques}
                         limit={7}
                         resetOnDataChange={playerSelected}
-                        keysOption={["rank", "name"]}
+                        keysOption={["rank", "name", "intensity", "_id"]}
                         className={"select-multiple-value--techniques"}
                     />
                     <fieldset>

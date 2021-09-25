@@ -1,12 +1,21 @@
 html {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: Arial, Geneva, Tahoma, sans-serif;
     font-size: 62.5%;
 }
 
+body {
+  //background: url("../img/bg.jpg");
+}
+
 .container {
-    max-width: 1200px;
+    max-width: 1224px;
     margin: 0 auto;
-    padding: 0 12px;
+    padding: 0 62px 0 12px;
+}
+
+.logo-tsudata {
+  display: block;
+  margin: 0 auto;
 }
 
 .button--primary {
@@ -20,6 +29,14 @@ html {
       background-color: #555555;
       color: #ffffff;
     }
+}
+
+h2 {
+  font-size: 12px;
+  text-align: center;
+  margin-top: 12px;
+  margin-bottom: 3px;
+  text-transform: uppercase;
 }
 
 .button--secondary {
@@ -39,6 +56,12 @@ html {
   &--blue {color: $colorBlue}
   &--red {color: $colorRed}
   &--green {color: $colorGreen}
+}
+
+.bg-color {
+  &--blue {background: $bgBlue}
+  &--red {background: $bgRed}
+  &--green {background: $bgGreen}
 }
 
 .btn-bg {
@@ -63,4 +86,10 @@ html {
       background: $colorGreen;
     }
   }
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }

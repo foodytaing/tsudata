@@ -1,0 +1,121 @@
+@import "../styles/variables";
+
+.compare-panel {
+  background: #ffffff;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  transition: transform ease 0.2s;
+  padding-left: 38px;
+  padding-top: 38px;
+
+  &--open {
+    transform: translateX(0);
+    transition: transform ease 0.2s;
+  }
+
+  &--close {
+    transform: translateX(calc(100% + -45px));
+    transition: transform ease 0.2s;
+  }
+
+  &__menu {
+    background: #555555;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 45px;
+  }
+
+  &__player-detail-list {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__player-detail-list__item {
+    width: 240px;
+    box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);
+    margin: 0 6px;
+  }
+
+  &__btn-open {
+    color: #ffffff;
+    font-size: 26px;
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    transition: background ease 0.2s;
+
+    &:hover {
+      background: #cccccc;
+      transition: background ease 0.2s;
+    }
+  }
+
+  &__player-img-list__item {
+    border-radius: 50%;
+    width: 39px;
+    height: 39px;
+    position: relative;
+    margin: 5px auto;
+  }
+
+  &__player-img-list__wrapper-img {
+    overflow: hidden;
+    border-radius: 50%;
+    width: 39px;
+    height: 39px;
+    position: relative;
+
+    img {
+      position: absolute;
+      height: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+    } 
+  }
+
+  &__btn-clear {
+    display: block;
+    border-radius: 50%;
+    width: 39px;
+    height: 39px;
+    margin: 5px auto;
+    border: 1px solid #ffffff;
+    font-size: 22px;
+    color: #ffffff;
+    background: transparent;
+    transition: background ease 0.2s;
+
+    &:hover {
+      background: #cccccc;
+      transition: background ease 0.2s;
+    }
+  }
+
+  &__btn-delete {
+    position: absolute;
+    z-index: 10;
+    background: #ffffff;
+    border-radius: 50%;
+    width: 39px;
+    height: 39px;
+    top: 0;
+    right: 0;
+    opacity: 0.3;
+    font-size: 22px;
+    transition: opacity ease 0.2s;
+
+    &:hover {
+      opacity: 0.9;
+      transition: opacity ease 0.2s;
+    }
+  }
+}

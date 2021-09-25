@@ -46,8 +46,6 @@ const ApiSearchInputMultipleValue = (props) => {
             return;
         }
 
-        console.log(escapeRegExp(inputValue))
-
         try {
             //const response = await axios.get(`${apiUrl}?${apiUrlQuery}&${keySearch}=${inputValue.toLowerCase()}`);
             const response = await axios.get(apiUrl, { params: { key: keySearch, val: escapeRegExp(inputValue), type: type } });
@@ -65,10 +63,12 @@ const ApiSearchInputMultipleValue = (props) => {
 
         if (value.filter(e => e._id === option._id).length) {
             handleDeleteValue(option)
+            setInputValue("");
         } else if (value.length < limit) {
             newValue = [...value, { ...option }];
             handleChange(newValue);
             setOptions([]);
+            setInputValue("");
         }
     }
 

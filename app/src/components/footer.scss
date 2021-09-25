@@ -1,0 +1,39 @@
+footer {
+  margin: 0 auto;
+  font-size: 10px;
+  padding: 24px 12px;
+  margin-top: 24px;
+  text-align: center;
+}
+
+.footer-copyright {
+  font-size: 12px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.container {
+  max-width: 1401px;
+  margin: 0 auto;
+  padding: 0 12px;
+}
+
+.hide {
+  display: none !important;
+}
+
+.tooltip-container {
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    .tooltip-content {
+      display: block;
+    }
+  }
+
+  .tooltip-content {
+    position: absolute;
+    cursor: auto;
+  }
+}

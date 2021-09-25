@@ -1,0 +1,83 @@
+@import "../styles/variables";
+
+.player-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    &__wrapper-img {
+        width: 50px;
+        overflow: hidden;
+        height: 50px;
+        position: relative;
+        border: 2px solid transparent;
+        transition: border-color ease-in-out 0.25s;
+    }
+
+    &__img {
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .badge-free {
+        position: absolute;
+        color: #ffffff;
+        height: 14px;
+        width: 14px;
+        font-size: 10px;
+        text-align: center;
+        bottom: 0;
+        right: 0;
+
+        .fa-gift {
+            vertical-align: middle;
+        }
+    }
+
+    &__item {
+        cursor: pointer;
+        position: relative;
+
+        &--blue {
+            .badge-free {
+                background: $bgBlue;
+            }
+        }
+
+        &--red {
+            .badge-free {
+                background: $bgRed;
+            }
+        }
+
+        &--green {
+            .badge-free {
+                background: $bgGreen;
+            }
+        }
+
+        &--blue:hover {
+            .player-list__wrapper-img {
+                border-color: $bgBlue;
+                transition: border-color ease-in-out 0.25s;
+            }
+        }
+
+        &--red:hover {
+            .player-list__wrapper-img {
+                border-color: $bgRed;
+                transition: border-color ease-in-out 0.25s;
+            }
+        }
+
+        &--green:hover {
+            .player-list__wrapper-img {
+                border-color: $bgGreen;
+                transition: border-color ease-in-out 0.25s;
+            }
+        }
+    }
+}

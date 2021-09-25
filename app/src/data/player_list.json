@@ -980,5 +980,23 @@
         "last_name": "",
         "country": "brazil",
         "team": "Brésil"
+    },
+    {
+        "first_name": "Cannavaru",
+        "last_name": "",
+        "country": "italia",
+        "team": "Italie"
+    },
+    {
+        "first_name": "Zédane",
+        "last_name": "",
+        "country": "france",
+        "team": "France"
+    },
+    {
+        "first_name": "Alessandro",
+        "last_name": "Delpi",
+        "country": "italia",
+        "team": "Italie"
     }
 ]

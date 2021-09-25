@@ -1,0 +1,14 @@
+.alert-message {
+    margin: 30px;
+    pointer-events: all;
+    font-size: 14px;
+    border-radius: 4px;
+    background: white;
+    padding: 24px;
+    background: green;
+    color: #ffffff;
+
+    &__button {
+        display: none;
+    }
+}

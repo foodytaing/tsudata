@@ -156,7 +156,7 @@ const initialDataSelected = {
 }
 
 const fetcher = url => fetch(url).then(r => r.json())
-const apiUrl = `${process.env.REACT_APP_API_URL}/api/skill/`
+const apiUrl = `${process.env.REACT_APP_API_URL}/api/skill`
 
 const SkillList = () => {
     const alert = useAlert()
@@ -166,8 +166,8 @@ const SkillList = () => {
     const [showForm, setShowForm] = useState(false);
     const [newDataForm, setNewDataForm] = useState(false);
 
-    //const { data, error } = useSWR(apiUrl, fetcher)
-    const { data, setData } = useState([])
+    const { data, error } = useSWR(apiUrl + "?type_skill=passive_skill", fetcher)
+    //const { data, setData } = useState([])
 
     async function handleGetData(id) {
         try {
@@ -293,8 +293,8 @@ const SkillList = () => {
         });
     }
 
-    //if (error) return <div>failed to load</div>
-    //if (!data) return <div>loading...</div>
+    if (error) return <div>failed to load</div>
+    if (!data) return <div>loading...</div>
 
     return (
         <div className="container">

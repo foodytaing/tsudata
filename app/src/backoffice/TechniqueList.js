@@ -309,13 +309,13 @@ const TechniqueList = () => {
                                 </td>
                                 <td>
                                     <FontAwesome
-                                        name="bolt"
+                                        name="fire"
                                     />
                                     {item?.intensity}
                                 </td>
                                 <td>
                                     <FontAwesome
-                                        name="fire"
+                                        name="bolt"
                                     />
                                     {item?.stamina}
                                 </td>
