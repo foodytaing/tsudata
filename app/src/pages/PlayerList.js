@@ -55,6 +55,10 @@ const PlayerList = () => {
             data: data.filter(data => data.collection_card == "limited_player")
         },
         {
+            category: "Joueurs Gratuits",
+            data: data.filter(data => data.collection_card == "free_player")
+        },
+        {
             category: "Joueurs Payants",
             data: data.filter(data => data.collection_card == "paying_player")
         },
@@ -82,8 +86,6 @@ const PlayerList = () => {
             response.data?.leader_skill?.forEach(id => { return response.data.leader_skill_details[id] = {} })
             response.data?.passive_skill?.forEach(id => { return response.data.passive_skill_details[id] = {} })
             response.data?.hidden_abilities?.forEach(id => { return response.data.hidden_abilities_details[id] = {} })
-
-
 
             response.data?.leader_skill?.forEach(id => {
                 axios

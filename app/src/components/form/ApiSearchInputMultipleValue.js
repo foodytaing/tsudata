@@ -16,7 +16,7 @@ const ApiSearchInputMultipleValue = (props) => {
         label,
         type,
         value = [],
-        keysOption = ["_id", "name", "description"],
+        keysOption = ["name", "description"],
         keySearch = "name",
         limit = 7,
         resetOnDataChange,
@@ -24,6 +24,8 @@ const ApiSearchInputMultipleValue = (props) => {
     } = props
 
     const alert = useAlert()
+
+    const valueLength = value.length
 
     const [inputValue, setInputValue] = useState("");
     const [options, setOptions] = useState([]);
@@ -96,11 +98,16 @@ const ApiSearchInputMultipleValue = (props) => {
                                         </span>
                                     )
                                 })}
-                                <button className="select-multiple-value__btn-delete" onClick={(e) => handleDeleteValue(option)}>
-                                    <FontAwesome
-                                        name="times-circle"
-                                    />
-                                </button>
+
+                                {
+                                    (valueLength - 1) === index ? (
+                                        <button className="select-multiple-value__btn-delete" onClick={(e) => handleDeleteValue(option)}>
+                                            <FontAwesome
+                                                name="times-circle"
+                                            />
+                                        </button>
+                                    ) : null
+                                }
                             </li>
                         )
                     })

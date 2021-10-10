@@ -238,74 +238,16 @@ const PlayerList = () => {
     const [newPlayerForm, setNewPlayerForm] = useState(false);
 
     const [PassiveSkill, setPassiveSkill] = useState()
-    const [fetchPassiveSkill, setFetchPassiveSkill] = useState(false);
-
     const [LeaderSkill, setLeaderSkill] = useState()
-    const [fetchLeaderSkill, setFetchLeaderSkill] = useState(false);
-
     const [HiddenAbilities, setHiddenAbilities] = useState();
-    const [fetchHiddenAbilities, setFetchHiddenAbilities] = useState(false);
-
     const [Techniques, setTechniques] = useState();
-    const [fetchTechniques, setFetchTechniques] = useState(false);
 
     const { data, error } = useSWR(`${process.env.REACT_APP_API_URL}/api/player/`, fetcher)
 
-    useEffect(() => {
-        if (!fetchLeaderSkill) {
-            playerSelected?.leader_skill?.forEach(el => {
-                axios
-                    .get(`${process.env.REACT_APP_API_URL}/api/skill/${el._id}`)
-                    .then((res) => {
-                        setLeaderSkill([{ ...res.data }])
-                        setFetchLeaderSkill(true)
-                    }).catch((err) => console.log(err))
-            })
-        }
-        if (!fetchPassiveSkill) {
-            playerSelected?.passive_skill?.forEach(el => {
-                axios
-                    .get(`${process.env.REACT_APP_API_URL}/api/skill/${el._id}`)
-                    .then((res) => {
-                        setPassiveSkill([{ ...res.data }])
-                        setFetchPassiveSkill(true)
-                    }).catch((err) => console.log(err))
-            })
-        };
-        if (!fetchHiddenAbilities) {
-            let HA = []
-            playerSelected?.hidden_abilities?.forEach(el => {
-                axios
-                    .get(`${process.env.REACT_APP_API_URL}/api/skill/${el._id}`)
-                    .then((res) => {
-                        HA.push(res.data);
-                        setHiddenAbilities(HA);
-                        setFetchHiddenAbilities(true);
-                    }).catch((err) => console.log(err))
-            })
-        }
-        if (!fetchTechniques) {
-            let Techniques = []
-            playerSelected?.techniques?.forEach(el => {
-                axios
-                    .get(`${process.env.REACT_APP_API_URL}/api/technique/${el._id}`)
-                    .then((res) => {
-                        Techniques.push(res.data);
-                        setTechniques([...Techniques]);
-                        setFetchTechniques(true);
-                    }).catch((err) => console.log(err))
-            })
-        }
-    }, [playerSelected])
-
     async function handleGetPlayer(id) {
-        setFetchPassiveSkill(false);
         setPassiveSkill([]);
-        setFetchLeaderSkill(false);
         setLeaderSkill([]);
-        setFetchHiddenAbilities(false);
         setHiddenAbilities([])
-        setFetchTechniques(false);
         setTechniques([]);
 
         try {
@@ -314,6 +256,52 @@ const PlayerList = () => {
             const formatLeaderSkill = response.data.leader_skill.map(skill => { return { "_id": skill } });
             const formatHiddenAbilitiesSkill = response.data.hidden_abilities.map(skill => { return { "_id": skill } });
             const formatTechniques = response.data.techniques.map(technique => { return { "_id": technique } });
+
+            response.data.hidden_abilities_details = {};
+            response.data.passive_skill_details = {};
+            response.data.leader_skill_details = {};
+            response.data.techniques_details = {};
+
+            response.data?.techniques?.forEach(id => { return response.data.techniques_details[id] = {} })
+            response.data?.leader_skill?.forEach(id => { return response.data.leader_skill_details[id] = {} })
+            response.data?.passive_skill?.forEach(id => { return response.data.passive_skill_details[id] = {} })
+            response.data?.hidden_abilities?.forEach(id => { return response.data.hidden_abilities_details[id] = {} })
+
+            response.data?.leader_skill?.forEach(id => {
+                axios
+                    .get(`${process.env.REACT_APP_API_URL}/api/skill/${id}`)
+                    .then((res) => {
+                        response.data.leader_skill_details[id] = { ...res.data }
+                        setLeaderSkill(Object.entries(response.data.leader_skill_details).map(item => item[1]))
+                    }).catch((err) => console.log(err))
+            })
+
+            response.data?.passive_skill?.forEach(id => {
+                axios
+                    .get(`${process.env.REACT_APP_API_URL}/api/skill/${id}`)
+                    .then((res) => {
+                        response.data.passive_skill_details[id] = { ...res.data }
+                        setPassiveSkill(Object.entries(response.data.passive_skill_details).map(item => item[1]))
+                    }).catch((err) => console.log(err))
+            })
+
+            response.data?.hidden_abilities?.forEach(id => {
+                axios
+                    .get(`${process.env.REACT_APP_API_URL}/api/skill/${id}`)
+                    .then((res) => {
+                        response.data.hidden_abilities_details[id] = { ...res.data }
+                        setHiddenAbilities(Object.entries(response.data.hidden_abilities_details).map(item => item[1]));
+                    }).catch((err) => console.log(err))
+            })
+
+            response.data?.techniques?.forEach(id => {
+                axios
+                    .get(`${process.env.REACT_APP_API_URL}/api/technique/${id}`)
+                    .then((res) => {
+                        response.data.techniques_details[id] = { ...res.data }
+                        setTechniques(Object.entries(response.data.techniques_details).map(item => item[1]));
+                    }).catch((err) => console.log(err))
+            })
 
             if (
                 (response.data.effect_type === "params" || response.data.effect_type === "intensity") &&
@@ -440,7 +428,6 @@ const PlayerList = () => {
         }
 
         setPlayerSelected(newPlayerSelected);
-        console.log(newPlayerSelected)
     }
 
     function handleInputStatsChange(e) {
@@ -467,10 +454,6 @@ const PlayerList = () => {
     }
 
     function showNewPlayerForm() {
-        setFetchPassiveSkill(true);
-        setFetchLeaderSkill(true);
-        setFetchHiddenAbilities(true);
-        setFetchTechniques(true);
         setPassiveSkill([]);
         setLeaderSkill([]);
         setHiddenAbilities([])
@@ -697,7 +680,7 @@ const PlayerList = () => {
                         value={Techniques}
                         limit={7}
                         resetOnDataChange={playerSelected}
-                        keysOption={["rank", "name", "intensity", "_id"]}
+                        keysOption={["rank", "name"]}
                         className={"select-multiple-value--techniques"}
                     />
                     <fieldset>
