@@ -1,0 +1,1 @@
+export const ADD_PLAYER_ON_PANEL = "ADD_PLAYER_ON_PANEL";

@@ -1,0 +1,182 @@
+@import "../styles/variables";
+
+.detail-stats-player {
+	padding: 12px;
+	position: relative;
+
+	&__img {
+		width: 100%;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	&__img-wrapper {
+		position: relative;
+		height: 175px;
+		overflow: hidden;
+		margin-bottom: 6px;
+	}
+
+	&__full-name {
+		text-transform: capitalize;
+		font-size: 1.4rem;
+		font-weight: bold;
+		position: relative;
+		padding-left: 22px;
+		margin-bottom: 6px;
+	}
+
+	&__sub-name {
+		font-size: 12px;
+		text-transform: capitalize;
+		display: block;
+		font-weight: normal;
+
+		font-weight: normal;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		max-width: 180px;
+	}
+
+	&__series {
+		font-size: 1.2rem;
+		color: #000000;
+		display: block;
+		font-weight: normal;
+	}
+
+	&__flag {
+		position: absolute;
+		top: 3px;
+		left: 0;
+	}
+
+	&__stats-category {
+		margin-bottom: 6px;
+		border: 1px solid #555555;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	&__btn-delete {
+		font-size: 1.6rem;
+		position: absolute;
+		top: 6px;
+		right: 12px;
+		transition: transform ease 0.4s;
+
+		&:hover {
+		transform: translateY(-2px);
+		transition: transform ease 0.2s;
+		}
+	}
+
+	&__positions {
+		position: absolute;
+		z-index: 10;
+		right: 3px;
+		bottom: 3px;
+		display: flex;
+	}
+}
+
+.player-stats {
+  	font-size: 1.2rem;
+
+  	&__row {
+		display: flex;
+		justify-content: space-between;
+		padding: 3px;
+
+		&:nth-child(even) {
+			background: #dfdfdf;
+		}
+
+		&--category {
+			display: flex;
+			background: #555555;
+			color: #ffffff;
+			font-weight: bold;
+		}
+  	}
+
+	&__lb {
+		font-size: 10px;
+		color: #aa1894;
+		margin-left: 4px;
+		display: inline-block;
+	}
+
+	&__value-intensity {
+		margin-left: 8px;
+		font-weight: bold;
+	}
+}
+
+.boost {
+	margin-bottom: 6px;
+	text-align: center;
+	color: #ffffff;
+
+  	&__value-list {
+		display: flex;
+		flex-wrap: wrap;
+  	}
+
+	&__input {
+		width: 100%;
+		text-align: center;
+		width: 100%;
+		background: #ffffff;
+		text-align: center;
+		border: 1px solid #8c0b6c;
+		color: #8c0b6c;
+		font-size: 12px;
+
+		&--red {
+			color: $colorRed;
+			border: 1px solid $colorRed;
+		}
+
+		&--blue {
+			color: $colorBlue;
+			border: 1px solid $colorBlue;
+		}
+
+		&--green {
+			color: $colorGreen;
+			border: 1px solid $colorGreen;
+		}
+	}
+
+	&__value-item {
+		width: 25%;
+		background: #8c0b6c;
+
+		&.empty {
+			background: #ffffff;
+		}
+
+		&--red {
+			background: $colorRed;
+		}
+
+		&--blue {
+			background: $colorBlue;
+		}
+
+		&--green {
+			background: $colorGreen;
+		}
+  	}
+
+	&--limit-break {
+		.boost__value-item {
+			width: 33.3333%;
+		}
+	}
+}

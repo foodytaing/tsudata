@@ -1,0 +1,23 @@
+.tabs__menu {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.tabs__menu-item {
+  cursor: pointer;
+  padding: 1px 2px;
+  border: 1px solid #555555;
+  margin: 0 1px;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  text-align: center;
+  transition: background ease-in-out 0.25s;
+
+  &--active {
+    background: #555555;
+    color: #ffffff;
+  }
+}

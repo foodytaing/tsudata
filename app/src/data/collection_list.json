@@ -1,5 +1,9 @@
 [
     {
+        "label": "Next Dream",
+        "value": "next_dream"
+    },
+    {
         "label": "Inclus Ticket SSR",
         "value": "include_ticket_SSR"
     },

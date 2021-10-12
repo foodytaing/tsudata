@@ -16,7 +16,7 @@ const ApiSearchInputMultipleValue = (props) => {
         label,
         type,
         value = [],
-        keysOption = ["_id", "name", "description"],
+        keysOption = ["name", "description"],
         keySearch = "name",
         limit = 7,
         resetOnDataChange,
@@ -24,6 +24,8 @@ const ApiSearchInputMultipleValue = (props) => {
     } = props
 
     const alert = useAlert()
+
+    const valueLength = value.length
 
     const [inputValue, setInputValue] = useState("");
     const [options, setOptions] = useState([]);
@@ -46,8 +48,6 @@ const ApiSearchInputMultipleValue = (props) => {
             return;
         }
 
-        console.log(escapeRegExp(inputValue))
-
         try {
             //const response = await axios.get(`${apiUrl}?${apiUrlQuery}&${keySearch}=${inputValue.toLowerCase()}`);
             const response = await axios.get(apiUrl, { params: { key: keySearch, val: escapeRegExp(inputValue), type: type } });
@@ -65,10 +65,12 @@ const ApiSearchInputMultipleValue = (props) => {
 
         if (value.filter(e => e._id === option._id).length) {
             handleDeleteValue(option)
+            setInputValue("");
         } else if (value.length < limit) {
             newValue = [...value, { ...option }];
             handleChange(newValue);
             setOptions([]);
+            setInputValue("");
         }
     }
 
@@ -96,11 +98,16 @@ const ApiSearchInputMultipleValue = (props) => {
                                         </span>
                                     )
                                 })}
-                                <button className="select-multiple-value__btn-delete" onClick={(e) => handleDeleteValue(option)}>
-                                    <FontAwesome
-                                        name="times-circle"
-                                    />
-                                </button>
+
+                                {
+                                    (valueLength - 1) === index ? (
+                                        <button className="select-multiple-value__btn-delete" onClick={(e) => handleDeleteValue(option)}>
+                                            <FontAwesome
+                                                name="times-circle"
+                                            />
+                                        </button>
+                                    ) : null
+                                }
                             </li>
                         )
                     })

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const playerSchema = new mongoose.Schema({
     image_url: {
-        type: String,
+        type: Object,
         lowercase: true,
         trim: true,
     },
@@ -68,7 +68,7 @@ const playerSchema = new mongoose.Schema({
         type: [String],
     },
     chest: {
-        type: [String],
+        type: String,
     },
 }, {
     timestamps: true,

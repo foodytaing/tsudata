@@ -1,0 +1,53 @@
+.technique {
+  font-size: 1.2rem;
+  border: 1px solid #e96800;
+
+  &__name {
+    font-weight: bold;
+    display: block;
+    text-transform: capitalize;
+  }
+
+  &__item {
+    padding: 6px 3px;
+    border-bottom: 1px solid #e96800;
+
+    &:first-child {
+      background: #ffefe3;
+    }
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    > div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 3px;
+    }
+  }
+
+  &__title {
+    display: block;
+    color: #ffffff;
+    background: #e96800;
+    padding: 3px;
+  }
+
+  &__type {
+    text-transform: uppercase;
+  }
+
+  &__rank {
+    text-transform: uppercase;
+  }
+
+  &__intensity {
+    margin-right: 6px;
+    font-size: 1.0rem;
+  }
+
+  &__stamina {
+    font-size: 1.0rem;
+  }
+}

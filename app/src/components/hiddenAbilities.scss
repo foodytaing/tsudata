@@ -1,0 +1,80 @@
+.leader-skill {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  border: 1px solid #07675f;
+
+  &__name {
+    font-weight: bold;
+    display: block;
+  }
+
+  &__item {
+    padding: 3px;
+  }
+
+  &__title {
+    display: block;
+    color: #ffffff;
+    background: #07675f;
+    padding: 3px;
+  }
+
+  &__rank {
+    text-transform: uppercase;
+  }
+}
+
+.passive-skill {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  border: 1px solid #7646b8;
+
+  &__name {
+    font-weight: bold;
+    display: block;
+  }
+
+  &__item {
+    padding: 3px;
+  }
+
+  &__title {
+    display: block;
+    color: #ffffff;
+    background: #7646b8;
+    padding: 3px;
+  }
+
+  &__rank {
+    text-transform: uppercase;
+  }
+}
+
+.hidden-abilities {
+  font-size: 1.2rem;
+  border: 1px solid #1945c3;
+
+  &-list__item {
+    padding: 6px 3px;
+    border-bottom: 1px solid #1945c3;
+
+    &:last-child {
+      margin-bottom: 0px;
+      border-bottom: 0;
+    }
+  }
+  
+  &-list__name {
+    font-weight: bold;
+    display: block;
+  }
+
+  &__title {
+    display: block;
+    color: #ffffff;
+    background: #1945c3;
+    padding: 3px;
+  }
+}
+
+.skills-wrapper > div:last-child {margin-bottom: 0;}
