@@ -6,9 +6,9 @@
     justify-content: center;
 
     &__wrapper-img {
-        width: 50px;
+        width: 65px;
+        height: 65px;
         overflow: hidden;
-        height: 50px;
         position: relative;
         border: 2px solid transparent;
         transition: border-color ease-in-out 0.25s;
@@ -20,6 +20,9 @@
         top: 0;
         left: 50%;
         transform: translateX(-50%);
+        opacity: 0.5;
+        filter: grayscale(1);
+        transition: all ease-in-out 0.25s;
     }
 
     .badge-free {
@@ -31,6 +34,8 @@
         text-align: center;
         bottom: 0;
         right: 0;
+        filter: grayscale(1);
+        transition: all ease-in-out 0.25s;
 
         .fa-gift {
             vertical-align: middle;
@@ -77,6 +82,30 @@
             .player-list__wrapper-img {
                 border-color: $bgGreen;
                 transition: border-color ease-in-out 0.25s;
+            }
+        }
+
+        &:hover {
+            .badge-free {
+                filter: grayscale(0);
+                transition: all ease-in-out 0.25s;
+            }
+
+            .player-list__img {
+                filter: grayscale(0);
+                opacity: 1;
+                transition: all ease-in-out 0.25s;
+            }
+        }
+
+        &--possessed {
+            .badge-free {
+                filter: grayscale(0);
+            }
+
+            .player-list__img {
+                filter: grayscale(0);
+                opacity: 1;
             }
         }
     }

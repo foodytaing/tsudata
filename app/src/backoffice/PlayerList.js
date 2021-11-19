@@ -328,7 +328,6 @@ const PlayerList = () => {
                 }));
             }
 
-
             setPlayerStats(({ ...initialPlayerStats, ...response.data.stats }));
             setNewPlayerForm(false)
             setShowForm(true);
@@ -424,6 +423,13 @@ const PlayerList = () => {
             newPlayerSelected = {
                 ...playerSelected,
                 ...e
+            }
+        }
+
+        if (name === "collection_card") {
+            newPlayerSelected = {
+                ...newPlayerSelected,
+                position_in_collection: data.filter(data => data.collection_card == value).length + 1,
             }
         }
 

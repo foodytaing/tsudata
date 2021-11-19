@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import FontAwesome from 'react-fontawesome'
 
 import lbVal from "../data/limit_break_values.json"
@@ -135,8 +135,8 @@ export const DetailStatsPlayer = (props) => {
 	const calcSpeed = (stats.speed + lbCalculator(lbSpeed)) * ((physical + leader_skill) / 100 + 1 || 1);
 	const calcPower = (stats.power + lbCalculator(lbPower)) * ((physical + leader_skill) / 100 + 1 || 1);
 	const calcTechnique = (stats.technique + lbCalculator(lbTechnique)) * ((physical + leader_skill) / 100 + 1 || 1);
-	const calcSavingPunch = (stats.catch + lbCalculator(lbSavingPunch)) * ((leader_skill) / 100 + 1 || 1);
-	const calcSavingCatch = (stats.punch + lbCalculator(lbSavingCatch)) * ((leader_skill) / 100 + 1 || 1);
+	const calcSavingPunch = (stats.punch + lbCalculator(lbSavingPunch)) * ((leader_skill) / 100 + 1 || 1);
+	const calcSavingCatch = (stats.catch + lbCalculator(lbSavingCatch)) * ((leader_skill) / 100 + 1 || 1);
 
 	const calcStats = {
 		dribble: Math.round((calcDribble + calcSpeed / 2) * ((params + bond) / 100 + 1 || 1)),
@@ -145,8 +145,8 @@ export const DetailStatsPlayer = (props) => {
 		tackle: Math.round((calcTackle + calcSpeed / 2) * ((params + bond) / 100 + 1 || 1)),
 		block: Math.round((calcBlock + calcPower / 2) * ((params + bond) / 100 + 1 || 1)),
 		intercept: Math.round((calcIntercept + calcTechnique / 2) * ((params + bond) / 100 + 1 || 1)),
-		punch: Math.round((calcSavingPunch + (calcSpeed + calcPower) / 2) * ((params + bond) / 100 + 1 || 1)),
-		catch: Math.round((calcSavingCatch + (calcPower + calcTechnique) / 2) * ((params + bond) / 100 + 1 || 1)),
+		punch: Math.round((calcSavingPunch + (calcSpeed + calcPower) / 4) * ((params + bond) / 100 + 1 || 1)),
+		catch: Math.round((calcSavingCatch + (calcPower + calcTechnique) / 4) * ((params + bond) / 100 + 1 || 1)),
 	}
 
 	const calcIntensity = intensity / 100 + 1 || 1

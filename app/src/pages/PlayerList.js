@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAlert } from 'react-alert'
 import useSWR from 'swr'
 import axios from "axios";
@@ -9,6 +9,7 @@ import ComparePanel from "../components/ComparePanel";
 import FontAwesome from 'react-fontawesome'
 
 import logo from "../img/tsudata-logo.png"
+import playersPossessedData from '../data/players_possessed.json'
 
 import './playerlist.scss';
 
@@ -26,45 +27,47 @@ const PlayerList = () => {
 
     const { data, error } = useSWR(`${process.env.REACT_APP_API_URL}/api/player/`, fetcher)
 
+    const [playersPossessed, setPlayersPossessed] = useState([...playersPossessedData]);
+
     if (error) return <div>failed to load</div>
     if (!data) return <div>loading...</div>
 
     const allPlayers = [
         {
             category: "Next Dream",
-            data: data.filter(data => data.collection_card == "next_dream")
+            data: data.filter(data => data.collection_card === "next_dream")
         },
         {
             category: "Joueurs SSR",
-            data: data.filter(data => data.collection_card == "include_ticket_SSR").concat(data.filter(data => data.collection_card == "lr_player"))
+            data: data.filter(data => data.collection_card === "include_ticket_SSR").concat(data.filter(data => data.collection_card == "lr_player"))
         },
         {
             category: "Joueurs Couleur/Type",
-            data: data.filter(data => data.collection_card == "exclude_ticket_SSR")
+            data: data.filter(data => data.collection_card === "exclude_ticket_SSR")
         },
         {
             category: "Dream Collection",
-            data: data.filter(data => data.collection_card == "dream_collection")
+            data: data.filter(data => data.collection_card === "dream_collection")
         },
         {
             category: "Dream Festival",
-            data: data.filter(data => data.collection_card == "dream_festival")
+            data: data.filter(data => data.collection_card === "dream_festival")
         },
         {
             category: "Joueurs Limités",
-            data: data.filter(data => data.collection_card == "limited_player")
+            data: data.filter(data => data.collection_card === "limited_player")
         },
         {
             category: "Joueurs Gratuits",
-            data: data.filter(data => data.collection_card == "free_player")
+            data: data.filter(data => data.collection_card === "free_player")
         },
         {
             category: "Joueurs Payants",
-            data: data.filter(data => data.collection_card == "paying_player")
+            data: data.filter(data => data.collection_card === "paying_player")
         },
         {
             category: "World Legend",
-            data: data.filter(data => data.collection_card == "world_legend")
+            data: data.filter(data => data.collection_card === "world_legend")
         }
     ]
 
@@ -144,6 +147,18 @@ const PlayerList = () => {
         dispatch({ type: ADD_PLAYER_ON_PANEL, payload: [] });
     };
 
+    function addPlayer(id) {
+        if (Array.isArray(playersPossessed) && playersPossessed.includes(id)) {
+            let newPlayersPossessed = [...playersPossessed];
+            let index = newPlayersPossessed.indexOf(id);
+            newPlayersPossessed.splice(index, 1)
+            setPlayersPossessed(newPlayersPossessed);
+        } else {
+            const newPlayersPossessed = [...playersPossessed, id]
+            setPlayersPossessed(newPlayersPossessed);
+        }
+    }
+
     return (
         <>
             <div className="container">
@@ -157,11 +172,11 @@ const PlayerList = () => {
                             <div className="player-list">
                                 {players.data.map(player => {
                                     return (
-                                        <div onClick={() => handleAddPlayerOnPanel(player._id)} key={player._id} className={`player-list__item player-list__item--${player.color}`}>
+                                        <div onClick={() => handleAddPlayerOnPanel(player._id)} key={player._id} className={`player-list__item player-list__item--${player.color} ${Array.isArray(playersPossessed) && playersPossessed.includes(player._id) ? "player-list__item--possessed" : ""}`}>
                                             <div className="player-list__wrapper-img">
                                                 <img
                                                     className="player-list__img"
-                                                    src={player?.image_url ? `https://res.cloudinary.com/dcty4rvff/image/upload/c_scale,h_50/${player?.image_url.path}` : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
+                                                    src={player?.image_url ? `https://res.cloudinary.com/dcty4rvff/image/upload/c_scale,h_75/${player?.image_url.path}` : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
                                                     alt={player?.first_name + '_' + player?.last_name}
                                                 />
                                             </div>

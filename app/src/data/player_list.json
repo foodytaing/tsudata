@@ -1004,5 +1004,17 @@
         "last_name": "Delpi",
         "country": "italia",
         "team": "Italie"
+    },
+    {
+        "first_name": "Mbappa",
+        "last_name": "",
+        "country": "france",
+        "team": "France"
+    },
+    {
+        "first_name": "Raymar",
+        "last_name": "",
+        "country": "brazil",
+        "team": "Brésil"
     }
 ]
