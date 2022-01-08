@@ -179,7 +179,7 @@ export const DetailStatsPlayer = (props) => {
 					{player?.sub_name}
 				</span>
 				<span className={`detail-stats-player__series`}>
-					{player?.series}
+					{player?._id}
 				</span>
 			</h3>
 

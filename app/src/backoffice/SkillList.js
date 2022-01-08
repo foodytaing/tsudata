@@ -156,7 +156,7 @@ const initialDataSelected = {
 }
 
 const fetcher = url => fetch(url).then(r => r.json())
-const apiUrl = `${process.env.REACT_APP_API_URL}/api/skill`
+const apiUrl = `${process.env.REACT_APP_API_URL}/api/skill/`
 
 const SkillList = () => {
     const alert = useAlert()
