@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import playerList from '../../data/player_list.json'
 
-const players = playerList
+const players = JSON.parse(JSON.stringify(playerList, function(a, b) {
+  return typeof b === "string" ? b.toLowerCase() : b
+}));
 
 function tri(a, b) {
     if (a.name < b.name) return -1;
@@ -19,7 +21,8 @@ export const Input = (props) => {
         label,
         type,
         name,
-        fieldClass
+        fieldClass,
+        readonly = false
     } = props
 
     switch (type) {
@@ -42,6 +45,7 @@ export const Input = (props) => {
                             name={name}
                             onChange={e => handleChange(e)}
                             value={value}
+                            className={readonly ? "input--readonly" : ""}
                         />
                     </fieldset>
                 </>
@@ -100,7 +104,17 @@ export const SelectAutoSuggestPlayerName = (props) => {
 
     function handleInputValueChange(e) {
         setInputValue(e.target.value);
-        getSuggestion(e.target.value)
+
+        if (e.target.value === "") {
+            handleChange({
+                country: "",
+                first_name: "",
+                last_name: "",
+                team: undefined
+            });
+        } else {
+            getSuggestion(e.target.value);
+        }
     }
 
     function getSuggestion(inputValue) {
@@ -131,7 +145,7 @@ export const SelectAutoSuggestPlayerName = (props) => {
                 <label>{label}</label>
             ) : null}
             <div className="wrapper-input-auto-complete">
-                <input autoComplete="off" onChange={(e) => handleInputValueChange(e)} value={inputValue} />
+                <input type="search" autoComplete="off" onChange={(e) => handleInputValueChange(e)} value={inputValue} />
                 {Array.isArray(suggestions) && suggestions.length > 0 ? (
                     <ul className="wrapper-input-auto-complete__suggestions">
                         {Array.isArray(suggestions) && suggestions.map((option, index) => {

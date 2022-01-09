@@ -149,6 +149,10 @@
 
 .wrapper-input-auto-complete {
   position: relative;
+  font-size: 1.6rem;
+  text-transform: capitalize;
+  background: #ffffff;
+  z-index: 1;
 
   &__suggestions {
     position: absolute;
@@ -190,6 +194,11 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
+}
+
+.input--readonly {
+  pointer-events: none;
+  background: #f0f0f0;
 }
 
 #cloudinary_upload_button {

@@ -28,7 +28,7 @@ const playerForm = [
     {
         label: "Nom",
         name: "last_name",
-        readonly: "true",
+        readonly: true,
         fieldClass: "tier-width"
     },
     {
@@ -622,6 +622,8 @@ const PlayerList = () => {
                                     handleChange={handleInputInfoChange}
                                     options={form?.options}
                                     fieldClass={form?.fieldClass}
+                                    readonly={form?.readonly}
+                                    
                                 />
                             )
                         })
@@ -640,6 +642,7 @@ const PlayerList = () => {
                                     readonly={form?.readonly}
                                     options={form?.options}
                                     fieldClass={form?.fieldClass}
+                                    readonly={form?.readonly}
                                 />
                             )
                         })
