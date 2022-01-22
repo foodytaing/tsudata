@@ -6,6 +6,7 @@ import Tab from "../components/Tab"
 
 import HiddenAbilities from "./HiddenAbilities";
 import TechniquesSpecials from "./TechniquesSpecials";
+import AllSkills from "./AllSkills";
 
 import "./detailStatsPlayer.scss";
 
@@ -55,9 +56,12 @@ const limitBreakGkForm = [
 ]
 const boostForm = [
 	{ name: "leader_skill", label: "LS (%)" },
-	{ name: "params", label: "Params (%)" },
 	{ name: "bond", label: "Lien (%)" },
-	{ name: "intensity", label: "Intens (%)" },
+	{ name: "params", label: "Params (%)" },
+]
+const boostIntensity = [
+	{ name: "intensity", label: "Intensité (%)" },
+	{ name: "good_read", label: "Bonne lecture (%)" }
 ]
 
 const orderPosition = ['at', 'mo', 'md', 'df', 'gb'];
@@ -65,11 +69,12 @@ const orderPosition = ['at', 'mo', 'md', 'df', 'gb'];
 export const DetailStatsPlayer = (props) => {
 	const {
 		player,
-		handleDeletePlayerOnPanel
+		handleDeletePlayerOnPanel,
+		index
 	} = props
 
 	const [boost, setBoost] = useState({
-		leader_skill: 69, params: "", bond: 40, intensity: "",
+		leader_skill: 69, params: "", bond: 40, intensity: "", good_read: "",
 		dribble: 25, shot: 25, pass: 25, tackle: 25, block: 25, intercept: 25, speed: 25, power: 25, technique: 25, catch: 25, punch: 25,
 		attack: "", defend: "", physical: 10, saving: "", stamina: ""
 	})
@@ -80,6 +85,7 @@ export const DetailStatsPlayer = (props) => {
 	const leader_skill = parseInt(boost.leader_skill) || 0;
 	const bond = parseInt(boost.bond) || 0;
 	const intensity = parseInt(boost.intensity) || 0;
+	const good_read = parseInt(boost.good_read) || 0;
 	const lbDribble = parseInt(boost.dribble) || 0;
 	const lbShot = parseInt(boost.shot) || 0;
 	const lbPass = parseInt(boost.pass) || 0;
@@ -147,6 +153,8 @@ export const DetailStatsPlayer = (props) => {
 		intercept: Math.round((calcIntercept + calcTechnique / 2) * ((params + bond) / 100 + 1 || 1)),
 		punch: Math.round((calcSavingPunch + (calcSpeed + calcPower) / 4) * ((params + bond) / 100 + 1 || 1)),
 		catch: Math.round((calcSavingCatch + (calcPower + calcTechnique) / 4) * ((params + bond) / 100 + 1 || 1)),
+		highball: player?.stats?.highBall,
+		lowball: player?.stats?.lowBall
 	}
 
 	const calcIntensity = intensity / 100 + 1 || 1
@@ -301,6 +309,27 @@ export const DetailStatsPlayer = (props) => {
 						</div>
 					</div>
 
+					<div className="boost boost--intensity">
+						<div className="boost__value-list">
+							{boostIntensity.map(input => {
+								return (
+									<div key={'boost_' + input.name + '_' + player.keyId} className={`boost__value-item boost__value-item--${player?.color}`}>
+										<label className="boost__label">{input.label}</label>
+										<input
+											className={`boost__input boost__input--${player?.color}`}
+											defaultValue={boost[input.name]}
+											placeholder={0}
+											name={input.name}
+											onChange={handleInputChange}
+											type="number"
+											autoComplete="off"
+										/>
+									</div>
+								)
+							})}
+						</div>
+					</div>
+
 					<div className="boost boost--limit-break">
 						<div className="boost__value-list">
 							{
@@ -360,22 +389,22 @@ export const DetailStatsPlayer = (props) => {
 							Array.isArray(player?.positions) && player?.positions.includes("gb") ? (
 								<div className="detail-stats-player__stats-category player-stats">
 									<PlayerStatsCategory label="Parades" value={calcTotalSaving} />
-									<PlayerStatsRow label="Coup de poing" lb={calcLbPunch} value={calcStats.punch} valueIntensity={intensity ? calcStats.punch * calcIntensity : null} />
-									<PlayerStatsRow label="Arrêt" lb={calcLbCatch} value={calcStats.catch} valueIntensity={intensity ? calcStats.catch * calcIntensity : null} />
+									<PlayerStatsRow label="Coup de poing" lb={calcLbPunch} value={calcStats.punch} valueIntensity={intensity ? calcStats.punch * calcIntensity : null} goodRead={good_read ? calcStats.punch * (good_read / 100) : null} />
+									<PlayerStatsRow label="Arrêt" lb={calcLbCatch} value={calcStats.catch} valueIntensity={intensity ? calcStats.catch * calcIntensity : null} goodRead={good_read ? calcStats.catch * (good_read / 100) : null} />
 								</div>
 							) : (
 								<>
 									<div className="detail-stats-player__stats-category player-stats">
 										<PlayerStatsCategory label="Attaque" value={calcTotalAttack} />
-										<PlayerStatsRow label="Dribble" lb={calcLbDribble} value={calcStats.dribble} valueIntensity={intensity ? calcStats.dribble * calcIntensity : null} />
-										<PlayerStatsRow label="Tir" lb={calcLbShot} value={calcStats.shot} valueIntensity={intensity ? calcStats.shot * calcIntensity : null} />
-										<PlayerStatsRow label="Passe" lb={calcLbPass} value={calcStats.pass} valueIntensity={intensity ? calcStats.pass * calcIntensity : null} />
+										<PlayerStatsRow label="Dribble" lb={calcLbDribble} value={calcStats.dribble} valueIntensity={intensity ? calcStats.dribble * calcIntensity : null} goodRead={good_read ? calcStats.dribble * (good_read / 100) : null} />
+										<PlayerStatsRow label="Tir" lb={calcLbShot} value={calcStats.shot} valueIntensity={intensity ? calcStats.shot * calcIntensity : null} goodRead={good_read ? calcStats.shot * (good_read / 100) : null} />
+										<PlayerStatsRow label="Passe" lb={calcLbPass} value={calcStats.pass} valueIntensity={intensity ? calcStats.pass * calcIntensity : null} goodRead={good_read ? calcStats.pass * (good_read / 100) : null} />
 									</div>
 									<div className="detail-stats-player__stats-category player-stats">
 										<PlayerStatsCategory label="Defense" value={calcTotalDefend} />
-										<PlayerStatsRow label="Tacle" lb={calcLbTackle} value={calcStats.tackle} valueIntensity={intensity ? calcStats.tackle * calcIntensity : null} />
-										<PlayerStatsRow label="Contre" lb={calcLbBlock} value={calcStats.block} valueIntensity={intensity ? calcStats.block * calcIntensity : null} />
-										<PlayerStatsRow label="Interception" lb={calcLbIntercept} value={calcStats.intercept} valueIntensity={intensity ? calcStats.intercept * calcIntensity : null} />
+										<PlayerStatsRow label="Tacle" lb={calcLbTackle} value={calcStats.tackle} valueIntensity={intensity ? calcStats.tackle * calcIntensity : null} goodRead={good_read ? calcStats.tackle * (good_read / 100) : null} />
+										<PlayerStatsRow label="Contre" lb={calcLbBlock} value={calcStats.block} valueIntensity={intensity ? calcStats.block * calcIntensity : null} goodRead={good_read ? calcStats.block * (good_read / 100) : null} />
+										<PlayerStatsRow label="Interception" lb={calcLbIntercept} value={calcStats.intercept} valueIntensity={intensity ? calcStats.intercept * calcIntensity : null} goodRead={good_read ? calcStats.intercept * (good_read / 100) : null} />
 									</div>
 								</>
 							)
@@ -389,18 +418,30 @@ export const DetailStatsPlayer = (props) => {
 				</div>
 
 				<div tab="Compétences">
-					<HiddenAbilities
-						hiddenAbilities={player?.hidden_abilities_details}
-						orderHiddenAbilities={player?.hidden_abilities}
-						passiveSkill={player?.passive_skill_details}
-						orderPassiveSkill={player?.passive_skill}
-						leaderSkill={player?.leader_skill_details}
-						orderLeaderSkill={player?.leader_skill}
-					/>
+					<div className="tabs_content__item tabs_content__item--overflow-hidden">
+						<HiddenAbilities
+							hiddenAbilities={player?.hidden_abilities_details}
+							orderHiddenAbilities={player?.hidden_abilities}
+							passiveSkill={player?.passive_skill_details}
+							orderPassiveSkill={player?.passive_skill}
+							leaderSkill={player?.leader_skill_details}
+							orderLeaderSkill={player?.leader_skill}
+						/>
+						<TechniquesSpecials techniques={player?.techniques_details} orderTechniques={player?.techniques} />
+					</div>
 				</div>
 
 				<div tab="TS">
-					<TechniquesSpecials techniques={player?.techniques_details} orderTechniques={player?.techniques} />
+					<AllSkills
+						firstName={player?.first_name}
+						lastName={player?.last_name}
+						keyId={player?.keyId}
+						id={player?._id}
+						index={index}
+						intensity={intensity}
+						calcStats={calcStats}
+						good_read={good_read}
+					/>
 				</div>
 			</Tab>
 
@@ -432,7 +473,8 @@ export const PlayerStatsRow = (props) => {
 		label,
 		value,
 		lb,
-		valueIntensity
+		valueIntensity,
+		goodRead
 	} = props
 
 	return (
@@ -450,6 +492,11 @@ export const PlayerStatsRow = (props) => {
 				}
 			</div>
 			<div>
+				{
+					goodRead ? (
+						<span className="player-stats__value-goodread">{Math.round(goodRead)}+</span>
+					) : null
+				}
 				<span className="player-stats__value">{value}</span>
 				{
 					valueIntensity ? (

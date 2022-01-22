@@ -13,7 +13,7 @@
 
 	&__img-wrapper {
 		position: relative;
-		height: 175px;
+		height: 200px;
 		overflow: hidden;
 		margin-bottom: 6px;
 	}
@@ -105,7 +105,7 @@
   	}
 
 	&__lb {
-		font-size: 10px;
+		font-size: 1.0rem;
 		color: #aa1894;
 		margin-left: 4px;
 		display: inline-block;
@@ -114,6 +114,12 @@
 	&__value-intensity {
 		margin-left: 8px;
 		font-weight: bold;
+	}
+
+	&__value-goodread {
+		margin-right: 8px;
+		font-size: 1.1rem;
+		color: #555555;
 	}
 }
 
@@ -178,5 +184,17 @@
 		.boost__value-item {
 			width: 33.3333%;
 		}
+	}
+}
+
+.boost--intensity {
+	.boost__value-item {
+		width: 50%;
+	}
+}
+
+.boost--boost {
+	.boost__value-item {
+		width: 33.3333%;
 	}
 }

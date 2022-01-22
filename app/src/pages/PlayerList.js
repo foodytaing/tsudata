@@ -86,7 +86,7 @@ const PlayerList = () => {
     ]
 
     async function handleAddPlayerOnPanel(id) {
-        if (Array.isArray(playersOnPanel) & playersOnPanel.length === 5) {
+        if (Array.isArray(playersOnPanel) & playersOnPanel.length === 4) {
             alert.show('Vous avez atteint le nombre maximal de joueur dans la liste de comparaison.');
             return;
         }

@@ -25,9 +25,15 @@ module.exports.createPlayer = async (req, res) => {
 };
 
 module.exports.getAllPlayers = async (req, res) => {
-    const players = await PlayerModel.find(req.query)
-        .select(["-leader_skill", "-passive_skill", "-hidden_abilities", "-stats", "-techniques"]);
-    res.status(200).json(players.sort(tri));
+    if (req.query.last_name || req.query.first_name) {
+        const players = await PlayerModel.find(req.query)
+            .select(["-leader_skill", "-passive_skill", "-hidden_abilities", "-stats", "-positions", "-rarity", "-position_in_collection"]);
+        res.status(200).json(players);
+    } else {
+        const players = await PlayerModel.find(req.query)
+            .select(["-leader_skill", "-passive_skill", "-hidden_abilities", "-stats", "-techniques"]);
+        res.status(200).json(players.sort(tri));
+    }
 };
 
 module.exports.getPlayer = async (req, res) => {
