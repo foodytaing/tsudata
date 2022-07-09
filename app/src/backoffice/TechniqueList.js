@@ -55,7 +55,7 @@ const dataForm = [
             },
             {
                 "label": "Une-Deux",
-                "value": "one-two"
+                "value": "onetwo"
             },
             {
                 "label": "Tacle",

@@ -1,4 +1,5 @@
 import React from "react";
+import FontAwesome from 'react-fontawesome'
 
 import "./hiddenAbilities.scss";
 
@@ -9,7 +10,9 @@ export const HiddenAbilities = (props) => {
     passiveSkill,
     orderPassiveSkill,
     leaderSkill,
-    orderLeaderSkill
+    orderLeaderSkill,
+    setSkillBoost,
+    active_skills
   } = props
 
   return (
@@ -41,6 +44,15 @@ export const HiddenAbilities = (props) => {
 
               return (
                 <li className="passive-skill__item" key={ps._id}>
+                  {ps.effect_value && ps.effect_type && ps.name.toLowerCase() !== "lien" ? (
+                    <span onClick={() => setSkillBoost(ps)} className="check-box-boost">
+                      {active_skills && active_skills[ps._id] === true ? (
+                        <FontAwesome
+                          name="check"
+                        />
+                      ) : null}
+                    </span>
+                  ) : null}
                   <span className="passive-skill__name"><span className="passive-skill__rank">{ps.rank}</span> - {ps.name}</span>
                   <p className="passive-skill__desc">{ps.description}</p>
                 </li>
@@ -61,6 +73,15 @@ export const HiddenAbilities = (props) => {
 
                   return (
                     <li className="hidden-abilities-list__item" key={ha._id}>
+                      {ha.effect_value && ha.effect_type && ha.name.toLowerCase() !== "lien" ? (
+                        <span onClick={() => setSkillBoost(ha)} className="check-box-boost">
+                          {active_skills && active_skills[ha._id] === true ? (
+                            <FontAwesome
+                              name="check"
+                            />
+                          ) : null}
+                        </span>
+                      ) : null}
                       <span className="hidden-abilities-list__name">{ha.name}</span>
                       <p className="hidden-abilities-list__desc">{ha.description}</p>
                     </li>

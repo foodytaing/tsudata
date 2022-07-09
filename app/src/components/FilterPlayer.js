@@ -6,6 +6,7 @@ import colorList from '../data/color_list.json'
 import countryList from '../data/country_list.json'
 import seriesList from '../data/series_list.json'
 import collectionList from '../data/collection_list.json'
+import dateList from '../data/date_list.json'
 
 import "./filterPlayer.scss";
 
@@ -46,20 +47,60 @@ const filterForm = [
     }
 ]
 
+const dateFilterForm = [
+    {
+        label: "Date",
+        name: "createdAt",
+        type: "select",
+        options: dateList
+    }
+]
+
+const positionFilterForm = [
+    {
+        label: "Position",
+        name: "position",
+        type: "select",
+        options: [
+            {
+                "label": "AT",
+                "value": "at"
+            },
+            {
+                "label": "MO",
+                "value": "mo"
+            },
+            {
+                "label": "MD",
+                "value": "md"
+            },
+            {
+                "label": "DF",
+                "value": "df"
+            },
+            {
+                "label": "GB",
+                "value": "gb"
+            }
+        ]
+    }
+]
+
 export const FilterPlayer = (props) => {
     const {
-        handleFilterChange
+        handleFilterChange,
+        handleDateFilterChange,
+        handlePositionFilterChange,
+        filter,
+        dateFilter,
+        positionFilter,
     } = props
-
-    const [filter, setFilter] = useState({});
 
     function handleChange(e) {
         const target = e?.target;
         const value = target?.type === 'checkbox' ? target?.checked : target?.value;
         const name = target?.name;
         let newFilter = {}
-
-
 
         if (target) {
             newFilter = {
@@ -81,12 +122,23 @@ export const FilterPlayer = (props) => {
             }
         });
 
-        setFilter(newFilter);
         handleFilterChange(newFilter);
     }
 
+    function handleChangeDate(e) {
+        const target = e?.target;
+        const value = target?.value;
+        handleDateFilterChange(value);
+    }
+
+    function handleChangePosition(e) {
+        const target = e?.target;
+        const value = target?.value;
+        handlePositionFilterChange(value);
+    }
+
     return (
-        <div className="container">
+        <div>
             <form autoComplete="off" className="filter-player">
                 {
                     filterForm.map((form, index) => {
@@ -100,6 +152,40 @@ export const FilterPlayer = (props) => {
                                 fieldClass={form?.fieldClass}
                                 handleChange={handleChange}
                                 value={filter[form?.name] || ""}
+                                readonly={form?.readonly}
+                            />
+                        )
+                    })
+                }
+                {
+                    dateFilterForm.map((form, index) => {
+                        return (
+                            <Input
+                                key={index}
+                                label={form?.label}
+                                name={form?.name}
+                                type={form?.type}
+                                options={form?.options}
+                                fieldClass={form?.fieldClass}
+                                handleChange={handleChangeDate}
+                                value={dateFilter || ""}
+                                readonly={form?.readonly}
+                            />
+                        )
+                    })
+                }
+                {
+                    positionFilterForm.map((form, index) => {
+                        return (
+                            <Input
+                                key={index}
+                                label={form?.label}
+                                name={form?.name}
+                                type={form?.type}
+                                options={form?.options}
+                                fieldClass={form?.fieldClass}
+                                handleChange={handleChangePosition}
+                                value={positionFilter || ""}
                                 readonly={form?.readonly}
                             />
                         )

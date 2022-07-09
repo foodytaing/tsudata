@@ -1,5 +1,20 @@
 [
     {
+        "first_name": "Tatsuo",
+        "last_name": "Mikami",
+        "country": "japan"
+    },
+    {
+        "first_name": "Minato",
+        "last_name": "Gamo",
+        "country": "japan"
+    },
+    {
+        "first_name": "Munemasa",
+        "last_name": "Katagiri",
+        "country": "japan"
+    },
+    {
         "first_name": "Tsubasa",
         "last_name": "Ozora",
         "country": "japan"
@@ -570,6 +585,16 @@
         "country": "spain"
     },
     {
+        "first_name": "Xavii",
+        "last_name": "",
+        "country": "spain"
+    },
+    {
+        "first_name": "Ienista",
+        "last_name": "",
+        "country": "spain"
+    },
+    {
         "first_name": "Marcos",
         "last_name": "Almieja",
         "country": "brazil"
@@ -853,5 +878,25 @@
         "first_name": "Raymar",
         "last_name": "",
         "country": "brazil"
+    },
+    {
+        "first_name": "Hartland",
+        "last_name": "",
+        "country": "norway"
+    },
+    {
+        "first_name": "Filippo",
+        "last_name": "Inzars",
+        "country": "italia"
+    },
+    {
+        "first_name": "Roman",
+        "last_name": "Bacchus",
+        "country": "united-states"
+    },
+    {
+        "first_name": "Tréssaga",
+        "last_name": "",
+        "country": "france"
     }
 ]

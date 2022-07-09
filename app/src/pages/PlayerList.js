@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAlert } from 'react-alert'
 import useSWR from 'swr'
 import axios from "axios";
+import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { ADD_PLAYER_ON_PANEL } from "../actions/player.action"
 import ComparePanel from "../components/ComparePanel";
@@ -9,7 +10,7 @@ import FilterPlayer from "../components/FilterPlayer";
 
 import FontAwesome from 'react-fontawesome'
 
-import logo from "../img/tsudata-logo.png"
+import loader from "../img/loader.gif"
 import playersPossessedData from '../data/players_possessed.json'
 
 import './playerlist.scss';
@@ -19,8 +20,6 @@ export const creatKeyId = (id) => {
 };
 
 const initialFilter = {}
-
-const orderPosition = ['at', 'mo', 'md', 'df', 'gb'];
 const fetcher = url => fetch(url).then(r => r.json())
 
 const PlayerList = () => {
@@ -32,11 +31,14 @@ const PlayerList = () => {
 
     const [playersPossessed, setPlayersPossessed] = useState([...playersPossessedData]);
     const [filter, setFilter] = useState({ ...initialFilter });
+    const [dateFilter, setDateFilter] = useState("2022-01-01");
+    const [positionFilter, setPositionFilter] = useState("");
+
 
     if (error) return <div>failed to load</div>
-    if (!data) return <div>loading...</div>
+    if (!data) return <div><img src={loader} className="loader" /></div>
 
-    let dataFiltered = data.filter(data => {
+    let newData = data.filter(data => {
         return Object.keys(filter).every(f => {
             if (f === "first_name") {
                 return filter[f].toLowerCase() === data[f].toLowerCase()
@@ -46,7 +48,20 @@ const PlayerList = () => {
         });
     });
 
+    let dataFilteredByDate = newData.filter(data => data.createdAt && moment(data.createdAt).format() > moment(dateFilter).format())
+
+    let dataFilteredByDateAply = dateFilter === "2017-01-01" || dateFilter === "" ? newData : dataFilteredByDate
+
+    let dataFiltered = positionFilter != "" ? dataFilteredByDateAply.filter(data => data.position.includes(positionFilter)) : dataFilteredByDateAply;
+
+
     const allPlayers = [
+        {
+            category: "Nouveauté",
+            data: dataFiltered.filter(data => data.createdAt && data.collection_card !== "" && (moment(data.createdAt) > moment().subtract(14, 'd'))).sort(function (a, b) {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            })
+        },
         {
             category: "Next Dream",
             data: dataFiltered.filter(data => data.collection_card === "next_dream")
@@ -85,8 +100,10 @@ const PlayerList = () => {
         }
     ]
 
+    console.log(allPlayers[0].data);
+
     async function handleAddPlayerOnPanel(id) {
-        if (Array.isArray(playersOnPanel) & playersOnPanel.length === 4) {
+        if (Array.isArray(playersOnPanel) & playersOnPanel.length === 3) {
             alert.show('Vous avez atteint le nombre maximal de joueur dans la liste de comparaison.');
             return;
         }
@@ -176,11 +193,13 @@ const PlayerList = () => {
     return (
         <>
             <div className="container">
-                <header>
-                    <img src={logo} alt="tsudata" className="logo-tsudata" />
-                </header>
                 <FilterPlayer
                     handleFilterChange={setFilter}
+                    handleDateFilterChange={setDateFilter}
+                    handlePositionFilterChange={setPositionFilter}
+                    filter={filter}
+                    dateFilter={dateFilter}
+                    positionFilter={positionFilter}
                 />
                 {Array.isArray(allPlayers) && allPlayers.map((players) => {
                     if (players.data.length) {
@@ -194,10 +213,13 @@ const PlayerList = () => {
                                                 <div className="player-list__wrapper-img">
                                                     <img
                                                         className="player-list__img"
-                                                        src={player?.image_url ? `https://res.cloudinary.com/dcty4rvff/image/upload/c_scale,h_75/${player?.image_url.path}` : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
+                                                        src={player?.image_url ? `https://res.cloudinary.com/dcty4rvff/image/upload/c_scale,h_100/${player?.image_url.path}` : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
                                                         alt={player?.first_name + '_' + player?.last_name}
                                                     />
                                                 </div>
+                                                <span className="badge-stats player-list__stats">
+                                                    {Math.round(player?.stats / 1000)}K
+                                                </span>
                                                 {
                                                     player.chest === "true" ? (
                                                         <span className="badge-free player-list__gift">

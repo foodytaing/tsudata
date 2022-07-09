@@ -1,5 +1,5 @@
 .all-technique-wrapper {
-  height: 450px;
+  height: 562px;
   overflow: auto;
 }
 
@@ -78,6 +78,11 @@
 .all-technique__item {
   border-bottom: 1px solid #e96800;
   position: relative;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #e7ceba;
+  }
 
   &:after {
     content: "";
@@ -88,6 +93,14 @@
 
   &:last-child {
     border-bottom: 0;
+  }
+
+  &--active {
+    background-color: #e8af80;
+
+    &:hover {
+      background-color: #e8af80;
+    }
   }
 }
 
@@ -112,6 +125,10 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 6px;
+}
+
+.all-technique__type {
+  margin-right: 4px;
 }
 
 .all-technique__gift {

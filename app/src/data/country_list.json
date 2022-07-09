@@ -78,5 +78,13 @@
     {
         "label": "Danemark",
         "value": "denmark"
+    },
+    {
+        "label": "Norvège",
+        "value": "norway"
+    },
+    {
+        "label": "Etats Unis",
+        "value": "united-states"
     }
 ]

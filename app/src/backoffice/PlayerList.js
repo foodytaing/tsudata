@@ -623,7 +623,7 @@ const PlayerList = () => {
                                     options={form?.options}
                                     fieldClass={form?.fieldClass}
                                     readonly={form?.readonly}
-                                    
+
                                 />
                             )
                         })

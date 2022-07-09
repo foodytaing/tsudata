@@ -27,12 +27,49 @@ module.exports.createPlayer = async (req, res) => {
 module.exports.getAllPlayers = async (req, res) => {
     if (req.query.last_name || req.query.first_name) {
         const players = await PlayerModel.find(req.query)
-            .select(["-leader_skill", "-passive_skill", "-hidden_abilities", "-stats", "-positions", "-rarity", "-position_in_collection"]);
+            .select(["-leader_skill", "-passive_skill", "-hidden_abilities", "-positions", "-rarity", "-position_in_collection"]);
         res.status(200).json(players);
     } else {
         const players = await PlayerModel.find(req.query)
-            .select(["-leader_skill", "-passive_skill", "-hidden_abilities", "-stats", "-techniques"]);
-        res.status(200).json(players.sort(tri));
+            .select(["-leader_skill", "-passive_skill", "-hidden_abilities", "-techniques"]);
+
+        const newPlayers = players.map(player => {
+            const stats = parseInt(player.stats.dribble || 0)
+                + parseInt(player.stats.shot || 0)
+                + parseInt(player.stats.pass || 0)
+                + parseInt(player.stats.tackle || 0)
+                + parseInt(player.stats.block || 0)
+                + parseInt(player.stats.intercept || 0)
+                + parseInt(player.stats.speed || 0)
+                + parseInt(player.stats.power || 0)
+                + parseInt(player.stats.technique || 0)
+                + parseInt(player.stats.punch || 0)
+                + parseInt(player.stats.catch || 0);
+
+
+            const result = {
+                stats: stats,
+                position: player.positions,
+                _id: player._id,
+                collection_card: player.collection_card,
+                position_in_collection: player.position_in_collection,
+                rarity: player.rarity,
+                color: player.color,
+                sub_name: player.sub_name,
+                chest: player.chest,
+                country: player.country,
+                first_name: player.first_name,
+                image_url: player.image_url,
+                last_name: player.last_name,
+                series: player.series,
+                updatedAt: player.updatedAt,
+                createdAt: player.createdAt
+            }
+
+            return result;
+        })
+
+        res.status(200).json(newPlayers.sort(tri));
     }
 };
 

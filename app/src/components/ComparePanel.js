@@ -35,7 +35,7 @@ export const ComparePanel = (props) => {
     prevPlayerLengthRef.current = Array.isArray(players) && players.length;
   }, [players])
 
-  let numberFreeSlot = 4 - players.length;
+  let numberFreeSlot = 3 - players.length;
   let rows = [];
   for (let i = 0; i < numberFreeSlot; i++) {
     rows.push(i);
@@ -63,7 +63,7 @@ export const ComparePanel = (props) => {
                 <li key={player.keyId} className="compare-panel__player-img-list__item">
                   <div key={player.keyId} className="compare-panel__player-img-list__wrapper-img">
                     <img
-                      src={player?.image_url ? `https://res.cloudinary.com/dcty4rvff/image/upload/c_scale,h_50/${player?.image_url.path}` : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
+                      src={player?.image_url ? `https://res.cloudinary.com/dcty4rvff/image/upload/c_scale,h_100/${player?.image_url.path}` : "https://pleinjour.fr/wp-content/plugins/lightbox/images/No-image-found.jpg"}
                       alt={player?.first_name + '_' + player?.last_name}
                     />
                   </div>
@@ -110,7 +110,7 @@ export const ComparePanel = (props) => {
             })
           ) : null}
           {
-            Array.isArray(players) && players.length < 4 ? (
+            Array.isArray(players) && players.length < 3 ? (
               <>
                 <li className="compare-panel__player-detail-list__item compare-panel__player-detail-list__item--empty" onClick={() => setShowPanel(false)}>
                   <div>
