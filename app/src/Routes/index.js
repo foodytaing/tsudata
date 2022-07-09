@@ -8,7 +8,8 @@ import {
 
 //import Pages
 import PlayerList from "../pages/PlayerList";
-import Error404 from "../pages/Error404"
+import Error404 from "../pages/Error404";
+import Profil from "../pages/Profil";
 
 //import Pages Backoffice
 import Backoffice from "../backoffice/Backoffice"
@@ -22,6 +23,7 @@ const index = () => {
             <Switch>
                 <Route path="/" exact component={PlayerList} />
                 <Route path="/error404" exact component={Error404} />
+                <Route path="/profil" exact component={Profil} />
                 <Route path="/backoffice" exact component={Backoffice} />
                 <Route path="/backoffice/playerlist" exact component={BackofficePlayerList} />
                 <Route path="/backoffice/skilllist" exact component={BackofficeSkillList} />

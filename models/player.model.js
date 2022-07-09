@@ -22,6 +22,9 @@ const playerSchema = new mongoose.Schema({
     position_in_collection: {
         type: Number,
     },
+    rating: {
+        type: Number,
+    },
     first_name: {
         type: String,
         lowercase: true,

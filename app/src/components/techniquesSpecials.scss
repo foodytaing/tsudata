@@ -1,6 +1,7 @@
 .technique {
   font-size: 1.2rem;
   border: 1px solid #e96800;
+  margin-bottom: 1px;
 
   &__name {
     font-weight: bold;
@@ -23,7 +24,7 @@
     > div {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 3px;
+      margin-bottom: 6px;
     }
   }
 
@@ -44,10 +45,10 @@
 
   &__intensity {
     margin-right: 6px;
-    font-size: 1.0rem;
+    font-size: 1.2rem;
   }
 
   &__stamina {
-    font-size: 1.0rem;
+    font-size: 1.2rem;
   }
 }

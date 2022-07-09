@@ -10,6 +10,8 @@
 
   &__item {
     padding: 3px;
+    position: relative;
+    padding-left: 25px;
   }
 
   &__title {
@@ -36,6 +38,8 @@
 
   &__item {
     padding: 3px;
+    padding-left: 25px;
+    position: relative;
   }
 
   &__title {
@@ -53,17 +57,20 @@
 .hidden-abilities {
   font-size: 1.2rem;
   border: 1px solid #1945c3;
+  margin-bottom: 12px;
 
   &-list__item {
     padding: 6px 3px;
     border-bottom: 1px solid #1945c3;
+    padding-left: 25px;
+    position: relative;
 
     &:last-child {
       margin-bottom: 0px;
       border-bottom: 0;
     }
   }
-  
+
   &-list__name {
     font-weight: bold;
     display: block;
@@ -77,4 +84,14 @@
   }
 }
 
-.skills-wrapper > div:last-child {margin-bottom: 0;}
+.check-box-boost {
+  position: absolute;
+  display: block;
+  border: 1px solid #000000;
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  border-radius: 2px;
+  cursor: pointer;
+  text-align: center;
+}

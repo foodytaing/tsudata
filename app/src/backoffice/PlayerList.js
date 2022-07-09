@@ -28,7 +28,7 @@ const playerForm = [
     {
         label: "Nom",
         name: "last_name",
-        readonly: "true",
+        readonly: true,
         fieldClass: "tier-width"
     },
     {
@@ -328,7 +328,6 @@ const PlayerList = () => {
                 }));
             }
 
-
             setPlayerStats(({ ...initialPlayerStats, ...response.data.stats }));
             setNewPlayerForm(false)
             setShowForm(true);
@@ -424,6 +423,13 @@ const PlayerList = () => {
             newPlayerSelected = {
                 ...playerSelected,
                 ...e
+            }
+        }
+
+        if (name === "collection_card") {
+            newPlayerSelected = {
+                ...newPlayerSelected,
+                position_in_collection: data.filter(data => data.collection_card == value).length + 1,
             }
         }
 
@@ -616,6 +622,8 @@ const PlayerList = () => {
                                     handleChange={handleInputInfoChange}
                                     options={form?.options}
                                     fieldClass={form?.fieldClass}
+                                    readonly={form?.readonly}
+
                                 />
                             )
                         })
@@ -634,6 +642,7 @@ const PlayerList = () => {
                                     readonly={form?.readonly}
                                     options={form?.options}
                                     fieldClass={form?.fieldClass}
+                                    readonly={form?.readonly}
                                 />
                             )
                         })

@@ -4,16 +4,20 @@
 	padding: 12px;
 	position: relative;
 
+	&__id {
+		display: none;
+	}
+
 	&__img {
 		width: 100%;
 		position: absolute;
-		top: 50%;
+		top: 65%;
 		transform: translateY(-50%);
 	}
 
 	&__img-wrapper {
 		position: relative;
-		height: 175px;
+		height: 170px;
 		overflow: hidden;
 		margin-bottom: 6px;
 	}
@@ -22,9 +26,16 @@
 		text-transform: capitalize;
 		font-size: 1.4rem;
 		font-weight: bold;
-		position: relative;
-		padding-left: 22px;
+		position: absolute;
+		padding-left: 25px;
 		margin-bottom: 6px;
+		z-index: 10;
+		top: 0;
+		left: 0;
+		padding-top: 3px;
+		padding-bottom: 3px;
+		width: 100%;
+		background: rgba(255, 255, 255, .85);
 	}
 
 	&__sub-name {
@@ -32,12 +43,9 @@
 		text-transform: capitalize;
 		display: block;
 		font-weight: normal;
-
-		font-weight: normal;
 		text-overflow: ellipsis;
 		overflow: hidden;
 		white-space: nowrap;
-		max-width: 180px;
 	}
 
 	&__series {
@@ -45,12 +53,13 @@
 		color: #000000;
 		display: block;
 		font-weight: normal;
+		display: none;
 	}
 
 	&__flag {
 		position: absolute;
-		top: 3px;
-		left: 0;
+		top: 6px;
+		left: 3px;
 	}
 
 	&__stats-category {
@@ -65,13 +74,13 @@
 	&__btn-delete {
 		font-size: 1.6rem;
 		position: absolute;
-		top: 6px;
-		right: 12px;
+		top: -20px;
+		right: 0;
 		transition: transform ease 0.4s;
 
 		&:hover {
-		transform: translateY(-2px);
-		transition: transform ease 0.2s;
+			transform: translateY(-2px);
+			transition: transform ease 0.2s;
 		}
 	}
 
@@ -82,38 +91,108 @@
 		bottom: 3px;
 		display: flex;
 	}
+
+	&__rate {
+		font-size: 12px;
+		text-align: center;
+		margin-bottom: 6px;
+		color: #f5a100;
+		height: 14px;
+	}
 }
 
 .player-stats {
-  	font-size: 1.2rem;
+	font-size: 1.2rem;
 
-  	&__row {
-		display: flex;
-		justify-content: space-between;
-		padding: 3px;
-
+	&__row-wrapper {
 		&:nth-child(even) {
 			background: #dfdfdf;
 		}
+	}
 
+	&__row {
 		&--category {
 			display: flex;
 			background: #555555;
 			color: #ffffff;
 			font-weight: bold;
+			justify-content: space-between;
+			padding: 3px;
 		}
-  	}
+	}
+
+	&__stats-in-match {
+		display: flex;
+		justify-content: space-between;
+		padding: 3px;
+	}
+
+	&__stats-skill {
+		display: flex;
+		justify-content: space-between;
+		padding: 0 3px 3px 3px;
+		font-weight: bold;
+		align-items: center;
+		line-height: 10px;
+		height: 20px;
+	}
+
+	&__stats-skill-stats {
+		white-space: nowrap;
+		font-size: 14px;
+
+		&--high {
+			color: #770000
+		}
+
+		&--medium {
+			color: #a46000
+		}
+
+		&--low {}
+	}
+
+	&__stats-skill-name {
+		max-width: 80%;
+		text-transform: capitalize;
+
+		>span {
+			white-space: nowrap;
+		}
+	}
 
 	&__lb {
-		font-size: 10px;
+		font-size: 1.0rem;
 		color: #aa1894;
 		margin-left: 4px;
 		display: inline-block;
+		display: none;
+	}
+
+	&__bb {
+		font-size: 1.0rem;
+		color: #000000;
+		margin-left: 4px;
+		display: inline-block;
+		display: none;
 	}
 
 	&__value-intensity {
 		margin-left: 8px;
 		font-weight: bold;
+	}
+
+	&__value-goodread {
+		margin-right: 8px;
+		color: #555555;
+	}
+
+	&__boost_intensity,
+	&__boost_params,
+	&__boost_good_read {
+		padding: 0 3px;
+		color: #555555;
+		font-size: 10px;
 	}
 }
 
@@ -122,10 +201,15 @@
 	text-align: center;
 	color: #ffffff;
 
-  	&__value-list {
+	&--formation,
+	&--limit-break {
+		display: none;
+	}
+
+	&__value-list {
 		display: flex;
 		flex-wrap: wrap;
-  	}
+	}
 
 	&__input {
 		width: 100%;
@@ -136,6 +220,7 @@
 		border: 1px solid #8c0b6c;
 		color: #8c0b6c;
 		font-size: 12px;
+		height: 18px;
 
 		&--red {
 			color: $colorRed;
@@ -154,7 +239,7 @@
 	}
 
 	&__value-item {
-		width: 25%;
+		width: 33.3333%;
 		background: #8c0b6c;
 
 		&.empty {
@@ -172,11 +257,34 @@
 		&--green {
 			background: $colorGreen;
 		}
-  	}
+	}
 
 	&--limit-break {
 		.boost__value-item {
 			width: 33.3333%;
+		}
+	}
+}
+
+.boost--intensity {
+	.boost__value-item {
+		width: 33.3333%;
+	}
+}
+
+.boost--boost {
+	.boost__value-item {
+		width: 50%;
+	}
+}
+
+.boost--boundary-break {
+	.boost__value-item {
+		width: 100%;
+
+		select {
+			appearance: none;
+			cursor: pointer;
 		}
 	}
 }

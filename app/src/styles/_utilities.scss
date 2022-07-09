@@ -1,16 +1,16 @@
 html {
-    font-family: Arial, Geneva, Tahoma, sans-serif;
-    font-size: 62.5%;
+  font-family: Arial, Geneva, Tahoma, sans-serif;
+  font-size: 62.5%;
 }
 
 body {
-  //background: url("../img/bg.jpg");
+  padding-right: 45px;
 }
 
 .container {
-    max-width: 1224px;
-    margin: 0 auto;
-    padding: 0 62px 0 12px;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 12px;
 }
 
 .logo-tsudata {
@@ -19,77 +19,107 @@ body {
 }
 
 .button--primary {
-    padding: 6px;
-    font-size: 1.6rem;
-    background: #cccccc;
-    border-radius: 4px;
-    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  padding: 6px;
+  font-size: 1.6rem;
+  background: #cccccc;
+  border-radius: 4px;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  cursor: pointer;
 
-    &:hover {
-      background-color: #555555;
-      color: #ffffff;
-    }
+  &:hover {
+    background-color: #555555;
+    color: #ffffff;
+  }
 }
 
 h2 {
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
   margin-top: 12px;
   margin-bottom: 3px;
   text-transform: uppercase;
+  font-weight: bold;
 }
 
 .button--secondary {
-    padding: 6px;
-    font-size: 1.4rem;
-    background: #cccccc;
-    border-radius: 4px;
-    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  padding: 6px;
+  font-size: 1.4rem;
+  background: #cccccc;
+  border-radius: 4px;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 
-    &:hover {
-      background-color: #555555;
-      color: #ffffff;
-    }
+  &:hover {
+    background-color: #555555;
+    color: #ffffff;
+  }
 }
 
 .text-color {
-  &--blue {color: $colorBlue}
-  &--red {color: $colorRed}
-  &--green {color: $colorGreen}
+  &--blue {
+    color: $colorBlue
+  }
+
+  &--red {
+    color: $colorRed
+  }
+
+  &--green {
+    color: $colorGreen
+  }
 }
 
 .bg-color {
-  &--blue {background: $bgBlue}
-  &--red {background: $bgRed}
-  &--green {background: $bgGreen}
+  &--blue {
+    background: $bgBlue
+  }
+
+  &--red {
+    background: $bgRed
+  }
+
+  &--green {
+    background: $bgGreen
+  }
 }
 
 .btn-bg {
   &--blue {
     background: $bgBlue;
     color: #ffffff;
+
     &:hover {
       background: $colorBlue;
     }
   }
+
   &--red {
     background: $bgRed;
     color: #ffffff;
+
     &:hover {
       background: $colorRed;
     }
   }
+
   &--green {
     background: $bgGreen;
     color: #ffffff;
+
     &:hover {
       background: $colorGreen;
     }
   }
 }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.loader {
+  width: 100%;
+  max-width: 150px;
+  margin: 0 auto;
+  display: block;
 }

@@ -79,71 +79,76 @@ const dataForm = [
                 label: "Intensité",
                 value: "intensity"
             },
+            {
+                label: "Bonne Lecture",
+                value: "good_read"
+            },
         ],
         fieldClass: "tier-width"
-    },
-    {
-        label: "Paramètres affectés",
-        name: "assignment_stats",
-        type: "checkbox",
-        options: [
-            {
-                "label": "Dribble",
-                "value": "dribble"
-            },
-            {
-                "label": "Tir",
-                "value": "shot"
-            },
-            {
-                "label": "Passe",
-                "value": "pass"
-            },
-            {
-                "label": "Tacle",
-                "value": "tackle"
-            },
-            {
-                "label": "Contre",
-                "value": "block"
-            },
-            {
-                "label": "Interception",
-                "value": "intercept"
-            },
-            {
-                "label": "Rapidité",
-                "value": "speed"
-            },
-            {
-                "label": "Puissance",
-                "value": "power"
-            },
-            {
-                "label": "Technique",
-                "value": "technique"
-            },
-            {
-                "label": "Coup de poing",
-                "value": "punch"
-            },
-            {
-                "label": "Capte",
-                "value": "catch"
-            },
-            {
-                "label": "Ballon Haut (tête)",
-                "value": "highball"
-            },
-            {
-                "label": "Ballon Bas (volée)",
-                "value": "lowball"
-            }
-        ],
-        className: "checkbox-list-wrapper-vertical",
-        fieldClass: "full-width"
     }
 ]
+
+const assignmentStatsForm = [{
+    label: "Paramètres affectés",
+    name: "assignment_stats",
+    type: "checkbox",
+    options: [
+        {
+            "label": "Dribble",
+            "value": "dribble"
+        },
+        {
+            "label": "Tir",
+            "value": "shot"
+        },
+        {
+            "label": "Passe",
+            "value": "pass"
+        },
+        {
+            "label": "Tacle",
+            "value": "tackle"
+        },
+        {
+            "label": "Contre",
+            "value": "block"
+        },
+        {
+            "label": "Interception",
+            "value": "intercept"
+        },
+        {
+            "label": "Rapidité",
+            "value": "speed"
+        },
+        {
+            "label": "Puissance",
+            "value": "power"
+        },
+        {
+            "label": "Technique",
+            "value": "technique"
+        },
+        {
+            "label": "Coup de poing",
+            "value": "punch"
+        },
+        {
+            "label": "Capte",
+            "value": "catch"
+        },
+        {
+            "label": "Ballon Haut (tête)",
+            "value": "highball"
+        },
+        {
+            "label": "Ballon Bas (volée)",
+            "value": "lowball"
+        }
+    ],
+    className: "checkbox-list-wrapper-vertical",
+    fieldClass: "full-width"
+}]
 
 const initialDataSelected = {
     "name": "",
@@ -156,7 +161,7 @@ const initialDataSelected = {
 }
 
 const fetcher = url => fetch(url).then(r => r.json())
-const apiUrl = `${process.env.REACT_APP_API_URL}/api/skill`
+const apiUrl = `${process.env.REACT_APP_API_URL}/api/skill/`
 
 const SkillList = () => {
     const alert = useAlert()
@@ -166,7 +171,7 @@ const SkillList = () => {
     const [showForm, setShowForm] = useState(false);
     const [newDataForm, setNewDataForm] = useState(false);
 
-    const { data, error } = useSWR(apiUrl + "?type_skill=passive_skill", fetcher)
+    const { data, error } = useSWR(apiUrl + "?type_skill=hidden_ability", fetcher)
     //const { data, setData } = useState([])
 
     async function handleGetData(id) {
@@ -293,6 +298,14 @@ const SkillList = () => {
         });
     }
 
+    function handleToggleAssignmentStats() {
+        if (dataSelected.assignment_stats.length === 0) {
+            setDataSelected({ ...dataSelected, assignment_stats: initialDataSelected.assignment_stats });
+        } else {
+            setDataSelected({ ...dataSelected, assignment_stats: [] });
+        }
+    }
+
     if (error) return <div>failed to load</div>
     if (!data) return <div>loading...</div>
 
@@ -350,6 +363,29 @@ const SkillList = () => {
                             )
                         })
                     }
+                    {
+                        assignmentStatsForm.map((form, index) => {
+                            return (
+                                <Input
+                                    key={index}
+                                    label={form?.label}
+                                    name={form?.name}
+                                    type={form?.type}
+                                    value={dataSelected[form?.name] || ""}
+                                    handleChange={handleInputInfoChange}
+                                    readonly={form?.readonly}
+                                    options={form?.options}
+                                    fieldClass={form?.fieldClass}
+                                    className={form?.className}
+                                />
+                            )
+                        })
+                    }
+                    <fieldset className="full-width">
+                        <span className="button--primary" onClick={handleToggleAssignmentStats}>
+                            Toggle l'assignement de stats
+                        </span>
+                    </fieldset>
                     <fieldset>
                         {
                             newDataForm ? (

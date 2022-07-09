@@ -6,9 +6,9 @@
     justify-content: center;
 
     &__wrapper-img {
-        width: 50px;
+        width: 85px;
+        height: 85px;
         overflow: hidden;
-        height: 50px;
         position: relative;
         border: 2px solid transparent;
         transition: border-color ease-in-out 0.25s;
@@ -20,21 +20,38 @@
         top: 0;
         left: 50%;
         transform: translateX(-50%);
+        opacity: 0.5;
+        filter: grayscale(1);
+        transition: all ease-in-out 0.25s;
     }
 
     .badge-free {
         position: absolute;
         color: #ffffff;
-        height: 14px;
-        width: 14px;
         font-size: 10px;
         text-align: center;
-        bottom: 0;
-        right: 0;
+        bottom: 2px;
+        right: 2px;
+        padding: 2px;
+        font-size: 16px;
+        filter: grayscale(1);
+        transition: all ease-in-out 0.25s;
 
         .fa-gift {
             vertical-align: middle;
         }
+    }
+
+    .badge-stats {
+        position: absolute;
+        color: #ffffff;
+        font-size: 16px;
+        text-align: center;
+        top: 2px;
+        left: 2px;
+        filter: grayscale(1);
+        transition: all ease-in-out 0.25s;
+        padding: 2px;
     }
 
     &__item {
@@ -42,19 +59,25 @@
         position: relative;
 
         &--blue {
-            .badge-free {
+
+            .badge-free,
+            .badge-stats {
                 background: $bgBlue;
             }
         }
 
         &--red {
-            .badge-free {
+
+            .badge-free,
+            .badge-stats {
                 background: $bgRed;
             }
         }
 
         &--green {
-            .badge-free {
+
+            .badge-free,
+            .badge-stats {
                 background: $bgGreen;
             }
         }
@@ -77,6 +100,34 @@
             .player-list__wrapper-img {
                 border-color: $bgGreen;
                 transition: border-color ease-in-out 0.25s;
+            }
+        }
+
+        &:hover {
+
+            .badge-free,
+            .badge-stats {
+                filter: grayscale(0);
+                transition: all ease-in-out 0.25s;
+            }
+
+            .player-list__img {
+                filter: grayscale(0);
+                opacity: 1;
+                transition: all ease-in-out 0.25s;
+            }
+        }
+
+        &--possessed {
+
+            .badge-free,
+            .badge-stats {
+                filter: grayscale(0);
+            }
+
+            .player-list__img {
+                filter: grayscale(0);
+                opacity: 1;
             }
         }
     }
