@@ -35,7 +35,7 @@ export const ComparePanel = (props) => {
     prevPlayerLengthRef.current = Array.isArray(players) && players.length;
   }, [players])
 
-  let numberFreeSlot = 3 - players.length;
+  let numberFreeSlot = 4 - players.length;
   let rows = [];
   for (let i = 0; i < numberFreeSlot; i++) {
     rows.push(i);
@@ -110,7 +110,7 @@ export const ComparePanel = (props) => {
             })
           ) : null}
           {
-            Array.isArray(players) && players.length < 3 ? (
+            Array.isArray(players) && players.length < 4 ? (
               <>
                 <li className="compare-panel__player-detail-list__item compare-panel__player-detail-list__item--empty" onClick={() => setShowPanel(false)}>
                   <div>

@@ -171,8 +171,10 @@ const SkillList = () => {
     const [showForm, setShowForm] = useState(false);
     const [newDataForm, setNewDataForm] = useState(false);
 
+    // const { data, error } = useSWR(apiUrl + "?type_skill=passive_skill", fetcher)
+    // const { data, error } = useSWR(apiUrl + "?type_skill=passive_skill", fetcher)
     const { data, error } = useSWR(apiUrl + "?type_skill=hidden_ability", fetcher)
-    //const { data, setData } = useState([])
+    // const { data, setData } = useState([])
 
     async function handleGetData(id) {
         try {

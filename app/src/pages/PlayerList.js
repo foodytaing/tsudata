@@ -53,12 +53,12 @@ const PlayerList = () => {
     let dataFilteredByDateAply = dateFilter === "2017-01-01" || dateFilter === "" ? newData : dataFilteredByDate
 
     let dataFiltered = positionFilter != "" ? dataFilteredByDateAply.filter(data => data.position.includes(positionFilter)) : dataFilteredByDateAply;
-
+    let newDataFiltered = positionFilter != "" ? newData.filter(data => data.position.includes(positionFilter)) : newData;
 
     const allPlayers = [
         {
-            category: "Nouveauté",
-            data: dataFiltered.filter(data => data.createdAt && data.collection_card !== "" && (moment(data.createdAt) > moment().subtract(14, 'd'))).sort(function (a, b) {
+            category: "Nouveauté / Rework",
+            data: newDataFiltered.filter(data => data.collection_card !== "" && (((moment(data.createdAt) > moment().subtract(14, 'd')) && data.createdAt) || (data.updatedAt && (moment(data.updatedAt) > moment().subtract(0, 'd'))))).sort(function (a, b) {
                 return new Date(b.createdAt) - new Date(a.createdAt);
             })
         },
@@ -100,10 +100,8 @@ const PlayerList = () => {
         }
     ]
 
-    console.log(allPlayers[0].data);
-
     async function handleAddPlayerOnPanel(id) {
-        if (Array.isArray(playersOnPanel) & playersOnPanel.length === 3) {
+        if (Array.isArray(playersOnPanel) & playersOnPanel.length === 4) {
             alert.show('Vous avez atteint le nombre maximal de joueur dans la liste de comparaison.');
             return;
         }

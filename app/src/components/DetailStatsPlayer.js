@@ -70,7 +70,7 @@ export const DetailStatsPlayer = (props) => {
 	} = props
 
 	const [boost, setBoost] = useState({
-		leader_skill: 75, params: "", bond: 45, intensity: "", good_read: "",
+		leader_skill: 75, params: "", bond: 55, intensity: "", good_read: "",
 		dribble: 25, shot: 25, pass: 25, tackle: 25, block: 25, intercept: 25, speed: 25, power: 25, technique: 25, catch: 25, punch: 25,
 		attack: "", defend: "", physical: "10", saving: "", stamina: "",
 		active_skills_boost: {
@@ -177,14 +177,14 @@ export const DetailStatsPlayer = (props) => {
 
 	if (allReadyFetch === 0) {
 		Array.isArray(data) && data.forEach((el, index) => {
-			el.techniques.forEach(id => techniques.push({ id: id, image_url: el.image_url, chest: el.chest }))
+			el.techniques.forEach((id, index) => techniques.push({ id: id, image_url: el.image_url, chest: el.chest, index: index }))
 
 			if (data.length === (index + 1)) {
 				techniques.forEach((tech, i) => {
 					axios
 						.get(`${process.env.REACT_APP_API_URL}/api/technique/${tech.id}`)
 						.then((res) => {
-							allTechniques.push({ ...res.data, image_url: tech.image_url, chest: tech.chest });
+							allTechniques.push({ ...res.data, image_url: tech.image_url, chest: tech.chest, index: tech.index });
 
 							if (techniques.length === allTechniques.length) {
 								let newPlayersOnPanel = [...playersOnPanel]
@@ -264,6 +264,8 @@ export const DetailStatsPlayer = (props) => {
 			}
 		})
 	}
+
+	console.log(moveset);
 
 	const isGk = Array.isArray(player?.positions) && player?.positions.includes("gb");
 
@@ -556,7 +558,7 @@ export const DetailStatsPlayer = (props) => {
 								})}
 								{boundaryBreak.map(input => {
 									return (
-										<div key={'boost_' + input.name + '_' + player.keyId} className={`boost__value-item boost__value-item--${player?.color}`} style={{ display: "none" }}>
+										<div key={'boost_' + input.name + '_' + player.keyId} className={`boost__value-item boost__value-item--${player?.color}`}>
 											<label className="boost__label">{input.label} - {calcLb()}</label>
 											<div style={{ display: 'none' }}>({calcLb()}/{totalLb(boundary_break, isGk)})</div>
 											<select
