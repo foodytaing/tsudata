@@ -44,6 +44,21 @@ const filterForm = [
         name: "series",
         type: "select",
         options: seriesList
+    },
+    {
+        label: "Gratuit",
+        name: "chest",
+        type: "select",
+        options: [
+            {
+                "label": "Oui",
+                "value": "true"
+            },
+            {
+                "label": "Non",
+                "value": "false"
+            },
+        ]
     }
 ]
 

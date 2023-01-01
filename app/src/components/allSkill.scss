@@ -96,10 +96,10 @@
   }
 
   &--active {
-    background-color: #e8af80;
+    background-color: #e5d5c8;
 
     &:hover {
-      background-color: #e8af80;
+      background-color: #e5d5c8;
     }
   }
 }
@@ -138,4 +138,18 @@
   color: #ffffff;
   background: #e96800;
   padding: 2px 4px;
+  width: 18px;
+  height: 18px;
+}
+
+.all-technique__lock {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #ffffff;
+  background: #e96800;
+  padding: 2px 4px;
+  width: 18px;
+  height: 18px;
+  text-align: center;
 }

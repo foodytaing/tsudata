@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 const playerSchema = new mongoose.Schema({
     image_url: {
@@ -57,18 +58,18 @@ const playerSchema = new mongoose.Schema({
         type: Object,
     },
     techniques: {
-        type: [String],
+        type: [{ type: ObjectId, ref: 'technique' }],
     },
     leader_skill: {
-        type: [String],
+        type: [{ type: ObjectId, ref: 'skill' }],
         trim: true,
     },
     passive_skill: {
-        type: [String],
+        type: [{ type: ObjectId, ref: 'skill' }],
         trim: true,
     },
     hidden_abilities: {
-        type: [String],
+        type: [{ type: ObjectId, ref: 'skill' }],
     },
     chest: {
         type: String,

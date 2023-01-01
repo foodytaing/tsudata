@@ -21,57 +21,57 @@ export const AllSkills = (props) => {
     {
       type: "dribble",
       label: "Dribble",
-      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "dribble" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity })
+      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "dribble" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity || a.name.localeCompare(b.name) })
     },
     {
       type: "shot",
       label: "Tir",
-      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "shot" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity })
+      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "shot" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity || a.name.localeCompare(b.name) })
     },
     {
       type: "pass",
       label: "Passe",
-      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "pass" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity })
+      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "pass" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity || a.name.localeCompare(b.name) })
     },
     {
       type: "onetwo",
       label: "Une Deux",
-      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "onetwo" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity })
+      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "onetwo" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity || a.name.localeCompare(b.name) })
     },
     {
       type: "tackle",
       label: "Tacle",
-      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "tackle" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity })
+      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "tackle" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity || a.name.localeCompare(b.name) })
     },
     {
       type: "block",
       label: "Contre",
-      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "block" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity })
+      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "block" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity || a.name.localeCompare(b.name) })
     },
     {
       type: "intercept",
       label: "Interception",
-      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "intercept" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity })
+      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "intercept" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity || a.name.localeCompare(b.name) })
     },
     {
       type: "highball",
       label: "Ballon Haut (Tête)",
-      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "highball" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity })
+      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "highball" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity || a.name.localeCompare(b.name) })
     },
     {
       type: "lowball",
       label: "Ballon Bas (Volée)",
-      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "lowball" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity })
+      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "lowball" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity || a.name.localeCompare(b.name) })
     },
     {
       type: "punch",
       label: "Coup de poing",
-      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "punch" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity })
+      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "punch" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity || a.name.localeCompare(b.name) })
     },
     {
       type: "catch",
       label: "Arrêt",
-      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "catch" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity })
+      data: Array.isArray(allTechniques) && allTechniques.filter(data => data.type_technique === "catch" && data.rank === "s").sort(function (a, b) { return b.intensity - a.intensity || a.name.localeCompare(b.name) })
     }
   ]
 
@@ -108,6 +108,15 @@ export const AllSkills = (props) => {
                               <span className="badge-free all-technique__gift">
                                 <FontAwesome
                                   name="gift"
+                                />
+                              </span>
+                            ) : null
+                          }
+                          {
+                            tech.index === 0 && tech?.image_url ? (
+                              <span className="badge-free all-technique__lock">
+                                <FontAwesome
+                                  name="lock"
                                 />
                               </span>
                             ) : null

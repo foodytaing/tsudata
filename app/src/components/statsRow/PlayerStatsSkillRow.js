@@ -3,23 +3,22 @@ import { calcStatTechnique } from "../../utils/calculator";
 import FontAwesome from 'react-fontawesome'
 
 export const classStatColor = (value, type) => {
-  let high, medium, low;
+  let limit;
 
   if (type == "shot" || type == "highball" || type == "lowball" || type == "catch" || type == "punch") {
-    high = 305;
-    medium = 280;
+    limit = 370;
   } else if (type == "tackle" || type == "dribble" || type == "intercept" || type == "pass" || type == "onetwo") {
-    high = 260;
-    medium = 235;
+    limit = 320;
   } else if (type == "block") {
-    high = 280;
-    medium = 255;
+    limit = 320;
   }
 
-  if (value >= high) {
+  if (value >= limit) {
     return 'high'
-  } else if (value >= medium) {
+  } else if (value >= (limit - 25)) {
     return 'medium'
+  } else if (value >= (limit - 50)) {
+    return 'low'
   } else {
     return null
   }

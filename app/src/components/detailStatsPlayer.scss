@@ -5,7 +5,7 @@
 	position: relative;
 
 	&__id {
-		display: none;
+		//display: none;
 	}
 
 	&__img {
@@ -142,14 +142,16 @@
 		font-size: 14px;
 
 		&--high {
-			color: #770000
+			color: #4f0060;
 		}
 
 		&--medium {
-			color: #a46000
+			color: #770000;
 		}
 
-		&--low {}
+		&--low {
+			color: #a46000;
+		}
 	}
 
 	&__stats-skill-name {
@@ -274,7 +276,7 @@
 
 .boost--boost {
 	.boost__value-item {
-		width: 50%;
+		width: 33.3333%;
 	}
 }
 

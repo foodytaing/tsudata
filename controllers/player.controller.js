@@ -46,7 +46,6 @@ module.exports.getAllPlayers = async (req, res) => {
                 + parseInt(player.stats.punch || 0)
                 + parseInt(player.stats.catch || 0);
 
-
             const result = {
                 stats: stats,
                 position: player.positions,
@@ -82,6 +81,28 @@ module.exports.getPlayer = async (req, res) => {
         else console.log("ID unknown : " + req.params.id);
     }).select();
 };
+
+module.exports.getAllTechniquesByPlayer = async (req, res) => {
+
+    const players = await PlayerModel.find(req.query)
+        .select([
+            "-leader_skill",
+            "-passive_skill",
+            "-hidden_abilities",
+            "-positions",
+            "-rarity",
+            "-position_in_collection",
+            "-stats",
+            "-collection_card",
+            "-country",
+            "-series",
+            "-color"
+        ])
+        .populate('techniques');
+
+    res.status(200).json(players);
+
+}
 
 module.exports.updatePlayer = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
